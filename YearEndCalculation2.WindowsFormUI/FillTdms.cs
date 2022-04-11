@@ -92,7 +92,7 @@ namespace YearEndCalculation2.WindowsFormUI
 
             return dataList;
         }
-
+/*
         public List<TdmsEntry> FillEntries(string fileName, List<TdmsEntry> tdmsEntries)
         {
 
@@ -207,6 +207,6 @@ namespace YearEndCalculation2.WindowsFormUI
             }
             return tdmsExits;
         }
-
+*/
     }
 }
