@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Abstract\IYearEndService.cs" />
     <Compile Include="Concrete\Managers\YearEndManager.cs" />
+    <Compile Include="Concrete\ManuelMatchManager.cs" />
     <Compile Include="Concrete\ThemeManager.cs" />
     <Compile Include="DependencyResolvers\Ninject\BusinessModule.cs" />
     <Compile Include="DependencyResolvers\Ninject\InstanceFactory.cs" />

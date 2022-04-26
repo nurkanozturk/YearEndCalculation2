@@ -29,17 +29,18 @@ namespace YearEndCalculation2.WindowsFormUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbxMkysRemain = new System.Windows.Forms.TextBox();
             this.tbxTdmsRemain = new System.Windows.Forms.TextBox();
             this.lblMkysRemaining = new System.Windows.Forms.Label();
             this.lblTdmsRemaining = new System.Windows.Forms.Label();
             this.gbxRemain = new System.Windows.Forms.GroupBox();
             this.gbxResult = new System.Windows.Forms.GroupBox();
+            this.btnMatch = new System.Windows.Forms.Button();
             this.lblNoProblem = new System.Windows.Forms.Label();
             this.dgw = new System.Windows.Forms.DataGridView();
             this.btnExcel = new System.Windows.Forms.PictureBox();
@@ -103,8 +104,8 @@ namespace YearEndCalculation2.WindowsFormUI
             this.picCountCorrect = new System.Windows.Forms.PictureBox();
             this.picCountIncorrect = new System.Windows.Forms.PictureBox();
             this.lblDarkMode = new System.Windows.Forms.Label();
-            this.tglBtnDarkMode = new YearEndCalculation.WindowsFormUI.ToggleButton();
             this.pbxFacebook = new System.Windows.Forms.PictureBox();
+            this.tglBtnDarkMode = new YearEndCalculation.WindowsFormUI.ToggleButton();
             this.gbxRemain.SuspendLayout();
             this.gbxResult.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgw)).BeginInit();
@@ -184,6 +185,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // gbxResult
             // 
+            this.gbxResult.Controls.Add(this.btnMatch);
             this.gbxResult.Controls.Add(this.lblNoProblem);
             this.gbxResult.Controls.Add(this.dgw);
             this.gbxResult.Controls.Add(this.btnExcel);
@@ -201,16 +203,31 @@ namespace YearEndCalculation2.WindowsFormUI
             this.gbxResult.TabStop = false;
             this.gbxResult.Text = "Kontrol Edilmesi Gereken Kayıtlar";
             // 
+            // btnMatch
+            // 
+            this.btnMatch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(219)))), ((int)(((byte)(251)))));
+            this.btnMatch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnMatch.Image = ((System.Drawing.Image)(resources.GetObject("btnMatch.Image")));
+            this.btnMatch.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnMatch.Location = new System.Drawing.Point(617, 411);
+            this.btnMatch.Name = "btnMatch";
+            this.btnMatch.Size = new System.Drawing.Size(175, 29);
+            this.btnMatch.TabIndex = 85;
+            this.btnMatch.Text = "Manuel Eşleştirme";
+            this.btnMatch.UseVisualStyleBackColor = false;
+            this.btnMatch.Click += new System.EventHandler(this.btnMatch_Click);
+            // 
             // lblNoProblem
             // 
             this.lblNoProblem.AutoSize = true;
             this.lblNoProblem.BackColor = System.Drawing.Color.OldLace;
             this.lblNoProblem.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblNoProblem.Location = new System.Drawing.Point(129, 209);
+            this.lblNoProblem.Location = new System.Drawing.Point(89, 203);
             this.lblNoProblem.Name = "lblNoProblem";
-            this.lblNoProblem.Size = new System.Drawing.Size(0, 20);
+            this.lblNoProblem.Size = new System.Drawing.Size(221, 20);
             this.lblNoProblem.TabIndex = 81;
-            this.lblNoProblem.Visible = false;
+            this.lblNoProblem.Text = "KAYIT BULUNMAMAKTADIR";
             // 
             // dgw
             // 
@@ -218,44 +235,44 @@ namespace YearEndCalculation2.WindowsFormUI
             this.dgw.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dgw.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgw.BackgroundColor = System.Drawing.Color.OldLace;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgw.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
+            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgw.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
             this.dgw.ColumnHeadersHeight = 25;
             this.dgw.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.PowderBlue;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgw.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgw.DefaultCellStyle = dataGridViewCellStyle18;
             this.dgw.Location = new System.Drawing.Point(6, 43);
             this.dgw.Name = "dgw";
             this.dgw.ReadOnly = true;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgw.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgw.RowHeadersDefaultCellStyle = dataGridViewCellStyle19;
             this.dgw.RowHeadersVisible = false;
             this.dgw.RowHeadersWidth = 20;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.PowderBlue;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            this.dgw.RowsDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            this.dgw.RowsDefaultCellStyle = dataGridViewCellStyle20;
             this.dgw.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.dgw.RowTemplate.Height = 27;
             this.dgw.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgw.Size = new System.Drawing.Size(790, 370);
+            this.dgw.Size = new System.Drawing.Size(790, 363);
             this.dgw.TabIndex = 1;
             // 
             // btnExcel
@@ -264,7 +281,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.btnExcel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExcel.Image = ((System.Drawing.Image)(resources.GetObject("btnExcel.Image")));
             this.btnExcel.InitialImage = null;
-            this.btnExcel.Location = new System.Drawing.Point(705, 415);
+            this.btnExcel.Location = new System.Drawing.Point(17, 412);
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(34, 29);
             this.btnExcel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -278,7 +295,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.btnPrint.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnPrint.Image = ((System.Drawing.Image)(resources.GetObject("btnPrint.Image")));
             this.btnPrint.InitialImage = null;
-            this.btnPrint.Location = new System.Drawing.Point(746, 415);
+            this.btnPrint.Location = new System.Drawing.Point(58, 412);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(34, 29);
             this.btnPrint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1057,6 +1074,20 @@ namespace YearEndCalculation2.WindowsFormUI
             this.lblDarkMode.TabIndex = 81;
             this.lblDarkMode.Text = "Karanlık Mod";
             // 
+            // pbxFacebook
+            // 
+            this.pbxFacebook.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxFacebook.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxFacebook.Image = ((System.Drawing.Image)(resources.GetObject("pbxFacebook.Image")));
+            this.pbxFacebook.InitialImage = null;
+            this.pbxFacebook.Location = new System.Drawing.Point(1284, 658);
+            this.pbxFacebook.Name = "pbxFacebook";
+            this.pbxFacebook.Size = new System.Drawing.Size(22, 23);
+            this.pbxFacebook.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxFacebook.TabIndex = 84;
+            this.pbxFacebook.TabStop = false;
+            this.pbxFacebook.Click += new System.EventHandler(this.pbxFacebook_Click);
+            // 
             // tglBtnDarkMode
             // 
             this.tglBtnDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1072,20 +1103,6 @@ namespace YearEndCalculation2.WindowsFormUI
             this.tglBtnDarkMode.TabIndex = 80;
             this.tglBtnDarkMode.UseVisualStyleBackColor = true;
             this.tglBtnDarkMode.Click += new System.EventHandler(this.tglBtnDarkMode_Click);
-            // 
-            // pbxFacebook
-            // 
-            this.pbxFacebook.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbxFacebook.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbxFacebook.Image = ((System.Drawing.Image)(resources.GetObject("pbxFacebook.Image")));
-            this.pbxFacebook.InitialImage = null;
-            this.pbxFacebook.Location = new System.Drawing.Point(1284, 658);
-            this.pbxFacebook.Name = "pbxFacebook";
-            this.pbxFacebook.Size = new System.Drawing.Size(22, 23);
-            this.pbxFacebook.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbxFacebook.TabIndex = 84;
-            this.pbxFacebook.TabStop = false;
-            this.pbxFacebook.Click += new System.EventHandler(this.pbxFacebook_Click);
             // 
             // FormMain
             // 
@@ -1233,6 +1250,7 @@ namespace YearEndCalculation2.WindowsFormUI
         private YearEndCalculation.WindowsFormUI.ToggleButton tglBtnDarkMode;
         private System.Windows.Forms.Label lblDarkMode;
         private System.Windows.Forms.PictureBox pbxFacebook;
+        private System.Windows.Forms.Button btnMatch;
     }
 }
 

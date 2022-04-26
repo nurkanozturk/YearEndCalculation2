@@ -8,11 +8,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 using YearEndCalculation.Business.Concrete;
+using YearEndCalculation.Entities.Concrete;
 using YearEndCalculation.WindowsFormUI;
 using YearEndCalculation2.Business.Abstract;
 using YearEndCalculation2.Business.DependencyResolvers.Ninject;
-using YearEndCalculation2.Entities.Concrete;
 
 namespace YearEndCalculation2.WindowsFormUI
 {
@@ -21,18 +22,21 @@ namespace YearEndCalculation2.WindowsFormUI
         private decimal _mkysEntryTotal, _mkysExitTotal, _wrongTdmsEntry, _wrongTdmsExit;
         private string dgwPrint = "MKYS GİRİŞLERİ";
 
+        public static List<List<ActionRecord>> DgwItems;
+
+
         public static bool darkMode = new ThemeManager().WatchTheme() == 0 ? true : false;
         bool calculated = false;
 
-        List<MkysEntry> _mkysEntries = new List<MkysEntry>();
-        List<MkysExit> _mkysExits = new List<MkysExit>();
-        List<TdmsEntry> _tdmsEntries = new List<TdmsEntry>();
-        List<TdmsExit> _tdmsExits = new List<TdmsExit>();
+        List<ActionRecord> _mkysEntries = new List<ActionRecord>();
+        List<ActionRecord> _mkysExits = new List<ActionRecord>();
+        List<ActionRecord> _tdmsEntries = new List<ActionRecord>();
+        List<ActionRecord> _tdmsExits = new List<ActionRecord>();
 
-        List<MkysEntry> _mkysEntriesDgw = new List<MkysEntry>();
-        List<MkysExit> _mkysExitsDgw = new List<MkysExit>();
-        List<TdmsEntry> _tdmsEntriesDgw = new List<TdmsEntry>();
-        List<TdmsExit> _tdmsExitsDgw = new List<TdmsExit>();
+        List<ActionRecord> _mkysEntriesDgw = new List<ActionRecord>();
+        List<ActionRecord> _mkysExitsDgw = new List<ActionRecord>();
+        List<ActionRecord> _tdmsEntriesDgw = new List<ActionRecord>();
+        List<ActionRecord> _tdmsExitsDgw = new List<ActionRecord>();
 
         IYearEndService _yearEnd = InstanceFactory.GetInstance<IYearEndService>();
 
@@ -46,7 +50,7 @@ namespace YearEndCalculation2.WindowsFormUI
         private void FormMain_Load(object sender, EventArgs e)
         {
             tglBtnDarkMode.Checked = darkMode;
-
+            lblNoProblem.Visible = false;
             dgw.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(225, 225, 225);
             dgw.EnableHeadersVisualStyles = false;
             Color bgColor, bgColor2, headerColor, textColor, caclTextColor, cellBgColor, selectionBgColor, foreColor, calcBgColor, tabTextColor, prcTextColor, rtbxBgColor, tabBgColor;
@@ -297,8 +301,8 @@ namespace YearEndCalculation2.WindowsFormUI
             {
                 try
                 {
-                    _tdmsEntries = _fillTdms.FillTdmsDatas(fileName, new TdmsEntry(),false);
-                    _tdmsExits = _fillTdms.FillTdmsDatas(fileName, new TdmsExit(),true);
+                    _tdmsEntries = _fillTdms.FillTdmsDatas(fileName, false);
+                    _tdmsExits = _fillTdms.FillTdmsDatas(fileName, true);
 
                     if (rtbxTdms.Text == "")
                     {
@@ -351,24 +355,47 @@ namespace YearEndCalculation2.WindowsFormUI
             ClearPrices();
             dgw.DataSource = null;
 
-            _mkysEntries = _yearEnd.CompareEntries(_mkysEntries, _tdmsEntries);
-            _mkysExits = _yearEnd.CompareExits(_mkysExits, _tdmsExits);
-            _mkysExits = _yearEnd.CompareMkys(_mkysEntries, _mkysExits);
-            _tdmsExits = _yearEnd.CompareTdms(_tdmsEntries, _tdmsExits);
+            _mkysEntries = _yearEnd.CompareMkysTdms(_mkysEntries, _tdmsEntries);
+            _mkysExits = _yearEnd.CompareMkysTdms(_mkysExits, _tdmsExits);
+            _mkysExits = _yearEnd.CompareInSelf(_mkysEntries, _mkysExits);
+            _tdmsExits = _yearEnd.CompareInSelf(_tdmsEntries, _tdmsExits);
 
             _mkysEntriesDgw.AddRange(_mkysEntries);
             _mkysExitsDgw.AddRange(_mkysExits);
             _tdmsEntriesDgw.AddRange(_tdmsEntries);
             _tdmsExitsDgw.AddRange(_tdmsExits);
 
+            XmlNodeList matches = ManuelMatchManager.TakeMachedRecords(FillTdms.queryId);
+            if (matches != null)
+            {
+                foreach (XmlNode match in matches)
+                {
+                    XmlNodeList items = match.SelectNodes("item");
+                    foreach (XmlNode item in items)
+                    {
+                        _mkysEntriesDgw.Remove(_mkysEntries.SingleOrDefault(m => m.Id == item.Attributes["id"].Value));
+                        _mkysExitsDgw.Remove(_mkysExits.SingleOrDefault(m => m.Id == item.Attributes["id"].Value));
+                        _tdmsEntriesDgw.Remove(_tdmsEntries.SingleOrDefault(t => t.Id == item.Attributes["id"].Value));
+                        _tdmsExitsDgw.Remove(_tdmsExits.SingleOrDefault(t => t.Id == item.Attributes["id"].Value));
+
+                    }
+
+                }
+            }
+            DgwItems = new List<List<ActionRecord>>();
+            DgwItems.Add(_mkysEntriesDgw);
+            DgwItems.Add(_mkysExitsDgw);
+            DgwItems.Add(_tdmsEntriesDgw);
+            DgwItems.Add(_tdmsExitsDgw);
+
             dgw.DataSource = _mkysEntriesDgw;
 
             FixDataGridFormats();
 
-            foreach (var mkysEntry in _mkysEntries) { _mkysEntryTotal += mkysEntry.Amount; }
-            foreach (var mkysExit in _mkysExits) { _mkysExitTotal += mkysExit.Amount; }
-            foreach (var tdmsEntry in _tdmsEntries) { _wrongTdmsEntry += tdmsEntry.Amount; }
-            foreach (var tdmsExit in _tdmsExits) { _wrongTdmsExit += tdmsExit.Amount; }
+            foreach (var mkysEntry in _mkysEntries) { _mkysEntryTotal += mkysEntry.Price; }
+            foreach (var mkysExit in _mkysExits) { _mkysExitTotal += mkysExit.Price; }
+            foreach (var tdmsEntry in _tdmsEntries) { _wrongTdmsEntry += tdmsEntry.Price; }
+            foreach (var tdmsExit in _tdmsExits) { _wrongTdmsExit += tdmsExit.Price; }
 
             prcMkysRemain.Text = tbxMkysRemain.Text == string.Empty ? "0,00"
                 : string.Format("{0:0.00}", Convert.ToDecimal(tbxMkysRemain.Text));
@@ -393,14 +420,13 @@ namespace YearEndCalculation2.WindowsFormUI
             btnTab1.ForeColor = Color.WhiteSmoke;
 
             lblNoProblem.Text = string.Empty;
-            lblNoProblem.Visible = true;
-
 
             if (_mkysEntriesDgw.Count == 0)
             {
                 lblNoProblem.Text = "MUHASEBE KAYDI YAPILMAMIŞ GİRİŞ TİFİNİZ BULUNMAMAKTADIR.";
             }
 
+            lblNoProblem.Visible = true;
             ClearData();
         }
 
@@ -536,80 +562,39 @@ namespace YearEndCalculation2.WindowsFormUI
             worksheetTdmsEntry.Name = "TDMS GİRİŞ";
             worksheetTdmsExit.Name = "TDMS ÇIKIŞ";
 
-            List<string> entryHeaders = new List<string> { "FİŞ NO", "FİŞ TARİHİ", "TÜRÜ", "FATURA NO", "FATURA TARİHİ", "TUTAR" };
-            List<string> headers = new List<string> { "FİŞ NO", "FİŞ TARİHİ", "TÜRÜ", "AÇIKLAMA", "TUTAR" };
+            List<Microsoft.Office.Interop.Excel._Worksheet> worksheets = new List<Microsoft.Office.Interop.Excel._Worksheet>();
+            worksheets.Add(worksheetMkysEntry);
+            worksheets.Add(worksheetMkysExit);
+            worksheets.Add(worksheetTdmsEntry);
+            worksheets.Add(worksheetTdmsExit);
 
-            for (int i = 1; i < 7; i++)
+            List<List<ActionRecord>> actions = new List<List<ActionRecord>>();
+            actions.Add(_mkysEntriesDgw);
+            actions.Add(_mkysExitsDgw);
+            actions.Add(_tdmsEntriesDgw);
+            actions.Add(_tdmsExitsDgw);
+            int actionIndex = 0;
+            foreach (Microsoft.Office.Interop.Excel._Worksheet worksheet in worksheets)
             {
-                worksheetMkysEntry.Cells[1, i] = entryHeaders[i - 1];
-            }
+                worksheet.Cells[1, 1] = "FİŞ NO";
+                worksheet.Cells[1, 2] = "FİŞ TARİHİ";
+                worksheet.Cells[1, 3] = "TÜRÜ";
+                worksheet.Cells[1, 4] = "AÇIKLAMA";
+                worksheet.Cells[1, 5] = "TUTAR";
 
-            for (int i = 1; i < 6; i++)
-            {
-                worksheetMkysExit.Cells[1, i] = entryHeaders[i - 1];
-                worksheetTdmsEntry.Cells[1, i] = entryHeaders[i - 1];
-                worksheetTdmsExit.Cells[1, i] = entryHeaders[i - 1];
-            }
-
-            void fillCells<T>(List<T> list)
-            {
-                for (int i = 0; i < list.Count; i++)
+                for (int i = 0; i < actions[actionIndex].Count; i++)
                 {
-                    worksheetMkysEntry.Cells[i + 2, 1] = typeof(T).GetProperty("ReceiptNumber").GetValue(list[i]);
-                    worksheetMkysEntry.Cells[i + 2, 2] = typeof(T).GetProperty("ReceiptDate").GetValue(list[i]);
-                    worksheetMkysEntry.Cells[i + 2, 3] = typeof(T).GetProperty("TypeOfSupply").GetValue(list[i]);
-                    worksheetMkysEntry.Cells[i + 2, 4] = typeof(T).GetProperty("InvoiceNumber").GetValue(list[i]);
-                    worksheetMkysEntry.Cells[i + 2, 5] = typeof(T).GetProperty("InvoiceDate").GetValue(list[i]);
-                    worksheetMkysEntry.Cells[i + 2, 6] = Math.Round(Convert.ToDouble(typeof(T).GetProperty("Amount").GetValue(list[i])), 2);
+                    worksheet.Cells[i + 2, 1] = actions[actionIndex][i].DocNumber;
+                    worksheet.Cells[i + 2, 2] = actions[actionIndex][i].DocDate;
+                    worksheet.Cells[i + 2, 3] = actions[actionIndex][i].Type;
+                    worksheet.Cells[i + 2, 4] = actions[actionIndex][i].Explanation;
+                    worksheet.Cells[i + 2, 5] = Math.Round(Convert.ToDouble(actions[actionIndex][i].Price), 2);
                 }
+                actionIndex++;
+
+                worksheet.Columns.AutoFit();
+                worksheet.UsedRange.Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
             }
-
-            fillCells(_mkysEntriesDgw);
-
-            for (int i = 0; i < _mkysExitsDgw.Count; i++)
-            {
-                worksheetMkysExit.Cells[i + 2, 1] = _mkysExitsDgw[i].ReceiptNumber;
-                worksheetMkysExit.Cells[i + 2, 2] = _mkysExitsDgw[i].ReceiptDate;
-                worksheetMkysExit.Cells[i + 2, 3] = _mkysExitsDgw[i].TypeOfExit;
-                worksheetMkysExit.Cells[i + 2, 4] = _mkysExitsDgw[i].ToWhere;
-                worksheetMkysExit.Cells[i + 2, 5] = Math.Round(_mkysExitsDgw[i].Amount, 2);
-            }
-
-            for (int i = 0; i < _tdmsEntriesDgw.Count; i++)
-            {
-                worksheetTdmsEntry.Cells[i + 2, 1] = _tdmsEntriesDgw[i].ReceiptNumber;
-                worksheetTdmsEntry.Cells[i + 2, 2] = _tdmsEntriesDgw[i].ReceiptDate;
-                worksheetTdmsEntry.Cells[i + 2, 3] = _tdmsEntriesDgw[i].TypeOfProcess;
-                worksheetTdmsEntry.Cells[i + 2, 4] = _tdmsEntriesDgw[i].Explanation;
-                worksheetTdmsEntry.Cells[i + 2, 5] = Math.Round(_tdmsEntriesDgw[i].Amount, 2);
-            }
-
-            for (int i = 0; i < _tdmsExitsDgw.Count; i++)
-            {
-                worksheetTdmsExit.Cells[i + 2, 1] = _tdmsExitsDgw[i].ReceiptNumber;
-                worksheetTdmsExit.Cells[i + 2, 2] = _tdmsExitsDgw[i].ReceiptDate;
-                worksheetTdmsExit.Cells[i + 2, 3] = _tdmsExitsDgw[i].TypeOfProcess;
-                worksheetTdmsExit.Cells[i + 2, 4] = _tdmsExitsDgw[i].Explanation;
-                worksheetTdmsExit.Cells[i + 2, 5] = Math.Round(_tdmsExitsDgw[i].Amount, 2);
-            }
-
-
-
-            worksheetMkysEntry.Columns.AutoFit();
-            worksheetMkysExit.Columns.AutoFit();
-            worksheetTdmsEntry.Columns.AutoFit();
-            worksheetTdmsExit.Columns.AutoFit();
-
-            BorderLine(worksheetMkysEntry);
-            BorderLine(worksheetMkysExit);
-            BorderLine(worksheetTdmsEntry);
-            BorderLine(worksheetTdmsExit);
-
-        }
-
-        private static void BorderLine(Microsoft.Office.Interop.Excel._Worksheet worksheet)
-        {
-            worksheet.UsedRange.Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
         }
 
         private void TbxMkysRemain_KeyPress(object sender, KeyPressEventArgs e)
@@ -751,21 +736,9 @@ namespace YearEndCalculation2.WindowsFormUI
             dgw.Columns[1].HeaderText = "FİŞ NO";
             dgw.Columns[2].HeaderText = "FİŞ TARİHİ";
             dgw.Columns[3].HeaderText = "TÜRÜ";
-
-            if (dgw.DataSource == _mkysEntriesDgw)
-            {
-                dgw.Columns[4].HeaderText = "FATURA NO";
-                dgw.Columns[5].HeaderText = "FATURA TARİHİ";
-                dgw.Columns[6].HeaderText = "TUTAR";
-                dgw.Columns[6].DefaultCellStyle.Format = "0.00";
-            }
-
-            else
-            {
-                dgw.Columns[4].HeaderText = "AÇIKLAMA";
-                dgw.Columns[5].HeaderText = "TUTAR";
-                dgw.Columns[5].DefaultCellStyle.Format = "0.00";
-            }
+            dgw.Columns[4].HeaderText = "AÇIKLAMA";
+            dgw.Columns[5].HeaderText = "TUTAR";
+            dgw.Columns[5].DefaultCellStyle.Format = "0.00";
 
         }
 
@@ -778,7 +751,6 @@ namespace YearEndCalculation2.WindowsFormUI
             return defrence;
         }
 
-        int _lineWritten = 0;
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -786,6 +758,7 @@ namespace YearEndCalculation2.WindowsFormUI
         }
 
         int _nextDgwList = 1;
+        int _lineWritten = 0;
         int _dgwLineWritten = 0;
 
         private void btnHelp_Click(object sender, EventArgs e)
@@ -821,7 +794,23 @@ namespace YearEndCalculation2.WindowsFormUI
             System.Diagnostics.Process.Start("https://www.facebook.com/groups/466729348151176/?ref=share");
         }
 
-        int _fix = 1;
+        private void btnMatch_Click(object sender, EventArgs e)
+        {
+            MatchForm matchForm = new MatchForm();
+            matchForm.ShowDialog();
+            foreach (string id in MatchForm.matchedRecords)
+            {
+                _mkysEntriesDgw.RemoveAll(m => m.Id == id);
+                _mkysExitsDgw.RemoveAll(m => m.Id == id);
+                _tdmsEntriesDgw.RemoveAll(t => t.Id == id);
+                _tdmsExitsDgw.RemoveAll(t => t.Id == id);
+            }
+            dgw.DataSource = null;
+            btnTab1_Click(sender, e);
+
+
+        }
+
         private void printDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
 
         {
@@ -863,7 +852,7 @@ namespace YearEndCalculation2.WindowsFormUI
                         e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[2].FormattedValue.ToString(), dgw.Font = new Font("Book Antiqua", 8), Brushes.Black, new RectangleF(120, lineHeight, dgw.Columns[2].Width, 25));
                         e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[3].FormattedValue.ToString(), dgw.Font = new Font("Book Antiqua", 8), Brushes.Black, new RectangleF(210, lineHeight, 200, 25));
                         e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[4].FormattedValue.ToString(), dgw.Font = new Font("Book Antiqua", 8), Brushes.Black, new RectangleF(410, lineHeight, 290, 25));
-                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[(5 + _fix)].FormattedValue.ToString(), dgw.Font = new Font("Book Antiqua", 8), Brushes.Black, new RectangleF(710, lineHeight, dgw.Columns[5].Width, 25));
+                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[5].FormattedValue.ToString(), dgw.Font = new Font("Book Antiqua", 8), Brushes.Black, new RectangleF(710, lineHeight, dgw.Columns[5].Width, 25));
                         lineHeight += 25;
                         _dgwLineWritten++;
                         _lineWritten++;
@@ -876,7 +865,7 @@ namespace YearEndCalculation2.WindowsFormUI
                         {
                             dgwPrint = listOfDgw[_nextDgwList];
                             _nextDgwList++;
-                            _fix = 0;
+
 
                         }
 
@@ -892,7 +881,7 @@ namespace YearEndCalculation2.WindowsFormUI
                     dgwPrint = "MKYS GİRİŞLERİ";
                     _nextDgwList = 1;
                     _dgwLineWritten = 0;
-                    _fix = 1;
+
                 }
             }
         }

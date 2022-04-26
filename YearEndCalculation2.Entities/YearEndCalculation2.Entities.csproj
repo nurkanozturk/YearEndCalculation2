@@ -44,15 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Concrete\MkysEntry.cs" />
-    <Compile Include="Concrete\MkysExit.cs" />
-    <Compile Include="Concrete\TdmsEntry.cs" />
-    <Compile Include="Concrete\TdmsExit.cs" />
-    <Compile Include="Abstract\IEntity.cs" />
+    <Compile Include="Concrete\ActionRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstract\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

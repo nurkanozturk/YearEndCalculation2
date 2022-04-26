@@ -1,109 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YearEndCalculation.Entities.Abstract;
+using YearEndCalculation.Entities.Concrete;
 using YearEndCalculation2.Business.Abstract;
-using YearEndCalculation2.Entities.Concrete;
 
 namespace YearEndCalculation2.Business.Concrete.Managers
 {
     public class YearEndManager : IYearEndService
     {
-        public List<MkysEntry> CompareEntries(List<MkysEntry> mkysEntries, List<TdmsEntry> tdmsEntries)
+        public List<ActionRecord> CompareMkysTdms(List<ActionRecord> mkys, List<ActionRecord> tdms)
         {
-            for (int i = 0; i < mkysEntries.Count; i++)
+            for (int i = 0; i < mkys.Count; i++)
             {
-                for (int j = 0; j < tdmsEntries.Count; j++)
+                for (int j = 0; j < tdms.Count; j++)
                 {
-                    if (Math.Abs(mkysEntries[i].Amount - tdmsEntries[j].Amount) < 0.1m && mkysEntries[i].ReceiptNumber == tdmsEntries[j].ReceiptNumber)
+                    if (Math.Abs(mkys[i].Price - tdms[j].Price) < 0.1m && mkys[i].DocNumber == tdms[j].DocNumber)
                     {
-                        mkysEntries.RemoveAt(i);
-                        tdmsEntries.RemoveAt(j);
+                        mkys.RemoveAt(i);
+                        tdms.RemoveAt(j);
 
-                        j = tdmsEntries.Count;
+                        j = tdms.Count;
                         i = -1;
                     }
                 }
             }
-            for (int i = 0; i < mkysEntries.Count; i++)
+            for (int i = 0; i < mkys.Count; i++)
             {
-                for (int j = 0; j < tdmsEntries.Count; j++)
+                for (int j = 0; j < tdms.Count; j++)
                 {
-                    if (Math.Abs(mkysEntries[i].Amount - tdmsEntries[j].Amount) < 0.1m)
+                    if (Math.Abs(mkys[i].Price - tdms[j].Price) < 0.1m)
                     {
-                        mkysEntries.RemoveAt(i);
-                        tdmsEntries.RemoveAt(j);
+                        mkys.RemoveAt(i);
+                        tdms.RemoveAt(j);
 
-                        j = tdmsEntries.Count;
+                        j = tdms.Count;
                         i = -1;
                     }
                 }
             }
-            return mkysEntries;
+            return mkys;
         }
 
-        public List<MkysExit> CompareExits(List<MkysExit> mkysExits, List<TdmsExit> tdmsExits)
+        public List<ActionRecord> CompareInSelf(List<ActionRecord> entries, List<ActionRecord> exits)
         {
-            for (int i = 0; i < mkysExits.Count; i++)
+            for (int i = 0; i < entries.Count; i++)
             {
-                for (int j = 0; j < tdmsExits.Count; j++)
+                for (int j = 0; j < exits.Count; j++)
                 {
-                    if (Math.Abs(mkysExits[i].Amount - tdmsExits[j].Amount) < 0.1m && mkysExits[i].ReceiptNumber == tdmsExits[j].ReceiptNumber)
+                    if (exits[j].Price == entries[i].Price && exits[j].Type.Contains(entries[i].Type))
                     {
-                        mkysExits.RemoveAt(i);
-                        tdmsExits.RemoveAt(j);
-                        j = tdmsExits.Count;
-                        i = -1;
-                    }
-                }
-            }
-            for (int i = 0; i < mkysExits.Count; i++)
-            {
-                for (int j = 0; j < tdmsExits.Count; j++)
-                {
-                    if (Math.Abs(mkysExits[i].Amount - tdmsExits[j].Amount) < 0.1m)
-                    {
-                        mkysExits.RemoveAt(i);
-                        tdmsExits.RemoveAt(j);
-
-                        j = tdmsExits.Count;
+                        entries.RemoveAt(i);
+                        exits.RemoveAt(j);
+                        j = exits.Count;
                         i = -1;
                     }
                 }
             }
 
-            return mkysExits;
+            RemoveZeroAmounts(entries);
+            RemoveZeroAmounts(exits);
+
+            return exits;
         }
 
-        public List<MkysExit> CompareMkys(List<MkysEntry> mkysEntries, List<MkysExit> mkysExits)
-        {
-            for (int i = 0; i < mkysEntries.Count; i++)
-            {
-                for (int j = 0; j < mkysExits.Count; j++)
-                {
-                    if (mkysExits[j].Amount == mkysEntries[i].Amount && mkysExits[j].TypeOfExit.Contains(mkysEntries[i].TypeOfSupply))
-                    {
-                        mkysEntries.RemoveAt(i);
-                        mkysExits.RemoveAt(j);
-                        j = mkysExits.Count;
-                        i = -1;
-                    }
-                }
-            }
-
-            RemoveZeroAmounts(mkysEntries);
-            RemoveZeroAmounts(mkysExits);
-
-            return mkysExits;
-        }
-
-        private static void RemoveZeroAmounts<T>(List<T> list) where T: IEntity
+        private static void RemoveZeroAmounts(List<ActionRecord> list)
         {
             for (int i = 0; i < list.Count; i++)
             {
-                if (list[i].Amount == 0)
+                if (list[i].Price == 0)
                 {
                     list.RemoveAt(i);
                     i = -1;
@@ -111,24 +74,6 @@ namespace YearEndCalculation2.Business.Concrete.Managers
             }
         }
 
-        public List<TdmsExit> CompareTdms(List<TdmsEntry> tdmsEntries, List<TdmsExit> tdmsExits)
-        {
-            for (int i = 0; i < tdmsEntries.Count; i++)
-            {
-                for (int j = 0; j < tdmsExits.Count; j++)
-                {
-                    if (tdmsExits[j].Amount == tdmsEntries[i].Amount && tdmsExits[j].TypeOfProcess.Contains(tdmsEntries[i].TypeOfProcess))
-                    {
-                        tdmsEntries.RemoveAt(i);
-                        tdmsExits.RemoveAt(j);
-                        j = tdmsExits.Count;
-                        i = -1;
-                    }
-                }
-            }
-
-            return tdmsExits;
-        }
 
     }
 }
