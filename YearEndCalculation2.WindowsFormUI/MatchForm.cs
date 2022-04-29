@@ -15,8 +15,10 @@ namespace YearEndCalculation.WindowsFormUI
         {
             InitializeComponent();
         }
+        ManuelMatchManager _matchManager = new ManuelMatchManager();
 
         public static List<string> matchedRecords = new List<string>();
+        public static List<ActionRecord> rescuedItems = new List<ActionRecord>();
         string queryId = FillTdms.queryId;
         List<ActionRecord> unMatchedItems = new List<ActionRecord>();
         List<ActionRecord> matchedItems = new List<ActionRecord>();
@@ -39,14 +41,26 @@ namespace YearEndCalculation.WindowsFormUI
                 {
                     XmlNodeList items = match.SelectNodes("item");
                     string matchText = "";
+                    List<string> matchId = new List<string>();
                     foreach (XmlNode item in items)
                     {
                         matchText += item.Attributes[1].Value + " " + item.Attributes[2].Value + " " + item.Attributes[3].Value + "\n";
+                        matchId.Add(item.Attributes[0].Value);
+                        matchedItems.Add(new ActionRecord 
+                            {
+                                Id = item.Attributes[0].Value, 
+                                DocNumber = item.Attributes[1].Value,
+                                DocDate = item.Attributes[2].Value,
+                                Type= item.Attributes[3].Value,
+                                Explanation= item.Attributes[4].Value,
+                                Price = decimal.Parse(item.Attributes[5].Value)
+                            });
                     }
                     flpMatched.Controls.Add(new CheckBox
                     {
                         AutoSize = true,
-                        Text = matchText
+                        Text = matchText,
+                        Tag = matchId
                     });
 
                 }
@@ -69,9 +83,10 @@ namespace YearEndCalculation.WindowsFormUI
 
         }
 
-        string matchId = "";
+
         private void btnMatch_Click(object sender, EventArgs e)
         {
+            List<string> matchedItemIds = new List<string>();
             decimal mkysEntryPrice = 0;
             decimal mkysExitPrice = 0;
             decimal tdmsEntryPrice = 0;
@@ -108,17 +123,16 @@ namespace YearEndCalculation.WindowsFormUI
                         foreach (ListViewItem item in ((ListView)control).CheckedItems)
                         {
                             matchedItems.Add(unMatchedItems.Find(u => u.Id == item.Tag.ToString()));
-                            matchedItemText += item.Text + " "+item.SubItems[1].Text+" "+item.SubItems[2].Text+"\n";
-                            matchId += item.Tag + "-";
+                            matchedItemText += item.Text + " " + item.SubItems[1].Text + " " + item.SubItems[2].Text + "\n";
+                            matchedItemIds.Add(item.Tag.ToString());
                             ((ListView)control).Items.Remove(item);
                         }
                     }
 
                 }
 
-                ManuelMatchManager matchManager = new ManuelMatchManager();
-                matchedRecords = matchManager.SaveMatches(queryId, matchedItems);
-                flpMatched.Controls.Add(new CheckBox { AutoSize = true, Text = matchedItemText, Tag=matchId });
+                matchedRecords = _matchManager.SaveMatches(queryId, matchedItems);
+                flpMatched.Controls.Add(new CheckBox { AutoSize = true, Text = matchedItemText, Tag = matchedItemIds });
             }
         }
 
@@ -128,12 +142,44 @@ namespace YearEndCalculation.WindowsFormUI
             {
                 if (checkBox.Checked)
                 {
-                    //xml den kaldir
+                    string matchId = "";
+                    foreach (string itemId in (List<string>)checkBox.Tag)
+                    {
+                        matchId += itemId + "-";
+                    }
+                    _matchManager.RemoveMatchFromXml(queryId, matchId);
                     flpMatched.Controls.Remove(checkBox);
-                    //eslesmemislere ekle
-                    string matchid= checkBox.Tag.ToString();
+                    //chekbox tagı itemlerın idlerinin toplamını içeriyor
+                    //bir checkboxta birden fazla item mevcut
+                    foreach (string itemId in (List<string>)checkBox.Tag)
+                    {
+                        ActionRecord item = matchedItems.Find(m => m.Id == itemId);
+                        ListViewItem lvItem = new ListViewItem();
+                        lvItem.Tag = item.Id;
+                        lvItem.Text = item.DocNumber;
+                        lvItem.SubItems.Add(item.Type);
+                        lvItem.SubItems.Add(item.Price.ToString());
+
+                        AddItemToLv(lvMkysEntry, lvItem);
+                        AddItemToLv(lvMkysExit, lvItem);
+                        AddItemToLv(lvTdmsEntry, lvItem);
+                        AddItemToLv(lvTdmsExit, lvItem);
+                        matchedItems.Remove(item);
+                        unMatchedItems.Add(item);
+                        rescuedItems.Add(item);
+                    }
+
                 }
-                
+
+            }
+        }
+
+        private void AddItemToLv(ListView listView, ListViewItem lvItem)
+        {
+            if (lvItem.Tag.ToString().ToLower().StartsWith(listView.Name.ToLower().Remove(0, 2)))
+            {
+                listView.Items.Add(lvItem);
+
             }
         }
     }

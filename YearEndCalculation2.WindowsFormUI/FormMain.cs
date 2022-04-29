@@ -805,11 +805,37 @@ namespace YearEndCalculation2.WindowsFormUI
                 _tdmsEntriesDgw.RemoveAll(t => t.Id == id);
                 _tdmsExitsDgw.RemoveAll(t => t.Id == id);
             }
+
+            if (MatchForm.rescuedItems != null)
+            {
+                foreach (ActionRecord item in MatchForm.rescuedItems)
+                {
+                    switch (item.Id.Substring(0, 8))
+                    {
+                        case "mkysEntr":
+                            _mkysEntriesDgw.Add(item);
+                            break;
+                        case "mkysExit":
+                            _mkysExitsDgw.Add(item);
+                            break;
+                        case "tdmsEntr":
+                            _tdmsEntriesDgw.Add(item);
+                            break;
+                        case "tdmsExit":
+                            _tdmsExitsDgw.Add(item);
+                            break;
+                    }
+
+                }
+            }
+            MatchForm.rescuedItems = new List<ActionRecord>();
             dgw.DataSource = null;
             btnTab1_Click(sender, e);
 
 
         }
+
+
 
         private void printDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
 

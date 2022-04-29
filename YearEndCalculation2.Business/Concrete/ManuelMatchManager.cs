@@ -13,14 +13,14 @@ namespace YearEndCalculation.Business.Concrete
     {
         string _queryId = null;
         List<string> _matchedRecords = new List<string>();
-
+        XmlDocument xmlDocument = new XmlDocument();
         public static XmlNodeList TakeMachedRecords(string queryId)
         {
             if (!File.Exists("Matches.xml"))
             {
                 return null;
             }
-            
+
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load("Matches.xml");
             XmlNode datas = xmlDocument.SelectSingleNode("datas");
@@ -31,7 +31,7 @@ namespace YearEndCalculation.Business.Concrete
         }
         public List<string> SaveMatches(string queryId, List<ActionRecord> matchedItems)
         {
-            XmlDocument xmlDocument = new XmlDocument();
+            
             XmlNode query = null;
             _queryId = queryId;
 
@@ -109,9 +109,17 @@ namespace YearEndCalculation.Business.Concrete
                 docNumber.Value = matchedItem.DocNumber;
                 item.Attributes.Append(docNumber);
 
+                XmlAttribute docDate = xmlDocument.CreateAttribute("docDate");
+                docDate.Value = matchedItem.DocDate;
+                item.Attributes.Append(docDate);
+
                 XmlAttribute type = xmlDocument.CreateAttribute("type");
                 type.Value = matchedItem.Type;
                 item.Attributes.Append(type);
+
+                XmlAttribute explanation = xmlDocument.CreateAttribute("explanation");
+                explanation.Value = matchedItem.Explanation;
+                item.Attributes.Append(explanation);
 
                 XmlAttribute price = xmlDocument.CreateAttribute("price");
                 price.Value = matchedItem.Price.ToString();
@@ -124,6 +132,14 @@ namespace YearEndCalculation.Business.Concrete
 
         }
 
-
+        public void RemoveMatchFromXml(string queryId, string matchId)
+        {
+            xmlDocument.Load("Matches.xml");
+            XmlNode datas = xmlDocument.SelectSingleNode("datas");
+            XmlNode query = datas.SelectNodes(string.Format("//query[@id='{0}']", queryId))[0];
+            XmlNode match = query.SelectNodes(string.Format("//match[@id='{0}']", matchId))[0];
+            query.RemoveChild(match);
+            xmlDocument.Save("Matches.xml");
+        }
     }
 }
