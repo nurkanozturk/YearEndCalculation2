@@ -226,6 +226,7 @@
             this.Controls.Add(this.lvMkysEntry);
             this.Name = "MatchForm";
             this.Text = "MatchForm";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MatchForm_Load);
             this.ResumeLayout(false);
 

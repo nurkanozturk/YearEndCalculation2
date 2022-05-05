@@ -24,6 +24,10 @@ namespace YearEndCalculation.WindowsFormUI
         List<ActionRecord> matchedItems = new List<ActionRecord>();
         private void MatchForm_Load(object sender, EventArgs e)
         {
+            if (FormMain.DgwItems==null)
+            {
+                return;
+            }
             FillListView(FormMain.DgwItems[0], lvMkysEntry);
             FillListView(FormMain.DgwItems[1], lvMkysExit);
             FillListView(FormMain.DgwItems[2], lvTdmsEntry);
@@ -87,6 +91,7 @@ namespace YearEndCalculation.WindowsFormUI
         private void btnMatch_Click(object sender, EventArgs e)
         {
             List<string> matchedItemIds = new List<string>();
+            List<ActionRecord> newItems = new List<ActionRecord>();
             decimal mkysEntryPrice = 0;
             decimal mkysExitPrice = 0;
             decimal tdmsEntryPrice = 0;
@@ -122,7 +127,9 @@ namespace YearEndCalculation.WindowsFormUI
                     {
                         foreach (ListViewItem item in ((ListView)control).CheckedItems)
                         {
-                            matchedItems.Add(unMatchedItems.Find(u => u.Id == item.Tag.ToString()));
+                            ActionRecord newMatchItem = unMatchedItems.Find(u => u.Id == item.Tag.ToString());
+                            matchedItems.Add(newMatchItem);
+                            newItems.Add(newMatchItem);
                             matchedItemText += item.Text + " " + item.SubItems[1].Text + " " + item.SubItems[2].Text + "\n";
                             matchedItemIds.Add(item.Tag.ToString());
                             ((ListView)control).Items.Remove(item);
@@ -130,14 +137,18 @@ namespace YearEndCalculation.WindowsFormUI
                     }
 
                 }
-
-                matchedRecords = _matchManager.SaveMatches(queryId, matchedItems);
+                if (newItems.Count==0)
+                {
+                    return;
+                }
+                matchedRecords = _matchManager.SaveMatches(queryId, newItems);
                 flpMatched.Controls.Add(new CheckBox { AutoSize = true, Text = matchedItemText, Tag = matchedItemIds });
             }
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
+            List<CheckBox> checkedBoxes = new List<CheckBox>();
             foreach (CheckBox checkBox in flpMatched.Controls)
             {
                 if (checkBox.Checked)
@@ -148,9 +159,7 @@ namespace YearEndCalculation.WindowsFormUI
                         matchId += itemId + "-";
                     }
                     _matchManager.RemoveMatchFromXml(queryId, matchId);
-                    flpMatched.Controls.Remove(checkBox);
-                    //chekbox tagı itemlerın idlerinin toplamını içeriyor
-                    //bir checkboxta birden fazla item mevcut
+                    checkedBoxes.Add(checkBox);
                     foreach (string itemId in (List<string>)checkBox.Tag)
                     {
                         ActionRecord item = matchedItems.Find(m => m.Id == itemId);
@@ -165,6 +174,7 @@ namespace YearEndCalculation.WindowsFormUI
                         AddItemToLv(lvTdmsEntry, lvItem);
                         AddItemToLv(lvTdmsExit, lvItem);
                         matchedItems.Remove(item);
+                        matchedRecords.Remove(item.Id);
                         unMatchedItems.Add(item);
                         rescuedItems.Add(item);
                     }
@@ -172,6 +182,11 @@ namespace YearEndCalculation.WindowsFormUI
                 }
 
             }
+            foreach (CheckBox checkedBox in checkedBoxes)
+            {
+                flpMatched.Controls.Remove(checkedBox);
+            }
+            
         }
 
         private void AddItemToLv(ListView listView, ListViewItem lvItem)

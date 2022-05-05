@@ -57,7 +57,6 @@ namespace YearEndCalculation2.WindowsFormUI
 
             if (darkMode)
             {
-
                 bgColor = Color.FromArgb(37, 37, 41);
                 textColor = Color.FromArgb(231, 231, 231);
                 foreColor = Color.DarkGray;
@@ -69,7 +68,8 @@ namespace YearEndCalculation2.WindowsFormUI
                 prcTextColor = Color.OrangeRed;
                 calcBgColor = Color.Chocolate;
                 tabTextColor = Color.WhiteSmoke;
-
+                btnMatch.BackColor= Color.FromArgb(32, 29, 41);
+                btnMatch.ForeColor = Color.DarkGray;
                 btnPrint.Image = Image.FromFile("icons8-print-50-2.png");
             }
             else
@@ -86,7 +86,8 @@ namespace YearEndCalculation2.WindowsFormUI
                 prcTextColor = Color.DarkRed;
                 caclTextColor = SystemColors.WindowText;
                 tabBgColor = SystemColors.InactiveBorder;
-
+                btnMatch.BackColor = Color.FromArgb(216, 214, 226);
+                btnMatch.ForeColor = SystemColors.ControlText;
                 btnPrint.Image = Image.FromFile("icons8-print-50.png");
 
             }
@@ -103,7 +104,7 @@ namespace YearEndCalculation2.WindowsFormUI
             dgw.RowsDefaultCellStyle.SelectionBackColor = selectionBgColor;
 
             ForeColor = gbxEntrySelect.ForeColor = gbxExitSelect.ForeColor = gbxTdmsSelect.ForeColor = gbxRemain.ForeColor = gbxResult.ForeColor = foreColor;
-
+            
             gbxResult.BackColor = bgColor;
 
             tbxMkysRemain.BackColor = bgColor2;
@@ -796,6 +797,10 @@ namespace YearEndCalculation2.WindowsFormUI
 
         private void btnMatch_Click(object sender, EventArgs e)
         {
+            if (!calculated)
+            {
+                return;
+            }
             MatchForm matchForm = new MatchForm();
             matchForm.ShowDialog();
             foreach (string id in MatchForm.matchedRecords)
