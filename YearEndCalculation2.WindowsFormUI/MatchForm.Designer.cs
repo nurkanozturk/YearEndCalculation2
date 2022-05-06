@@ -47,6 +47,8 @@
             this.btnMatch = new System.Windows.Forms.Button();
             this.flpMatched = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRemove = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lvMkysEntry
@@ -182,12 +184,12 @@
             // 
             // btnMatch
             // 
-            this.btnMatch.BackColor = System.Drawing.Color.PeachPuff;
+            this.btnMatch.BackColor = System.Drawing.Color.DodgerBlue;
             this.btnMatch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnMatch.Location = new System.Drawing.Point(366, 541);
+            this.btnMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnMatch.Location = new System.Drawing.Point(394, 558);
             this.btnMatch.Name = "btnMatch";
-            this.btnMatch.Size = new System.Drawing.Size(322, 69);
+            this.btnMatch.Size = new System.Drawing.Size(202, 52);
             this.btnMatch.TabIndex = 3;
             this.btnMatch.Text = "EŞLEŞTİR";
             this.btnMatch.UseVisualStyleBackColor = false;
@@ -204,19 +206,44 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(1123, 541);
+            this.btnRemove.BackColor = System.Drawing.Color.PapayaWhip;
+            this.btnRemove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnRemove.Location = new System.Drawing.Point(1127, 558);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(120, 69);
+            this.btnRemove.Size = new System.Drawing.Size(111, 52);
             this.btnRemove.TabIndex = 5;
             this.btnRemove.Text = "GERİ AL";
-            this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.UseVisualStyleBackColor = false;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label1.Location = new System.Drawing.Point(421, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(160, 18);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Eşleştirilmemiş Kayıtlar";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label2.Location = new System.Drawing.Point(1084, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(191, 18);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Manuel Eşleştirilmiş Kayıtlar";
             // 
             // MatchForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1364, 749);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.flpMatched);
             this.Controls.Add(this.btnMatch);
@@ -225,10 +252,12 @@
             this.Controls.Add(this.lvMkysExit);
             this.Controls.Add(this.lvMkysEntry);
             this.Name = "MatchForm";
-            this.Text = "MatchForm";
+            this.ShowIcon = false;
+            this.Text = "Manuel Eşleştirme";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MatchForm_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -252,5 +281,7 @@
         private System.Windows.Forms.Button btnMatch;
         private System.Windows.Forms.FlowLayoutPanel flpMatched;
         private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

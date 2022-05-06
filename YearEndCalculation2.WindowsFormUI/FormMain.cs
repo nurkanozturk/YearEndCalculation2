@@ -49,6 +49,8 @@ namespace YearEndCalculation2.WindowsFormUI
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            
+            
             tglBtnDarkMode.Checked = darkMode;
             lblNoProblem.Visible = false;
             dgw.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(225, 225, 225);

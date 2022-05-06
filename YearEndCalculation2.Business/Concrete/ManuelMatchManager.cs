@@ -26,6 +26,10 @@ namespace YearEndCalculation.Business.Concrete
             XmlNode datas = xmlDocument.SelectSingleNode("datas");
             
             XmlNode query = datas.SelectNodes(string.Format("//query[@id='{0}']", queryId))[0];
+            if (query==null)
+            {
+                return null;
+            }
             return query.SelectNodes("match");
             
         }

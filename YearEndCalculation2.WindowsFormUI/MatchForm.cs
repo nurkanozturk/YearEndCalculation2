@@ -113,9 +113,9 @@ namespace YearEndCalculation.WindowsFormUI
                 mkysExitPrice += Convert.ToDecimal(item.SubItems[2].Text);
             }
 
-            if (Math.Abs(mkysEntryPrice + tdmsEntryPrice - mkysExitPrice - tdmsExitPrice) > 0.1m)
+            if (Math.Abs(mkysEntryPrice - tdmsEntryPrice - mkysExitPrice + tdmsExitPrice) > 0.1m)
             {
-                MessageBox.Show("Seçilen kayıtların tutarları eşleşmemektedir! Lütfen kontrol edip tekrar deneyin.");
+                MessageBox.Show("Seçilen kayıtların tutarları eşleşmemektedir! Lütfen kontrol edip tekrar deneyin.","Uyarı",MessageBoxButtons.OK,MessageBoxIcon.Warning);
 
             }
             else
