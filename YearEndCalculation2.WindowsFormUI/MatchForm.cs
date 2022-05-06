@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
@@ -37,7 +38,47 @@ namespace YearEndCalculation.WindowsFormUI
             lvMkysExit.Columns[1].Width = columnWidth;
             lvTdmsEntry.Columns[1].Width = columnWidth;
             lvTdmsExit.Columns[1].Width = columnWidth;
+            Color bgColor, bgColor2, headerColor, textColor, caclTextColor, cellBgColor, selectionBgColor, foreColor, calcBgColor, tabTextColor, prcTextColor, rtbxBgColor, tabBgColor;
 
+            if (FormMain.darkMode)
+            {
+                bgColor = Color.FromArgb(37, 37, 41);
+                textColor = Color.FromArgb(231, 231, 231);
+                foreColor = Color.DarkGray;
+                bgColor2 = rtbxBgColor = tabBgColor = Color.FromArgb(60, 60, 63);
+                caclTextColor = Color.FromArgb(40, 40, 40);
+                headerColor = Color.FromArgb(16, 27, 26);
+                cellBgColor = Color.FromArgb(45, 53, 51);
+                selectionBgColor = Color.DarkSlateGray;
+                prcTextColor = Color.OrangeRed;
+                calcBgColor = Color.Chocolate;
+                tabTextColor = Color.WhiteSmoke;
+                btnMatch.BackColor = Color.FromArgb(32, 29, 41);
+                btnMatch.ForeColor = Color.DarkGray;
+            }
+            else
+            {
+                bgColor = rtbxBgColor = Color.FromArgb(250, 248, 245);
+                bgColor2 = Color.OldLace;
+                headerColor = SystemColors.ControlLight;
+                textColor = SystemColors.WindowText;
+                cellBgColor = SystemColors.Window;
+                selectionBgColor = Color.PowderBlue;
+                foreColor = Color.Black;
+                calcBgColor = Color.DarkOrange;
+                tabTextColor = Color.WhiteSmoke;
+                prcTextColor = Color.DarkRed;
+                caclTextColor = SystemColors.WindowText;
+                tabBgColor = SystemColors.InactiveBorder;
+                btnMatch.BackColor = Color.FromArgb(216, 214, 226);
+                btnMatch.ForeColor = SystemColors.ControlText;
+
+            }
+            BackColor = bgColor;
+            lvMkysEntry.BackColor = lvMkysExit.BackColor= lvTdmsEntry.BackColor= lvTdmsExit.BackColor = bgColor2;
+            lvMkysEntry.ForeColor = lvMkysExit.ForeColor = lvTdmsEntry.ForeColor = lvTdmsExit.ForeColor = textColor;
+            label1.ForeColor = label2.ForeColor = textColor;
+            flpMatched.ForeColor = textColor;
             XmlNodeList matches = ManuelMatchManager.TakeMachedRecords(queryId);
             if (matches != null)
             {
@@ -115,7 +156,7 @@ namespace YearEndCalculation.WindowsFormUI
 
             if (Math.Abs(mkysEntryPrice - tdmsEntryPrice - mkysExitPrice + tdmsExitPrice) > 0.1m)
             {
-                MessageBox.Show("Seçilen kayıtların tutarları eşleşmemektedir! Lütfen kontrol edip tekrar deneyin.","Uyarı",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                MessageBox.Show("Sadece tutarları eşleşen kayıtları ekleyebilirsiniz.","Uyarı",MessageBoxButtons.OK,MessageBoxIcon.Warning);
 
             }
             else
