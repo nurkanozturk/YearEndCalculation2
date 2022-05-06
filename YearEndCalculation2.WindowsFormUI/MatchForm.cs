@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using YearEndCalculation.Business.Concrete;
@@ -25,7 +24,7 @@ namespace YearEndCalculation.WindowsFormUI
         List<ActionRecord> matchedItems = new List<ActionRecord>();
         private void MatchForm_Load(object sender, EventArgs e)
         {
-            if (FormMain.DgwItems==null)
+            if (FormMain.DgwItems == null)
             {
                 return;
             }
@@ -38,44 +37,27 @@ namespace YearEndCalculation.WindowsFormUI
             lvMkysExit.Columns[1].Width = columnWidth;
             lvTdmsEntry.Columns[1].Width = columnWidth;
             lvTdmsExit.Columns[1].Width = columnWidth;
-            Color bgColor, bgColor2, headerColor, textColor, caclTextColor, cellBgColor, selectionBgColor, foreColor, calcBgColor, tabTextColor, prcTextColor, rtbxBgColor, tabBgColor;
+            Color bgColor, bgColor2, textColor;
 
             if (FormMain.darkMode)
             {
                 bgColor = Color.FromArgb(37, 37, 41);
                 textColor = Color.FromArgb(231, 231, 231);
-                foreColor = Color.DarkGray;
-                bgColor2 = rtbxBgColor = tabBgColor = Color.FromArgb(60, 60, 63);
-                caclTextColor = Color.FromArgb(40, 40, 40);
-                headerColor = Color.FromArgb(16, 27, 26);
-                cellBgColor = Color.FromArgb(45, 53, 51);
-                selectionBgColor = Color.DarkSlateGray;
-                prcTextColor = Color.OrangeRed;
-                calcBgColor = Color.Chocolate;
-                tabTextColor = Color.WhiteSmoke;
+                bgColor2 = Color.FromArgb(60, 60, 63);
                 btnMatch.BackColor = Color.FromArgb(32, 29, 41);
                 btnMatch.ForeColor = Color.DarkGray;
             }
             else
             {
-                bgColor = rtbxBgColor = Color.FromArgb(250, 248, 245);
+                bgColor = Color.FromArgb(250, 248, 245);
                 bgColor2 = Color.OldLace;
-                headerColor = SystemColors.ControlLight;
                 textColor = SystemColors.WindowText;
-                cellBgColor = SystemColors.Window;
-                selectionBgColor = Color.PowderBlue;
-                foreColor = Color.Black;
-                calcBgColor = Color.DarkOrange;
-                tabTextColor = Color.WhiteSmoke;
-                prcTextColor = Color.DarkRed;
-                caclTextColor = SystemColors.WindowText;
-                tabBgColor = SystemColors.InactiveBorder;
                 btnMatch.BackColor = Color.FromArgb(216, 214, 226);
                 btnMatch.ForeColor = SystemColors.ControlText;
 
             }
             BackColor = bgColor;
-            lvMkysEntry.BackColor = lvMkysExit.BackColor= lvTdmsEntry.BackColor= lvTdmsExit.BackColor = bgColor2;
+            lvMkysEntry.BackColor = lvMkysExit.BackColor = lvTdmsEntry.BackColor = lvTdmsExit.BackColor = bgColor2;
             lvMkysEntry.ForeColor = lvMkysExit.ForeColor = lvTdmsEntry.ForeColor = lvTdmsExit.ForeColor = textColor;
             label1.ForeColor = label2.ForeColor = textColor;
             flpMatched.ForeColor = textColor;
@@ -91,15 +73,15 @@ namespace YearEndCalculation.WindowsFormUI
                     {
                         matchText += item.Attributes[1].Value + " " + item.Attributes[2].Value + " " + item.Attributes[3].Value + "\n";
                         matchId.Add(item.Attributes[0].Value);
-                        matchedItems.Add(new ActionRecord 
-                            {
-                                Id = item.Attributes[0].Value, 
-                                DocNumber = item.Attributes[1].Value,
-                                DocDate = item.Attributes[2].Value,
-                                Type= item.Attributes[3].Value,
-                                Explanation= item.Attributes[4].Value,
-                                Price = decimal.Parse(item.Attributes[5].Value)
-                            });
+                        matchedItems.Add(new ActionRecord
+                        {
+                            Id = item.Attributes[0].Value,
+                            DocNumber = item.Attributes[1].Value,
+                            DocDate = item.Attributes[2].Value,
+                            Type = item.Attributes[3].Value,
+                            Explanation = item.Attributes[4].Value,
+                            Price = decimal.Parse(item.Attributes[5].Value)
+                        });
                     }
                     flpMatched.Controls.Add(new CheckBox
                     {
@@ -156,7 +138,7 @@ namespace YearEndCalculation.WindowsFormUI
 
             if (Math.Abs(mkysEntryPrice - tdmsEntryPrice - mkysExitPrice + tdmsExitPrice) > 0.1m)
             {
-                MessageBox.Show("Sadece tutarları eşleşen kayıtları ekleyebilirsiniz.","Uyarı",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                MessageBox.Show("Sadece tutarları eşleşen kayıtları ekleyebilirsiniz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
             else
@@ -178,7 +160,7 @@ namespace YearEndCalculation.WindowsFormUI
                     }
 
                 }
-                if (newItems.Count==0)
+                if (newItems.Count == 0)
                 {
                     return;
                 }
@@ -227,7 +209,7 @@ namespace YearEndCalculation.WindowsFormUI
             {
                 flpMatched.Controls.Remove(checkedBox);
             }
-            
+
         }
 
         private void AddItemToLv(ListView listView, ListViewItem lvItem)
