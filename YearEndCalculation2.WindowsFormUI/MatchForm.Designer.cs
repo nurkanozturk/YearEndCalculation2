@@ -47,12 +47,16 @@
             this.btnMatch = new System.Windows.Forms.Button();
             this.flpMatched = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRemove = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.lblMkysEntry = new System.Windows.Forms.Label();
+            this.lblMkysExit = new System.Windows.Forms.Label();
+            this.lblTdmsEntry = new System.Windows.Forms.Label();
+            this.lblTdmsExit = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lvMkysEntry
             // 
+            this.lvMkysEntry.BackColor = System.Drawing.Color.Honeydew;
             this.lvMkysEntry.CheckBoxes = true;
             this.lvMkysEntry.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
@@ -61,7 +65,7 @@
             this.lvMkysEntry.FullRowSelect = true;
             this.lvMkysEntry.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvMkysEntry.HideSelection = false;
-            this.lvMkysEntry.Location = new System.Drawing.Point(12, 43);
+            this.lvMkysEntry.Location = new System.Drawing.Point(12, 70);
             this.lvMkysEntry.Name = "lvMkysEntry";
             this.lvMkysEntry.ShowItemToolTips = true;
             this.lvMkysEntry.Size = new System.Drawing.Size(240, 460);
@@ -87,6 +91,7 @@
             // 
             // lvMkysExit
             // 
+            this.lvMkysExit.BackColor = System.Drawing.Color.Honeydew;
             this.lvMkysExit.CheckBoxes = true;
             this.lvMkysExit.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader4,
@@ -96,9 +101,10 @@
             this.lvMkysExit.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvMkysExit.HideSelection = false;
             this.lvMkysExit.LabelWrap = false;
-            this.lvMkysExit.Location = new System.Drawing.Point(258, 43);
+            this.lvMkysExit.Location = new System.Drawing.Point(258, 70);
             this.lvMkysExit.MultiSelect = false;
             this.lvMkysExit.Name = "lvMkysExit";
+            this.lvMkysExit.ShowItemToolTips = true;
             this.lvMkysExit.Size = new System.Drawing.Size(240, 460);
             this.lvMkysExit.TabIndex = 2;
             this.lvMkysExit.UseCompatibleStateImageBehavior = false;
@@ -120,6 +126,7 @@
             // 
             // lvTdmsEntry
             // 
+            this.lvTdmsEntry.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(226)))));
             this.lvTdmsEntry.CheckBoxes = true;
             this.lvTdmsEntry.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader7,
@@ -128,9 +135,10 @@
             this.lvTdmsEntry.FullRowSelect = true;
             this.lvTdmsEntry.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvTdmsEntry.HideSelection = false;
-            this.lvTdmsEntry.Location = new System.Drawing.Point(504, 43);
+            this.lvTdmsEntry.Location = new System.Drawing.Point(504, 70);
             this.lvTdmsEntry.MultiSelect = false;
             this.lvTdmsEntry.Name = "lvTdmsEntry";
+            this.lvTdmsEntry.ShowItemToolTips = true;
             this.lvTdmsEntry.Size = new System.Drawing.Size(240, 460);
             this.lvTdmsEntry.TabIndex = 2;
             this.lvTdmsEntry.UseCompatibleStateImageBehavior = false;
@@ -152,6 +160,7 @@
             // 
             // lvTdmsExit
             // 
+            this.lvTdmsExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(226)))));
             this.lvTdmsExit.CheckBoxes = true;
             this.lvTdmsExit.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader10,
@@ -160,9 +169,10 @@
             this.lvTdmsExit.FullRowSelect = true;
             this.lvTdmsExit.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvTdmsExit.HideSelection = false;
-            this.lvTdmsExit.Location = new System.Drawing.Point(750, 43);
+            this.lvTdmsExit.Location = new System.Drawing.Point(750, 70);
             this.lvTdmsExit.MultiSelect = false;
             this.lvTdmsExit.Name = "lvTdmsExit";
+            this.lvTdmsExit.ShowItemToolTips = true;
             this.lvTdmsExit.Size = new System.Drawing.Size(240, 460);
             this.lvTdmsExit.TabIndex = 2;
             this.lvTdmsExit.UseCompatibleStateImageBehavior = false;
@@ -184,14 +194,14 @@
             // 
             // btnMatch
             // 
-            this.btnMatch.BackColor = System.Drawing.Color.DodgerBlue;
+            this.btnMatch.BackColor = System.Drawing.Color.Bisque;
             this.btnMatch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnMatch.Location = new System.Drawing.Point(394, 558);
             this.btnMatch.Name = "btnMatch";
             this.btnMatch.Size = new System.Drawing.Size(202, 52);
             this.btnMatch.TabIndex = 3;
-            this.btnMatch.Text = "EŞLEŞTİR";
+            this.btnMatch.Text = "EŞLEŞTİR ";
             this.btnMatch.UseVisualStyleBackColor = false;
             this.btnMatch.Click += new System.EventHandler(this.btnMatch_Click);
             // 
@@ -199,51 +209,81 @@
             // 
             this.flpMatched.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flpMatched.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flpMatched.Location = new System.Drawing.Point(1031, 43);
+            this.flpMatched.Location = new System.Drawing.Point(1022, 70);
             this.flpMatched.Name = "flpMatched";
             this.flpMatched.Size = new System.Drawing.Size(302, 460);
             this.flpMatched.TabIndex = 4;
             // 
             // btnRemove
             // 
-            this.btnRemove.BackColor = System.Drawing.Color.PapayaWhip;
+            this.btnRemove.BackColor = System.Drawing.Color.Bisque;
             this.btnRemove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnRemove.Location = new System.Drawing.Point(1127, 558);
+            this.btnRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnRemove.Location = new System.Drawing.Point(1188, 536);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(111, 52);
+            this.btnRemove.Size = new System.Drawing.Size(136, 29);
             this.btnRemove.TabIndex = 5;
-            this.btnRemove.Text = "GERİ AL";
+            this.btnRemove.Text = "Eşleştirmeyi İptal Et";
             this.btnRemove.UseVisualStyleBackColor = false;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(24, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(160, 18);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Eşleştirilmemiş Kayıtlar";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label2.Location = new System.Drawing.Point(1040, 16);
+            this.label2.Location = new System.Drawing.Point(1086, 49);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(177, 18);
             this.label2.TabIndex = 7;
             this.label2.Text = "Kaydedilmiş Eşleştirmeler";
             // 
+            // lblMkysEntry
+            // 
+            this.lblMkysEntry.AutoSize = true;
+            this.lblMkysEntry.Location = new System.Drawing.Point(86, 54);
+            this.lblMkysEntry.Name = "lblMkysEntry";
+            this.lblMkysEntry.Size = new System.Drawing.Size(69, 13);
+            this.lblMkysEntry.TabIndex = 8;
+            this.lblMkysEntry.Text = "MKYS GİRİŞ";
+            // 
+            // lblMkysExit
+            // 
+            this.lblMkysExit.AutoSize = true;
+            this.lblMkysExit.Location = new System.Drawing.Point(341, 54);
+            this.lblMkysExit.Name = "lblMkysExit";
+            this.lblMkysExit.Size = new System.Drawing.Size(67, 13);
+            this.lblMkysExit.TabIndex = 8;
+            this.lblMkysExit.Text = "MKYS ÇIKIŞ";
+            // 
+            // lblTdmsEntry
+            // 
+            this.lblTdmsEntry.AutoSize = true;
+            this.lblTdmsEntry.Location = new System.Drawing.Point(589, 54);
+            this.lblTdmsEntry.Name = "lblTdmsEntry";
+            this.lblTdmsEntry.Size = new System.Drawing.Size(70, 13);
+            this.lblTdmsEntry.TabIndex = 8;
+            this.lblTdmsEntry.Text = "TDMS GİRİŞ";
+            // 
+            // lblTdmsExit
+            // 
+            this.lblTdmsExit.AutoSize = true;
+            this.lblTdmsExit.Location = new System.Drawing.Point(838, 54);
+            this.lblTdmsExit.Name = "lblTdmsExit";
+            this.lblTdmsExit.Size = new System.Drawing.Size(68, 13);
+            this.lblTdmsExit.TabIndex = 8;
+            this.lblTdmsExit.Text = "TDMS ÇIKIŞ";
+            // 
             // MatchForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1364, 749);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(242)))), ((int)(((byte)(225)))));
+            this.ClientSize = new System.Drawing.Size(1364, 648);
+            this.Controls.Add(this.lblTdmsExit);
+            this.Controls.Add(this.lblTdmsEntry);
+            this.Controls.Add(this.lblMkysExit);
+            this.Controls.Add(this.lblMkysEntry);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.flpMatched);
             this.Controls.Add(this.btnMatch);
@@ -281,7 +321,10 @@
         private System.Windows.Forms.Button btnMatch;
         private System.Windows.Forms.FlowLayoutPanel flpMatched;
         private System.Windows.Forms.Button btnRemove;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblMkysEntry;
+        private System.Windows.Forms.Label lblMkysExit;
+        private System.Windows.Forms.Label lblTdmsEntry;
+        private System.Windows.Forms.Label lblTdmsExit;
     }
 }

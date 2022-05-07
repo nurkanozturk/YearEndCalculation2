@@ -44,23 +44,25 @@ namespace YearEndCalculation.WindowsFormUI
                 bgColor = Color.FromArgb(37, 37, 41);
                 textColor = Color.FromArgb(231, 231, 231);
                 bgColor2 = Color.FromArgb(60, 60, 63);
-                btnMatch.BackColor = Color.FromArgb(32, 29, 41);
-                btnMatch.ForeColor = Color.DarkGray;
+                btnMatch.BackColor=btnRemove.BackColor = Color.FromArgb(32, 29, 41);
+                btnMatch.ForeColor= btnRemove.ForeColor = Color.DarkGray;
             }
             else
             {
-                bgColor = Color.FromArgb(250, 248, 245);
-                bgColor2 = Color.OldLace;
+                bgColor = Color.FromArgb(226, 242, 225);
+                bgColor2 = Color.Honeydew;
                 textColor = SystemColors.WindowText;
-                btnMatch.BackColor = Color.FromArgb(216, 214, 226);
-                btnMatch.ForeColor = SystemColors.ControlText;
+                btnMatch.BackColor=btnRemove.BackColor = Color.Bisque;
+                btnMatch.ForeColor=btnRemove.ForeColor = SystemColors.ControlText;
+                
 
             }
             BackColor = bgColor;
             lvMkysEntry.BackColor = lvMkysExit.BackColor = lvTdmsEntry.BackColor = lvTdmsExit.BackColor = bgColor2;
             lvMkysEntry.ForeColor = lvMkysExit.ForeColor = lvTdmsEntry.ForeColor = lvTdmsExit.ForeColor = textColor;
-            label1.ForeColor = label2.ForeColor = textColor;
+            label2.ForeColor = textColor;
             flpMatched.ForeColor = textColor;
+            lblMkysEntry.ForeColor = lblMkysExit.ForeColor = lblTdmsEntry.ForeColor = lblTdmsExit.ForeColor = textColor;
             XmlNodeList matches = ManuelMatchManager.TakeMachedRecords(queryId);
             if (matches != null)
             {
@@ -138,7 +140,7 @@ namespace YearEndCalculation.WindowsFormUI
 
             if (Math.Abs(mkysEntryPrice - tdmsEntryPrice - mkysExitPrice + tdmsExitPrice) > 0.1m)
             {
-                MessageBox.Show("Sadece tutarları eşleşen kayıtları ekleyebilirsiniz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Tutar eşitlemesi sağlanamadı!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
             else
