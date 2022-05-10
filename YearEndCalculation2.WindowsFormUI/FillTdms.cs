@@ -9,6 +9,7 @@ namespace YearEndCalculation2.WindowsFormUI
     public class FillTdms
     {
         public static string queryId = "";
+        public static decimal transferredPrice = 0;
         public void PreLoadOleDb()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory;
@@ -48,14 +49,11 @@ namespace YearEndCalculation2.WindowsFormUI
                 {
                     isValiedFile = true;
                 }
-                else if (checkValueAlt == "Ödeme Emri" || checkValue == "Muhasebe İşlem")
-                {
-                    i = 11;
-                    isValiedFile = true;
-                }
+               
 
                 if (isValiedFile)
                 {
+                    transferredPrice = Convert.ToDecimal(dataTable.Rows[i-1][9].ToString());
                     queryId = dataTable.Rows[5][3].ToString()+"-"+dataTable.Rows[6][3].ToString()+"-"+dataTable.Rows[10][3].ToString();
 
                     while (dataTable.Rows[i][2].ToString() != "")
@@ -63,6 +61,7 @@ namespace YearEndCalculation2.WindowsFormUI
                         if (Convert.ToDecimal(dataTable.Rows[i][9 + Convert.ToInt32(isExit)]) > 0)
                         {
                             string idPrefix = isExit?"tdmsExit-":"tdmsEntry-" ;
+                            
                             dataList.Add(new ActionRecord
                             {
                                 Id = idPrefix + dataTable.Rows[i][2].ToString()+"-"+ dataTable.Rows[i][4].ToString()+"-"+ dataTable.Rows[i][9 + Convert.ToInt32(isExit)].ToString(),
@@ -71,7 +70,8 @@ namespace YearEndCalculation2.WindowsFormUI
                                 Type = dataTable.Rows[i][6].ToString(),
                                 Explanation = dataTable.Rows[i][7].ToString(),
                                 Price = Convert.ToDecimal(dataTable.Rows[i][9 + Convert.ToInt32(isExit)])
-                            });
+                        });
+                            
                         }
                         i++;
                     }

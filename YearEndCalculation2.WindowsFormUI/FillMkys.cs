@@ -6,8 +6,10 @@ namespace YearEndCalculation2.WindowsFormUI
 {
     public class FillMkys
     {
+       
         public List<ActionRecord> FillEntries(List<string> lines, List<ActionRecord> mkysEntries)
         {
+            
 
             lines.Remove(lines[0]);
             foreach (var line in lines)
@@ -24,6 +26,7 @@ namespace YearEndCalculation2.WindowsFormUI
                     Explanation = words[11],
                     Price = Convert.ToDecimal(words[7])
                 });
+                
             }
 
             return mkysEntries;
@@ -51,6 +54,7 @@ namespace YearEndCalculation2.WindowsFormUI
                         Explanation = words[5],
                         Price = price
                     });
+                    
                 }
             }
 
@@ -87,10 +91,13 @@ namespace YearEndCalculation2.WindowsFormUI
                         Explanation = "",
                         Price = totalPrice
                     });
+                    
                 }
             }
             return mkysExits;
         }
+
+       
     }
 
 }

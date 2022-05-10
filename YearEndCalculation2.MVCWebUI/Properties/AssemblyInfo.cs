@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("YearEndCalculation2.MVCWebUI")]
+[assembly: AssemblyTitle("YearEndCalculation2.MvcWebUI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("YearEndCalculation2.MVCWebUI")]
+[assembly: AssemblyProduct("YearEndCalculation2.MvcWebUI")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("48cdbe14-0a8a-4693-ae0f-db8254d4e189")]
+[assembly: Guid("c982939f-9a43-4816-99d0-1d03c09533c7")]
 
 // Version information for an assembly consists of the following four values:
 //

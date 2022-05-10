@@ -21,7 +21,8 @@ namespace YearEndCalculation2.WindowsFormUI
     {
         private decimal _mkysEntryTotal, _mkysExitTotal, _wrongTdmsEntry, _wrongTdmsExit;
         private string dgwPrint = "MKYS GİRİŞLERİ";
-
+        private decimal _mkysRemain;
+        private decimal _tdmsRemain;
         public static List<List<ActionRecord>> DgwItems;
 
 
@@ -358,6 +359,33 @@ namespace YearEndCalculation2.WindowsFormUI
             ClearPrices();
             dgw.DataSource = null;
 
+            _mkysRemain = _tdmsRemain = FillTdms.transferredPrice;
+            
+            foreach (ActionRecord mkysEntry in _mkysEntries)
+            {
+                _mkysRemain += mkysEntry.Price;
+            }
+
+            foreach (ActionRecord mkysExit in _mkysExits)
+            {
+                _mkysRemain -= mkysExit.Price;
+            }
+
+            foreach (ActionRecord tdmsEntry in _tdmsEntries)
+            {
+                _tdmsRemain += tdmsEntry.Price;
+            }
+
+            foreach (ActionRecord tdmsExit in _tdmsExits)
+            {
+                _tdmsRemain -= tdmsExit.Price;
+            }
+            DialogResult remainFillResult = MessageBox.Show("MKYS Kalan ve TDMS Kalan tutarları otomatik olarak doldurulsun mu?", "Kalan Tutarlar", MessageBoxButtons.YesNo);
+            if (remainFillResult == DialogResult.Yes)
+            {
+                tbxMkysRemain.Text = Math.Round(_mkysRemain, 2).ToString();
+                tbxTdmsRemain.Text = Math.Round(_tdmsRemain, 2).ToString();
+            }
             _mkysEntries = _yearEnd.CompareMkysTdms(_mkysEntries, _tdmsEntries);
             _mkysExits = _yearEnd.CompareMkysTdms(_mkysExits, _tdmsExits);
             _mkysExits = _yearEnd.CompareInSelf(_mkysEntries, _mkysExits);
@@ -399,6 +427,8 @@ namespace YearEndCalculation2.WindowsFormUI
             foreach (var mkysExit in _mkysExits) { _mkysExitTotal += mkysExit.Price; }
             foreach (var tdmsEntry in _tdmsEntries) { _wrongTdmsEntry += tdmsEntry.Price; }
             foreach (var tdmsExit in _tdmsExits) { _wrongTdmsExit += tdmsExit.Price; }
+            
+            
 
             prcMkysRemain.Text = tbxMkysRemain.Text == string.Empty ? "0,00"
                 : string.Format("{0:0.00}", Convert.ToDecimal(tbxMkysRemain.Text));

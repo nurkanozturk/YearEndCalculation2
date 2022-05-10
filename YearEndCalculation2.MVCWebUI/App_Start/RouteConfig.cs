@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace YearEndCalculation2.MVCWebUI
+namespace YearEndCalculation2.MvcWebUI
 {
     public class RouteConfig
     {
