@@ -140,7 +140,7 @@ namespace YearEndCalculation.WindowsFormUI
 
             if (Math.Abs(mkysEntryPrice - tdmsEntryPrice - mkysExitPrice + tdmsExitPrice) > 0.1m)
             {
-                MessageBox.Show("Tutar eşitlemesi sağlanamadı!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Seçilen kayıtların tutarları eşleşmiyor. Kontrol edip tekrar deneyiniz.", "Dikkat", MessageBoxButtons.OK);
 
             }
             else

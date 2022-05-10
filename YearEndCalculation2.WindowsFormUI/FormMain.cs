@@ -773,6 +773,11 @@ namespace YearEndCalculation2.WindowsFormUI
             dgw.Columns[5].HeaderText = "TUTAR";
             dgw.Columns[5].DefaultCellStyle.Format = "0.00";
 
+            dgw.Columns[1].Width = 60;
+            dgw.Columns[2].Width = 80;
+            dgw.Columns[3].Width = 200;
+            dgw.Columns[5].Width = 80;
+
         }
 
         private decimal CalculatePennyDefrence()

@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YearEndCalculation2.Busines
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YearEndCalculation2.Entities", "YearEndCalculation2.Entities\YearEndCalculation2.Entities.csproj", "{CA8295F7-879A-4442-BD92-0AB20F94718A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YearEndCalculation2.WindowsFormUI", "YearEndCalculation2.WindowsFormUI\YearEndCalculation2.WindowsFormUI.csproj", "{CF6DA3FF-DC0F-44B0-A1AC-E9C816A318A0}"
-EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{DE35BBE1-7C42-4B12-8257-BD0D7ECD9FA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YearEndCalculation2.WindowsFormUI", "YearEndCalculation2.WindowsFormUI\YearEndCalculation2.WindowsFormUI.csproj", "{CF6DA3FF-DC0F-44B0-A1AC-E9C816A318A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,12 +25,12 @@ Global
 		{CA8295F7-879A-4442-BD92-0AB20F94718A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA8295F7-879A-4442-BD92-0AB20F94718A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA8295F7-879A-4442-BD92-0AB20F94718A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE35BBE1-7C42-4B12-8257-BD0D7ECD9FA6}.Debug|Any CPU.ActiveCfg = Debug
+		{DE35BBE1-7C42-4B12-8257-BD0D7ECD9FA6}.Release|Any CPU.ActiveCfg = Release
 		{CF6DA3FF-DC0F-44B0-A1AC-E9C816A318A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF6DA3FF-DC0F-44B0-A1AC-E9C816A318A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF6DA3FF-DC0F-44B0-A1AC-E9C816A318A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF6DA3FF-DC0F-44B0-A1AC-E9C816A318A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE35BBE1-7C42-4B12-8257-BD0D7ECD9FA6}.Debug|Any CPU.ActiveCfg = Debug
-		{DE35BBE1-7C42-4B12-8257-BD0D7ECD9FA6}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
