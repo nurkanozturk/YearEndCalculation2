@@ -38,7 +38,6 @@ namespace YearEndCalculation.WindowsFormUI
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.linkLblOleDb = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // label1
@@ -53,11 +52,13 @@ namespace YearEndCalculation.WindowsFormUI
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label2.Location = new System.Drawing.Point(74, 266);
+            this.label2.Location = new System.Drawing.Point(74, 286);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(1089, 90);
+            this.label2.Size = new System.Drawing.Size(1089, 58);
             this.label2.TabIndex = 2;
-            this.label2.Text = resources.GetString("label2.Text");
+            this.label2.Text = "İndirdiğiniz dosyaları Dosya Seç diyerek programa yükleyin.\r\n\tParçalı indirdiğini" +
+    "z dosyalar varsa tek seferde hepsini birden seçip yükleyebilir veya tek tek ekle" +
+    "yebilirsiniz.\r\n";
             // 
             // label3
             // 
@@ -91,7 +92,7 @@ namespace YearEndCalculation.WindowsFormUI
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label6.Location = new System.Drawing.Point(125, 233);
+            this.label6.Location = new System.Drawing.Point(125, 251);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(134, 22);
             this.label6.TabIndex = 2;
@@ -117,19 +118,6 @@ namespace YearEndCalculation.WindowsFormUI
             this.label9.TabIndex = 2;
             this.label9.Text = "Hesaplama Sonrası";
             // 
-            // linkLblOleDb
-            // 
-            this.linkLblOleDb.AutoSize = true;
-            this.linkLblOleDb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.linkLblOleDb.LinkColor = System.Drawing.SystemColors.MenuHighlight;
-            this.linkLblOleDb.Location = new System.Drawing.Point(208, 331);
-            this.linkLblOleDb.Name = "linkLblOleDb";
-            this.linkLblOleDb.Size = new System.Drawing.Size(92, 20);
-            this.linkLblOleDb.TabIndex = 3;
-            this.linkLblOleDb.TabStop = true;
-            this.linkLblOleDb.Text = "İndirme linki";
-            this.linkLblOleDb.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLblOleDb_LinkClicked);
-            // 
             // HelpForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,7 +125,6 @@ namespace YearEndCalculation.WindowsFormUI
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
             this.ClientSize = new System.Drawing.Size(1271, 749);
-            this.Controls.Add(this.linkLblOleDb);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label9);
@@ -167,6 +154,5 @@ namespace YearEndCalculation.WindowsFormUI
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.LinkLabel linkLblOleDb;
     }
 }

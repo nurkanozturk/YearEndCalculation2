@@ -30,10 +30,10 @@ namespace YearEndCalculation2.WindowsFormUI
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbxMkysRemain = new System.Windows.Forms.TextBox();
             this.tbxTdmsRemain = new System.Windows.Forms.TextBox();
             this.lblMkysRemaining = new System.Windows.Forms.Label();
@@ -97,14 +97,13 @@ namespace YearEndCalculation2.WindowsFormUI
             this.prcDifrence = new System.Windows.Forms.Button();
             this.printDocument = new System.Drawing.Printing.PrintDocument();
             this.lblAttention = new System.Windows.Forms.Label();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.btnHelp = new System.Windows.Forms.Button();
             this.picInfoTdms = new System.Windows.Forms.PictureBox();
             this.picInfoMkys = new System.Windows.Forms.PictureBox();
             this.picCountCorrect = new System.Windows.Forms.PictureBox();
             this.picCountIncorrect = new System.Windows.Forms.PictureBox();
-            this.lblDarkMode = new System.Windows.Forms.Label();
             this.pbxFacebook = new System.Windows.Forms.PictureBox();
+            this.gbxBottom = new System.Windows.Forms.GroupBox();
             this.tglBtnDarkMode = new YearEndCalculation.WindowsFormUI.ToggleButton();
             this.gbxRemain.SuspendLayout();
             this.gbxResult.SuspendLayout();
@@ -119,6 +118,7 @@ namespace YearEndCalculation2.WindowsFormUI
             ((System.ComponentModel.ISupportInitialize)(this.picCountCorrect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCountIncorrect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFacebook)).BeginInit();
+            this.gbxBottom.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbxMkysRemain
@@ -170,13 +170,12 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // gbxRemain
             // 
-            this.gbxRemain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gbxRemain.Controls.Add(this.lblTdmsRemaining);
             this.gbxRemain.Controls.Add(this.lblMkysRemaining);
             this.gbxRemain.Controls.Add(this.tbxTdmsRemain);
             this.gbxRemain.Controls.Add(this.tbxMkysRemain);
             this.gbxRemain.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.gbxRemain.Location = new System.Drawing.Point(887, 520);
+            this.gbxRemain.Location = new System.Drawing.Point(887, 539);
             this.gbxRemain.Name = "gbxRemain";
             this.gbxRemain.Size = new System.Drawing.Size(338, 97);
             this.gbxRemain.TabIndex = 0;
@@ -197,21 +196,23 @@ namespace YearEndCalculation2.WindowsFormUI
             this.gbxResult.Controls.Add(this.label9);
             this.gbxResult.Controls.Add(this.label10);
             this.gbxResult.Location = new System.Drawing.Point(48, 56);
+            this.gbxResult.MinimumSize = new System.Drawing.Size(770, 450);
             this.gbxResult.Name = "gbxResult";
-            this.gbxResult.Size = new System.Drawing.Size(802, 448);
+            this.gbxResult.Size = new System.Drawing.Size(804, 450);
             this.gbxResult.TabIndex = 5;
             this.gbxResult.TabStop = false;
             this.gbxResult.Text = "Kontrol Edilmesi Gereken Kayıtlar";
             // 
             // btnMatch
             // 
+            this.btnMatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMatch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(214)))), ((int)(((byte)(226)))));
             this.btnMatch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnMatch.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnMatch.Image = ((System.Drawing.Image)(resources.GetObject("btnMatch.Image")));
             this.btnMatch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMatch.Location = new System.Drawing.Point(635, 410);
+            this.btnMatch.Location = new System.Drawing.Point(637, 412);
             this.btnMatch.Name = "btnMatch";
             this.btnMatch.Size = new System.Drawing.Size(145, 31);
             this.btnMatch.TabIndex = 85;
@@ -234,56 +235,55 @@ namespace YearEndCalculation2.WindowsFormUI
             // dgw
             // 
             this.dgw.AllowUserToResizeRows = false;
-            this.dgw.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dgw.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgw.BackgroundColor = System.Drawing.Color.OldLace;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgw.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgw.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgw.ColumnHeadersHeight = 25;
             this.dgw.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.PowderBlue;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgw.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgw.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgw.Location = new System.Drawing.Point(6, 43);
             this.dgw.Name = "dgw";
             this.dgw.ReadOnly = true;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgw.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgw.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgw.RowHeadersVisible = false;
             this.dgw.RowHeadersWidth = 20;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.PowderBlue;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            this.dgw.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            this.dgw.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgw.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.dgw.RowTemplate.Height = 27;
             this.dgw.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgw.Size = new System.Drawing.Size(790, 363);
+            this.dgw.Size = new System.Drawing.Size(787, 363);
             this.dgw.TabIndex = 1;
             // 
             // btnExcel
             // 
-            this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExcel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExcel.Image = ((System.Drawing.Image)(resources.GetObject("btnExcel.Image")));
             this.btnExcel.InitialImage = null;
-            this.btnExcel.Location = new System.Drawing.Point(17, 412);
+            this.btnExcel.Location = new System.Drawing.Point(17, 414);
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(34, 29);
             this.btnExcel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -293,11 +293,11 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // btnPrint
             // 
-            this.btnPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnPrint.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnPrint.Image = ((System.Drawing.Image)(resources.GetObject("btnPrint.Image")));
             this.btnPrint.InitialImage = null;
-            this.btnPrint.Location = new System.Drawing.Point(58, 412);
+            this.btnPrint.Location = new System.Drawing.Point(58, 414);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(34, 29);
             this.btnPrint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -368,7 +368,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Monotype Corsiva", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label9.ForeColor = System.Drawing.Color.Maroon;
-            this.label9.Location = new System.Drawing.Point(668, 12);
+            this.label9.Location = new System.Drawing.Point(670, 12);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(59, 28);
             this.label9.TabIndex = 76;
@@ -380,7 +380,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Book Antiqua", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label10.ForeColor = System.Drawing.Color.DarkOliveGreen;
-            this.label10.Location = new System.Drawing.Point(727, 18);
+            this.label10.Location = new System.Drawing.Point(729, 18);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(65, 20);
             this.label10.TabIndex = 76;
@@ -388,11 +388,10 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // btnCalculate
             // 
-            this.btnCalculate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCalculate.BackColor = System.Drawing.Color.DarkOrange;
             this.btnCalculate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCalculate.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnCalculate.Location = new System.Drawing.Point(975, 630);
+            this.btnCalculate.Location = new System.Drawing.Point(975, 649);
             this.btnCalculate.Name = "btnCalculate";
             this.btnCalculate.Size = new System.Drawing.Size(163, 50);
             this.btnCalculate.TabIndex = 1;
@@ -402,9 +401,10 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // label7
             // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label7.Location = new System.Drawing.Point(557, 552);
+            this.label7.Location = new System.Drawing.Point(485, 39);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(15, 20);
             this.label7.TabIndex = 51;
@@ -412,9 +412,10 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label5.Location = new System.Drawing.Point(427, 552);
+            this.label5.Location = new System.Drawing.Point(355, 39);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(15, 20);
             this.label5.TabIndex = 49;
@@ -422,9 +423,10 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label4.Location = new System.Drawing.Point(303, 552);
+            this.label4.Location = new System.Drawing.Point(231, 39);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(18, 20);
             this.label4.TabIndex = 48;
@@ -432,9 +434,10 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label3.Location = new System.Drawing.Point(677, 552);
+            this.label3.Location = new System.Drawing.Point(605, 39);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(18, 20);
             this.label3.TabIndex = 47;
@@ -442,9 +445,10 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(181, 552);
+            this.label1.Location = new System.Drawing.Point(109, 39);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(19, 20);
             this.label1.TabIndex = 39;
@@ -452,13 +456,14 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // button10
             // 
+            this.button10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button10.BackColor = System.Drawing.Color.Transparent;
             this.button10.FlatAppearance.BorderSize = 0;
             this.button10.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
             this.button10.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
             this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button10.Font = new System.Drawing.Font("MS Reference Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button10.Location = new System.Drawing.Point(683, 535);
+            this.button10.Location = new System.Drawing.Point(611, 22);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(120, 51);
             this.button10.TabIndex = 46;
@@ -467,13 +472,14 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // button6
             // 
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button6.BackColor = System.Drawing.Color.Transparent;
             this.button6.FlatAppearance.BorderSize = 0;
             this.button6.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
             this.button6.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button6.Font = new System.Drawing.Font("MS Reference Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button6.Location = new System.Drawing.Point(570, 535);
+            this.button6.Location = new System.Drawing.Point(498, 22);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(120, 51);
             this.button6.TabIndex = 45;
@@ -482,13 +488,14 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // button4
             // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button4.BackColor = System.Drawing.Color.Transparent;
             this.button4.FlatAppearance.BorderSize = 0;
             this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
             this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button4.Font = new System.Drawing.Font("MS Reference Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button4.Location = new System.Drawing.Point(439, 532);
+            this.button4.Location = new System.Drawing.Point(367, 19);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(120, 51);
             this.button4.TabIndex = 43;
@@ -497,13 +504,14 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button3.BackColor = System.Drawing.Color.Transparent;
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
             this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("MS Reference Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button3.Location = new System.Drawing.Point(314, 532);
+            this.button3.Location = new System.Drawing.Point(242, 19);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(120, 51);
             this.button3.TabIndex = 42;
@@ -512,13 +520,14 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button2.BackColor = System.Drawing.Color.Transparent;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
             this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("MS Reference Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button2.Location = new System.Drawing.Point(198, 535);
+            this.button2.Location = new System.Drawing.Point(126, 22);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(120, 51);
             this.button2.TabIndex = 41;
@@ -527,13 +536,14 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button1.BackColor = System.Drawing.Color.Transparent;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
             this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("MS Reference Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button1.Location = new System.Drawing.Point(75, 532);
+            this.button1.Location = new System.Drawing.Point(3, 19);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(120, 51);
             this.button1.TabIndex = 40;
@@ -544,6 +554,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // prcWrongTdmsExit
             // 
+            this.prcWrongTdmsExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.prcWrongTdmsExit.BackColor = System.Drawing.Color.Transparent;
             this.prcWrongTdmsExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcWrongTdmsExit.FlatAppearance.BorderSize = 0;
@@ -552,7 +563,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.prcWrongTdmsExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.prcWrongTdmsExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.prcWrongTdmsExit.ForeColor = System.Drawing.Color.Black;
-            this.prcWrongTdmsExit.Location = new System.Drawing.Point(697, 578);
+            this.prcWrongTdmsExit.Location = new System.Drawing.Point(625, 65);
             this.prcWrongTdmsExit.Name = "prcWrongTdmsExit";
             this.prcWrongTdmsExit.Size = new System.Drawing.Size(90, 36);
             this.prcWrongTdmsExit.TabIndex = 58;
@@ -561,6 +572,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // prcWrongTdmsEntry
             // 
+            this.prcWrongTdmsEntry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.prcWrongTdmsEntry.BackColor = System.Drawing.Color.Transparent;
             this.prcWrongTdmsEntry.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcWrongTdmsEntry.FlatAppearance.BorderSize = 0;
@@ -569,7 +581,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.prcWrongTdmsEntry.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.prcWrongTdmsEntry.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.prcWrongTdmsEntry.ForeColor = System.Drawing.Color.Black;
-            this.prcWrongTdmsEntry.Location = new System.Drawing.Point(582, 578);
+            this.prcWrongTdmsEntry.Location = new System.Drawing.Point(510, 65);
             this.prcWrongTdmsEntry.Name = "prcWrongTdmsEntry";
             this.prcWrongTdmsEntry.Size = new System.Drawing.Size(90, 36);
             this.prcWrongTdmsEntry.TabIndex = 57;
@@ -578,6 +590,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // prcMkysExit
             // 
+            this.prcMkysExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.prcMkysExit.BackColor = System.Drawing.Color.Transparent;
             this.prcMkysExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcMkysExit.FlatAppearance.BorderSize = 0;
@@ -586,7 +599,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.prcMkysExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.prcMkysExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.prcMkysExit.ForeColor = System.Drawing.Color.Black;
-            this.prcMkysExit.Location = new System.Drawing.Point(449, 578);
+            this.prcMkysExit.Location = new System.Drawing.Point(377, 65);
             this.prcMkysExit.Name = "prcMkysExit";
             this.prcMkysExit.Size = new System.Drawing.Size(99, 36);
             this.prcMkysExit.TabIndex = 55;
@@ -595,6 +608,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // prcMkysEntry
             // 
+            this.prcMkysEntry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.prcMkysEntry.BackColor = System.Drawing.Color.Transparent;
             this.prcMkysEntry.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcMkysEntry.FlatAppearance.BorderSize = 0;
@@ -603,7 +617,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.prcMkysEntry.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.prcMkysEntry.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.prcMkysEntry.ForeColor = System.Drawing.Color.Black;
-            this.prcMkysEntry.Location = new System.Drawing.Point(324, 578);
+            this.prcMkysEntry.Location = new System.Drawing.Point(252, 65);
             this.prcMkysEntry.Name = "prcMkysEntry";
             this.prcMkysEntry.Size = new System.Drawing.Size(99, 36);
             this.prcMkysEntry.TabIndex = 54;
@@ -612,6 +626,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // prcTdmsRemain
             // 
+            this.prcTdmsRemain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.prcTdmsRemain.BackColor = System.Drawing.Color.Transparent;
             this.prcTdmsRemain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcTdmsRemain.FlatAppearance.BorderSize = 0;
@@ -620,7 +635,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.prcTdmsRemain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.prcTdmsRemain.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.prcTdmsRemain.ForeColor = System.Drawing.Color.Black;
-            this.prcTdmsRemain.Location = new System.Drawing.Point(206, 578);
+            this.prcTdmsRemain.Location = new System.Drawing.Point(134, 65);
             this.prcTdmsRemain.Name = "prcTdmsRemain";
             this.prcTdmsRemain.Size = new System.Drawing.Size(90, 36);
             this.prcTdmsRemain.TabIndex = 53;
@@ -629,6 +644,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // prcMkysRemain
             // 
+            this.prcMkysRemain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.prcMkysRemain.BackColor = System.Drawing.Color.Transparent;
             this.prcMkysRemain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcMkysRemain.FlatAppearance.BorderSize = 0;
@@ -637,7 +653,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.prcMkysRemain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.prcMkysRemain.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.prcMkysRemain.ForeColor = System.Drawing.Color.Black;
-            this.prcMkysRemain.Location = new System.Drawing.Point(85, 578);
+            this.prcMkysRemain.Location = new System.Drawing.Point(13, 65);
             this.prcMkysRemain.Name = "prcMkysRemain";
             this.prcMkysRemain.Size = new System.Drawing.Size(90, 36);
             this.prcMkysRemain.TabIndex = 52;
@@ -648,14 +664,13 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // gbxTdmsSelect
             // 
-            this.gbxTdmsSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gbxTdmsSelect.Controls.Add(this.lblTdmsCount);
             this.gbxTdmsSelect.Controls.Add(this.label6);
             this.gbxTdmsSelect.Controls.Add(this.btnTdmsDel);
             this.gbxTdmsSelect.Controls.Add(this.rtbxTdms);
             this.gbxTdmsSelect.Controls.Add(this.button12);
             this.gbxTdmsSelect.Controls.Add(this.btnTdmsSelect);
-            this.gbxTdmsSelect.Location = new System.Drawing.Point(887, 363);
+            this.gbxTdmsSelect.Location = new System.Drawing.Point(887, 382);
             this.gbxTdmsSelect.Name = "gbxTdmsSelect";
             this.gbxTdmsSelect.Size = new System.Drawing.Size(338, 151);
             this.gbxTdmsSelect.TabIndex = 4;
@@ -743,14 +758,13 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // gbxEntrySelect
             // 
-            this.gbxEntrySelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gbxEntrySelect.Controls.Add(this.lblMkysEntryCount);
             this.gbxEntrySelect.Controls.Add(this.label2);
             this.gbxEntrySelect.Controls.Add(this.btnMkysEntryDel);
             this.gbxEntrySelect.Controls.Add(this.rtbxMkysEntry);
             this.gbxEntrySelect.Controls.Add(this.button5);
             this.gbxEntrySelect.Controls.Add(this.btnMkysEntrySelect);
-            this.gbxEntrySelect.Location = new System.Drawing.Point(887, 37);
+            this.gbxEntrySelect.Location = new System.Drawing.Point(887, 56);
             this.gbxEntrySelect.Name = "gbxEntrySelect";
             this.gbxEntrySelect.Size = new System.Drawing.Size(338, 151);
             this.gbxEntrySelect.TabIndex = 2;
@@ -836,14 +850,13 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // gbxExitSelect
             // 
-            this.gbxExitSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gbxExitSelect.Controls.Add(this.lblMkysExitCount);
             this.gbxExitSelect.Controls.Add(this.label8);
             this.gbxExitSelect.Controls.Add(this.btnMkysExitDel);
             this.gbxExitSelect.Controls.Add(this.rtbxMkysExit);
             this.gbxExitSelect.Controls.Add(this.button9);
             this.gbxExitSelect.Controls.Add(this.btnMkysExitSelect);
-            this.gbxExitSelect.Location = new System.Drawing.Point(887, 199);
+            this.gbxExitSelect.Location = new System.Drawing.Point(887, 218);
             this.gbxExitSelect.Name = "gbxExitSelect";
             this.gbxExitSelect.Size = new System.Drawing.Size(338, 151);
             this.gbxExitSelect.TabIndex = 3;
@@ -931,10 +944,11 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // label13
             // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label13.BackColor = System.Drawing.Color.OliveDrab;
             this.label13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label13.ForeColor = System.Drawing.Color.Cornsilk;
-            this.label13.Location = new System.Drawing.Point(334, 578);
+            this.label13.Location = new System.Drawing.Point(262, 65);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(78, 2);
             this.label13.TabIndex = 72;
@@ -942,10 +956,11 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // label14
             // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label14.BackColor = System.Drawing.Color.DarkMagenta;
             this.label14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label14.ForeColor = System.Drawing.Color.Cornsilk;
-            this.label14.Location = new System.Drawing.Point(591, 578);
+            this.label14.Location = new System.Drawing.Point(519, 65);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(76, 2);
             this.label14.TabIndex = 72;
@@ -953,10 +968,11 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // label16
             // 
+            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label16.BackColor = System.Drawing.Color.DarkCyan;
             this.label16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label16.ForeColor = System.Drawing.Color.Cornsilk;
-            this.label16.Location = new System.Drawing.Point(705, 578);
+            this.label16.Location = new System.Drawing.Point(633, 65);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(73, 2);
             this.label16.TabIndex = 72;
@@ -964,10 +980,11 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // label17
             // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label17.BackColor = System.Drawing.Color.Red;
             this.label17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label17.ForeColor = System.Drawing.Color.Cornsilk;
-            this.label17.Location = new System.Drawing.Point(457, 578);
+            this.label17.Location = new System.Drawing.Point(385, 65);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(82, 2);
             this.label17.TabIndex = 72;
@@ -975,13 +992,14 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // prcDifrence
             // 
+            this.prcDifrence.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.prcDifrence.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
             this.prcDifrence.FlatAppearance.BorderSize = 0;
             this.prcDifrence.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
             this.prcDifrence.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
             this.prcDifrence.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.prcDifrence.ForeColor = System.Drawing.Color.DarkRed;
-            this.prcDifrence.Location = new System.Drawing.Point(237, 609);
+            this.prcDifrence.Location = new System.Drawing.Point(182, 104);
             this.prcDifrence.Name = "prcDifrence";
             this.prcDifrence.Size = new System.Drawing.Size(418, 51);
             this.prcDifrence.TabIndex = 74;
@@ -994,7 +1012,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // lblAttention
             // 
             this.lblAttention.AutoSize = true;
-            this.lblAttention.Location = new System.Drawing.Point(82, 663);
+            this.lblAttention.Location = new System.Drawing.Point(82, 678);
             this.lblAttention.Name = "lblAttention";
             this.lblAttention.Size = new System.Drawing.Size(379, 13);
             this.lblAttention.TabIndex = 75;
@@ -1002,15 +1020,11 @@ namespace YearEndCalculation2.WindowsFormUI
     "ur.";
             this.lblAttention.Visible = false;
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            // 
             // btnHelp
             // 
-            this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnHelp.Location = new System.Drawing.Point(1229, 658);
+            this.btnHelp.Location = new System.Drawing.Point(1229, 684);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(49, 23);
             this.btnHelp.TabIndex = 76;
@@ -1022,7 +1036,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             this.picInfoTdms.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picInfoTdms.Image = ((System.Drawing.Image)(resources.GetObject("picInfoTdms.Image")));
-            this.picInfoTdms.Location = new System.Drawing.Point(1229, 480);
+            this.picInfoTdms.Location = new System.Drawing.Point(1229, 499);
             this.picInfoTdms.Name = "picInfoTdms";
             this.picInfoTdms.Size = new System.Drawing.Size(22, 20);
             this.picInfoTdms.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1033,7 +1047,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             this.picInfoMkys.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picInfoMkys.Image = ((System.Drawing.Image)(resources.GetObject("picInfoMkys.Image")));
-            this.picInfoMkys.Location = new System.Drawing.Point(1229, 155);
+            this.picInfoMkys.Location = new System.Drawing.Point(1229, 174);
             this.picInfoMkys.Name = "picInfoMkys";
             this.picInfoMkys.Size = new System.Drawing.Size(22, 20);
             this.picInfoMkys.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1042,10 +1056,11 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // picCountCorrect
             // 
+            this.picCountCorrect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.picCountCorrect.ErrorImage = ((System.Drawing.Image)(resources.GetObject("picCountCorrect.ErrorImage")));
             this.picCountCorrect.Image = ((System.Drawing.Image)(resources.GetObject("picCountCorrect.Image")));
             this.picCountCorrect.InitialImage = ((System.Drawing.Image)(resources.GetObject("picCountCorrect.InitialImage")));
-            this.picCountCorrect.Location = new System.Drawing.Point(809, 560);
+            this.picCountCorrect.Location = new System.Drawing.Point(737, 47);
             this.picCountCorrect.Name = "picCountCorrect";
             this.picCountCorrect.Size = new System.Drawing.Size(19, 20);
             this.picCountCorrect.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1055,10 +1070,11 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // picCountIncorrect
             // 
+            this.picCountIncorrect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.picCountIncorrect.ErrorImage = ((System.Drawing.Image)(resources.GetObject("picCountIncorrect.ErrorImage")));
             this.picCountIncorrect.Image = ((System.Drawing.Image)(resources.GetObject("picCountIncorrect.Image")));
             this.picCountIncorrect.InitialImage = ((System.Drawing.Image)(resources.GetObject("picCountIncorrect.InitialImage")));
-            this.picCountIncorrect.Location = new System.Drawing.Point(809, 560);
+            this.picCountIncorrect.Location = new System.Drawing.Point(737, 47);
             this.picCountIncorrect.Name = "picCountIncorrect";
             this.picCountIncorrect.Size = new System.Drawing.Size(19, 20);
             this.picCountIncorrect.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1066,23 +1082,13 @@ namespace YearEndCalculation2.WindowsFormUI
             this.picCountIncorrect.TabStop = false;
             this.picCountIncorrect.Visible = false;
             // 
-            // lblDarkMode
-            // 
-            this.lblDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDarkMode.AutoSize = true;
-            this.lblDarkMode.Location = new System.Drawing.Point(1254, 43);
-            this.lblDarkMode.Name = "lblDarkMode";
-            this.lblDarkMode.Size = new System.Drawing.Size(69, 13);
-            this.lblDarkMode.TabIndex = 81;
-            this.lblDarkMode.Text = "Karanlık Mod";
-            // 
             // pbxFacebook
             // 
-            this.pbxFacebook.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxFacebook.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxFacebook.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbxFacebook.Image = ((System.Drawing.Image)(resources.GetObject("pbxFacebook.Image")));
             this.pbxFacebook.InitialImage = null;
-            this.pbxFacebook.Location = new System.Drawing.Point(1284, 658);
+            this.pbxFacebook.Location = new System.Drawing.Point(1284, 684);
             this.pbxFacebook.Name = "pbxFacebook";
             this.pbxFacebook.Size = new System.Drawing.Size(22, 23);
             this.pbxFacebook.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1090,11 +1096,43 @@ namespace YearEndCalculation2.WindowsFormUI
             this.pbxFacebook.TabStop = false;
             this.pbxFacebook.Click += new System.EventHandler(this.pbxFacebook_Click);
             // 
+            // gbxBottom
+            // 
+            this.gbxBottom.Controls.Add(this.label17);
+            this.gbxBottom.Controls.Add(this.label13);
+            this.gbxBottom.Controls.Add(this.label16);
+            this.gbxBottom.Controls.Add(this.label14);
+            this.gbxBottom.Controls.Add(this.picCountCorrect);
+            this.gbxBottom.Controls.Add(this.prcWrongTdmsExit);
+            this.gbxBottom.Controls.Add(this.picCountIncorrect);
+            this.gbxBottom.Controls.Add(this.prcWrongTdmsEntry);
+            this.gbxBottom.Controls.Add(this.prcDifrence);
+            this.gbxBottom.Controls.Add(this.prcMkysExit);
+            this.gbxBottom.Controls.Add(this.prcMkysEntry);
+            this.gbxBottom.Controls.Add(this.prcTdmsRemain);
+            this.gbxBottom.Controls.Add(this.prcMkysRemain);
+            this.gbxBottom.Controls.Add(this.label7);
+            this.gbxBottom.Controls.Add(this.label5);
+            this.gbxBottom.Controls.Add(this.label4);
+            this.gbxBottom.Controls.Add(this.label3);
+            this.gbxBottom.Controls.Add(this.label1);
+            this.gbxBottom.Controls.Add(this.button10);
+            this.gbxBottom.Controls.Add(this.button6);
+            this.gbxBottom.Controls.Add(this.button4);
+            this.gbxBottom.Controls.Add(this.button3);
+            this.gbxBottom.Controls.Add(this.button2);
+            this.gbxBottom.Controls.Add(this.button1);
+            this.gbxBottom.Location = new System.Drawing.Point(48, 512);
+            this.gbxBottom.Name = "gbxBottom";
+            this.gbxBottom.Size = new System.Drawing.Size(770, 163);
+            this.gbxBottom.TabIndex = 85;
+            this.gbxBottom.TabStop = false;
+            // 
             // tglBtnDarkMode
             // 
             this.tglBtnDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tglBtnDarkMode.AutoSize = true;
-            this.tglBtnDarkMode.Location = new System.Drawing.Point(1264, 16);
+            this.tglBtnDarkMode.Location = new System.Drawing.Point(1264, 19);
             this.tglBtnDarkMode.MinimumSize = new System.Drawing.Size(45, 22);
             this.tglBtnDarkMode.Name = "tglBtnDarkMode";
             this.tglBtnDarkMode.OffBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -1113,47 +1151,23 @@ namespace YearEndCalculation2.WindowsFormUI
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
             this.ClientSize = new System.Drawing.Size(1335, 749);
+            this.Controls.Add(this.tglBtnDarkMode);
+            this.Controls.Add(this.gbxBottom);
             this.Controls.Add(this.pbxFacebook);
             this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.gbxRemain);
-            this.Controls.Add(this.lblDarkMode);
-            this.Controls.Add(this.tglBtnDarkMode);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.lblAttention);
-            this.Controls.Add(this.prcDifrence);
-            this.Controls.Add(this.label17);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.label16);
-            this.Controls.Add(this.label14);
             this.Controls.Add(this.picInfoTdms);
             this.Controls.Add(this.picInfoMkys);
             this.Controls.Add(this.gbxTdmsSelect);
             this.Controls.Add(this.gbxEntrySelect);
             this.Controls.Add(this.gbxExitSelect);
-            this.Controls.Add(this.picCountCorrect);
-            this.Controls.Add(this.prcWrongTdmsExit);
-            this.Controls.Add(this.picCountIncorrect);
-            this.Controls.Add(this.prcWrongTdmsEntry);
-            this.Controls.Add(this.prcMkysExit);
-            this.Controls.Add(this.prcMkysEntry);
-            this.Controls.Add(this.prcTdmsRemain);
-            this.Controls.Add(this.prcMkysRemain);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.button10);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.gbxResult);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1030, 500);
             this.Name = "FormMain";
-            this.Text = "Yıl Sonu Muhasebe Hesaplaması v2.0";
+            this.Text = "Yıl Sonu Muhasebe Hesaplaması v2.1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.SizeChanged += new System.EventHandler(this.FormMain_SizeChanged);
@@ -1175,6 +1189,8 @@ namespace YearEndCalculation2.WindowsFormUI
             ((System.ComponentModel.ISupportInitialize)(this.picCountCorrect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCountIncorrect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFacebook)).EndInit();
+            this.gbxBottom.ResumeLayout(false);
+            this.gbxBottom.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1247,12 +1263,11 @@ namespace YearEndCalculation2.WindowsFormUI
         private System.Windows.Forms.PictureBox btnExcel;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Button btnHelp;
         private YearEndCalculation.WindowsFormUI.ToggleButton tglBtnDarkMode;
-        private System.Windows.Forms.Label lblDarkMode;
         private System.Windows.Forms.PictureBox pbxFacebook;
         private System.Windows.Forms.Button btnMatch;
+        private System.Windows.Forms.GroupBox gbxBottom;
     }
 }
 

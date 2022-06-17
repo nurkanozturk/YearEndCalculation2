@@ -124,12 +124,6 @@
 	
 	TDMS verileri için Tek Düze Muhasebe sistemini açın Yardımcı Defter ekranından taşınır kodu ile sorgulama yaparak Excel formatında indirip kaydedin.</value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>İndirdiğiniz dosyaları Dosya Seç diyerek programa yükleyin.
-	Parçalı indirdiğiniz dosyalar varsa tek seferde hepsini birden seçip yükleyebilir veya tek tek ekleyebilirsiniz.
-TDMS verilerini yükleme sırasında "Microsft.Ace.OleDb.12.0" hatası alırsanız Microsoft'un sitesinden "Microsoft Access Database Engine 2020"
-indirip kurunuz.</value>
-  </data>
   <data name="label3.Text" xml:space="preserve">
     <value>Hesaplama işlemi yaptırıldıktan sonra MKYS Giriş, MKYS Çıkış, TDMS Giriş ve TDMS Çıkış sayfalarında görüntülenen veriler program tarafından eşleştirmesi yapılamayan, manuel olarak kontrol edilmesi gereken verilerdir.
 Örneğin:

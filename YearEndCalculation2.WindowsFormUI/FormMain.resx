@@ -120,11 +120,11 @@
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnMatch.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAC3SURBVDhPvdIxDgFBFMbxuYSGREXhFhIncQKFglKBxCV0EnqnECfQ09kQCgrh/83aZBMzz0bw
-        Jb/MvNm8t7vZdb/OCHsM0EENhTLGGTfUcccMGxTKFVmjkl81eOgrI6HGbNXgi6+MWAPyazRfGxBL8Lo+
-        2QlLfDTggAbaWOnASHDABGtUfRVPGcd0+5oudmj6KpweFuk2nBY0RH9jSQfP6M59bFHRgRU1TpFA7yt6
-        7DneNv8zzj0AWFgzjdy/AisAAAAASUVORK5CYII=
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAALdJREFUOE+9
+        0jEOAUEUxvG5hIZEReEWEidxAoWCUoHEJXQSeqcQJ9DT2RAKCuH/zdpkEzPPRvAlv8y82by3u9l1v84I
+        ewzQQQ2FMsYZN9RxxwwbFMoVWaOSXzV46CsjocZs1eCLr4xYA/JrNF8bEEvwuj7ZCUt8NOCABtpY6cBI
+        cMAEa1R9FU8Zx3T7mi52aPoqnB4W6TacFjREf2NJB8/ozn1sUdGBFTVOkUDvK3rsOd42/zPOPQBYWDON
+        3L8CKwAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="btnExcel.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -162,9 +162,6 @@
   </data>
   <metadata name="printDocument.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
-  </metadata>
-  <metadata name="backgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>151, 17</value>
   </metadata>
   <data name="picInfoTdms.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

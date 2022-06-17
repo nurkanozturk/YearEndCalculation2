@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.OleDb;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
@@ -140,12 +139,10 @@ namespace YearEndCalculation2.WindowsFormUI
 
             prcMkysEntry.ForeColor = prcMkysExit.ForeColor = prcMkysRemain.ForeColor = prcTdmsRemain.ForeColor = prcWrongTdmsEntry.ForeColor = prcWrongTdmsExit.ForeColor = textColor;
 
+            
+
             MkysInfo();
             TdmsInfo();
-            if (!backgroundWorker1.IsBusy)
-            {
-                backgroundWorker1.RunWorkerAsync();
-            }
         }
 
         private void BtnMkysEntrySelect_Click(object sender, EventArgs e)
@@ -317,15 +314,7 @@ namespace YearEndCalculation2.WindowsFormUI
                         rtbxTdms.Text += "\n" + fileName;
                     }
                 }
-                catch (OleDbException)
-                {
-                    DialogResult result = MessageBox.Show("TDMS verilerinin Excel'den okunabilmesi için \"Microsoft Access Database Engine 2010\" dosyasını indirip kurmanız gerekmektedir. İndirme bağlantısına şimdi gidilsin mi?", "Sistem Gereksinimleri Eksikliği!", MessageBoxButtons.YesNo);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        System.Diagnostics.Process.Start("https://www.microsoft.com/en-us/download/details.aspx?id=13255");
-                    }
-                }
+                
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message + "\nBelge adı: " + fileName);
@@ -788,12 +777,7 @@ namespace YearEndCalculation2.WindowsFormUI
             var defrence = mkysRemain - (tdmsRemain + _mkysEntryTotal - _mkysExitTotal - _wrongTdmsEntry + _wrongTdmsExit);
             return defrence;
         }
-
-
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            _fillTdms.PreLoadOleDb();
-        }
+       
 
         int _nextDgwList = 1;
         int _lineWritten = 0;
@@ -823,14 +807,28 @@ namespace YearEndCalculation2.WindowsFormUI
 
         private void FormMain_SizeChanged(object sender, EventArgs e)
         {
-            gbxResult.Width = this.Width - gbxEntrySelect.Width - 210;
-            dgw.Width = gbxResult.Width - 10;
+            gbxResult.Height = Convert.ToInt32(this.Height-350);
+            gbxResult.Width = Convert.ToInt32(this.Width - gbxEntrySelect.Width - 200);
+            gbxBottom.Left = gbxResult.Left;
+            gbxBottom.Top = gbxResult.Bottom + 5;
+            dgw.Height = gbxResult.Height - 90;
+            dgw.Width = gbxResult.Width - 12;
+            lblNoProblem.Top = dgw.Top + dgw.Height / 2;
+            lblNoProblem.Left = dgw.Left + dgw.Width / 2 - lblNoProblem.Width / 2;
+            lblAttention.Top = gbxBottom.Bottom + 5;
+            gbxEntrySelect.Left = gbxExitSelect.Left = gbxTdmsSelect.Left = gbxRemain.Left = gbxResult.Right + 20;
+            btnCalculate.Left = gbxRemain.Left+gbxRemain.Width/2-btnCalculate.Width/2;
+
+            picInfoMkys.Left = picInfoTdms.Left = gbxEntrySelect.Right + 5;
+
         }
 
         private void pbxFacebook_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://www.facebook.com/groups/466729348151176/?ref=share");
         }
+
+        
 
         private void btnMatch_Click(object sender, EventArgs e)
         {

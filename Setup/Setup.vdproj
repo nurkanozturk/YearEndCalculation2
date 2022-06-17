@@ -15,20 +15,50 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_225E9B5BD10D503C4DBABF53300957EC"
+        "MsmKey" = "8:_09006375F5A1B3371251F0DF217B7866"
+        "OwnerKey" = "8:_4096E8CB2DE35794E1340008452F9720"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_09006375F5A1B3371251F0DF217B7866"
+        "OwnerKey" = "8:_FA1370B8AC6E4BEAAE9821902AD39AD4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1E6D516C691117B008BF9AC031044762"
         "OwnerKey" = "8:_E26100F66B094E5F925134975F151D16"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_225E9B5BD10D503C4DBABF53300957EC"
-        "OwnerKey" = "8:_B2EA3CBC96EB73D4C0DADC639CBF6C19"
+        "MsmKey" = "8:_1E6D516C691117B008BF9AC031044762"
+        "OwnerKey" = "8:_D261CC71767059720B871789060A6B30"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_23397AFA16BA939E2F1DDCE0790A6D18"
+        "MsmKey" = "8:_4096E8CB2DE35794E1340008452F9720"
         "OwnerKey" = "8:_FA1370B8AC6E4BEAAE9821902AD39AD4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_49FA9FA389D42B59DDA317C2C21EEA1A"
+        "OwnerKey" = "8:_E26100F66B094E5F925134975F151D16"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_49FA9FA389D42B59DDA317C2C21EEA1A"
+        "OwnerKey" = "8:_FA1370B8AC6E4BEAAE9821902AD39AD4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_49FA9FA389D42B59DDA317C2C21EEA1A"
+        "OwnerKey" = "8:_D261CC71767059720B871789060A6B30"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -40,12 +70,6 @@
         "Entry"
         {
         "MsmKey" = "8:_6D0E68A3F2434777BBAD2CE142961F4C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_7A0B642F86BB44AEA9F752E4A0B61630"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -63,6 +87,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_AE3C9C84FE3D4C089D681E6FEE332D9A"
+        "OwnerKey" = "8:_FA1370B8AC6E4BEAAE9821902AD39AD4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_B18554D553CC4511BDFB42CA1BFBF39A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -75,32 +105,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B2EA3CBC96EB73D4C0DADC639CBF6C19"
-        "OwnerKey" = "8:_FA1370B8AC6E4BEAAE9821902AD39AD4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_BBD5932EEF68230CC8B4D0165A3FFAA5"
-        "OwnerKey" = "8:_E26100F66B094E5F925134975F151D16"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_BBD5932EEF68230CC8B4D0165A3FFAA5"
-        "OwnerKey" = "8:_FA1370B8AC6E4BEAAE9821902AD39AD4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_BBD5932EEF68230CC8B4D0165A3FFAA5"
-        "OwnerKey" = "8:_B2EA3CBC96EB73D4C0DADC639CBF6C19"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_CB99120C23F2462FB3CBBB103363D87C"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D261CC71767059720B871789060A6B30"
+        "OwnerKey" = "8:_FA1370B8AC6E4BEAAE9821902AD39AD4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -119,6 +131,12 @@
         {
         "MsmKey" = "8:_E26100F66B094E5F925134975F151D16"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EEA71103FBBD07EB7F914973D2FB2FB0"
+        "OwnerKey" = "8:_09006375F5A1B3371251F0DF217B7866"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -154,13 +172,31 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B2EA3CBC96EB73D4C0DADC639CBF6C19"
+        "OwnerKey" = "8:_D261CC71767059720B871789060A6B30"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_23397AFA16BA939E2F1DDCE0790A6D18"
+        "OwnerKey" = "8:_AE3C9C84FE3D4C089D681E6FEE332D9A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_4096E8CB2DE35794E1340008452F9720"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_09006375F5A1B3371251F0DF217B7866"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_EEA71103FBBD07EB7F914973D2FB2FB0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -178,13 +214,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_BBD5932EEF68230CC8B4D0165A3FFAA5"
+        "OwnerKey" = "8:_49FA9FA389D42B59DDA317C2C21EEA1A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_225E9B5BD10D503C4DBABF53300957EC"
+        "OwnerKey" = "8:_1E6D516C691117B008BF9AC031044762"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -299,20 +335,20 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_225E9B5BD10D503C4DBABF53300957EC"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_09006375F5A1B3371251F0DF217B7866"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:ExcelDataReader, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_225E9B5BD10D503C4DBABF53300957EC"
+                    "_09006375F5A1B3371251F0DF217B7866"
                     {
-                    "Name" = "8:Ninject.DLL"
+                    "Name" = "8:ExcelDataReader.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Ninject.DLL"
+            "SourcePath" = "8:ExcelDataReader.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6AD6F5E811CE4C81BFD91CDF27787BE9"
@@ -330,20 +366,82 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_23397AFA16BA939E2F1DDCE0790A6D18"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1E6D516C691117B008BF9AC031044762"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_23397AFA16BA939E2F1DDCE0790A6D18"
+                    "_1E6D516C691117B008BF9AC031044762"
                     {
-                    "Name" = "8:log4net.DLL"
+                    "Name" = "8:Ninject.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:log4net.DLL"
+            "SourcePath" = "8:Ninject.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6AD6F5E811CE4C81BFD91CDF27787BE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4096E8CB2DE35794E1340008452F9720"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ExcelDataReader.DataSet, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_4096E8CB2DE35794E1340008452F9720"
+                    {
+                    "Name" = "8:ExcelDataReader.DataSet.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:ExcelDataReader.DataSet.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6AD6F5E811CE4C81BFD91CDF27787BE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_49FA9FA389D42B59DDA317C2C21EEA1A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:YearEndCalculation.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_49FA9FA389D42B59DDA317C2C21EEA1A"
+                    {
+                    "Name" = "8:YearEndCalculation.Entities.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:YearEndCalculation.Entities.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6AD6F5E811CE4C81BFD91CDF27787BE9"
@@ -365,7 +463,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.IO.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:System.IO.Packaging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_668C9520D17746A3AAB9E4CCEBA28727"
@@ -412,26 +510,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7A0B642F86BB44AEA9F752E4A0B61630"
-            {
-            "SourcePath" = "8:..\\YearEndCalculation2.WindowsFormUI\\PreLoad.xls"
-            "TargetName" = "8:PreLoad.xls"
-            "Tag" = "8:"
-            "Folder" = "8:_6AD6F5E811CE4C81BFD91CDF27787BE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8912772072F54E3B96AA602D945E1E6C"
             {
             "SourcePath" = "8:..\\YearEndCalculation2.WindowsFormUI\\bin\\Debug\\YearEndCalculation.WindowsFormUI.application"
@@ -456,7 +534,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_98B2BFC4F84947DAAE3662C51EC9FEFC"
@@ -481,6 +559,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AE3C9C84FE3D4C089D681E6FEE332D9A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_AE3C9C84FE3D4C089D681E6FEE332D9A"
+                    {
+                    "Name" = "8:log4net.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:log4net.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6AD6F5E811CE4C81BFD91CDF27787BE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B18554D553CC4511BDFB42CA1BFBF39A"
@@ -523,68 +632,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B2EA3CBC96EB73D4C0DADC639CBF6C19"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:YearEndCalculation.Business, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_B2EA3CBC96EB73D4C0DADC639CBF6C19"
-                    {
-                    "Name" = "8:YearEndCalculation.Business.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:YearEndCalculation.Business.DLL"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6AD6F5E811CE4C81BFD91CDF27787BE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BBD5932EEF68230CC8B4D0165A3FFAA5"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:YearEndCalculation.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_BBD5932EEF68230CC8B4D0165A3FFAA5"
-                    {
-                    "Name" = "8:YearEndCalculation.Entities.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:YearEndCalculation.Entities.DLL"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6AD6F5E811CE4C81BFD91CDF27787BE9"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CB99120C23F2462FB3CBBB103363D87C"
             {
             "AssemblyRegister" = "3:1"
@@ -614,6 +661,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D261CC71767059720B871789060A6B30"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:YearEndCalculation.Business, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D261CC71767059720B871789060A6B30"
+                    {
+                    "Name" = "8:YearEndCalculation.Business.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:YearEndCalculation.Business.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6AD6F5E811CE4C81BFD91CDF27787BE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DA058944CB214011A3FFE6766F78F7B7"
@@ -687,6 +765,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EEA71103FBBD07EB7F914973D2FB2FB0"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:TRUE"
+            "AssemblyAsmDisplayName" = "8:System.IO.Compression, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_EEA71103FBBD07EB7F914973D2FB2FB0"
+                    {
+                    "Name" = "8:System.IO.Compression.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.IO.Compression.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6AD6F5E811CE4C81BFD91CDF27787BE9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F1597FCFA8074283BEF3B65B62E5298C"
             {
             "AssemblyRegister" = "3:1"
@@ -722,7 +831,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:YearEndCalculation.WindowsFormUI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:YearEndCalculation.WindowsFormUI, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
                     "_FA1370B8AC6E4BEAAE9821902AD39AD4"
@@ -826,7 +935,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MKYS - TDMS Uyumu"
         "ProductCode" = "8:{1611DD59-B0B6-4113-A2D3-34FE56630962}"
-        "PackageCode" = "8:{6C5932C4-22BB-4569-94A3-17855D75148C}"
+        "PackageCode" = "8:{7A02C2B5-B8D1-4888-BD78-A17A047371D2}"
         "UpgradeCode" = "8:{15432425-C694-4FCF-AFB2-1732FCAEC169}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
