@@ -205,14 +205,14 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // btnMatch
             // 
-            this.btnMatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnMatch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(214)))), ((int)(((byte)(226)))));
             this.btnMatch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnMatch.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnMatch.Image = ((System.Drawing.Image)(resources.GetObject("btnMatch.Image")));
             this.btnMatch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMatch.Location = new System.Drawing.Point(637, 412);
+            this.btnMatch.Location = new System.Drawing.Point(306, 412);
             this.btnMatch.Name = "btnMatch";
             this.btnMatch.Size = new System.Drawing.Size(145, 31);
             this.btnMatch.TabIndex = 85;
@@ -279,11 +279,11 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // btnExcel
             // 
-            this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExcel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExcel.Image = ((System.Drawing.Image)(resources.GetObject("btnExcel.Image")));
             this.btnExcel.InitialImage = null;
-            this.btnExcel.Location = new System.Drawing.Point(17, 414);
+            this.btnExcel.Location = new System.Drawing.Point(713, 415);
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(34, 29);
             this.btnExcel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -293,11 +293,11 @@ namespace YearEndCalculation2.WindowsFormUI
             // 
             // btnPrint
             // 
-            this.btnPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPrint.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnPrint.Image = ((System.Drawing.Image)(resources.GetObject("btnPrint.Image")));
             this.btnPrint.InitialImage = null;
-            this.btnPrint.Location = new System.Drawing.Point(58, 414);
+            this.btnPrint.Location = new System.Drawing.Point(754, 415);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(34, 29);
             this.btnPrint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;

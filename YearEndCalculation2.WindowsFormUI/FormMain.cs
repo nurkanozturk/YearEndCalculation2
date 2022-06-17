@@ -818,7 +818,7 @@ namespace YearEndCalculation2.WindowsFormUI
             lblAttention.Top = gbxBottom.Bottom + 5;
             gbxEntrySelect.Left = gbxExitSelect.Left = gbxTdmsSelect.Left = gbxRemain.Left = gbxResult.Right + 20;
             btnCalculate.Left = gbxRemain.Left+gbxRemain.Width/2-btnCalculate.Width/2;
-
+            btnMatch.Left = dgw.Left+dgw.Width/2-btnMatch.Width/2;
             picInfoMkys.Left = picInfoTdms.Left = gbxEntrySelect.Right + 5;
 
         }
