@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using YearEndCalculation.Business.Tools;
 using YearEndCalculation.Entities.Concrete;
 
 namespace YearEndCalculation2.WindowsFormUI
@@ -26,7 +27,7 @@ namespace YearEndCalculation2.WindowsFormUI
                     {
                         ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
                         {
-                            UseHeaderRow = true
+                            UseHeaderRow = false
                         }
                     });
 
@@ -47,24 +48,29 @@ namespace YearEndCalculation2.WindowsFormUI
 
             if (isValiedFile)
             {
-                transferredPrice = Convert.ToDecimal(dataTable.Rows[i - 1][9].ToString());
+                transferredPrice = Convert.ToDecimal(dataTable.Rows[i - 1][10].ToString());
                 queryId = dataTable.Rows[5][3].ToString() + "-" + dataTable.Rows[6][3].ToString() + "-" + dataTable.Rows[10][3].ToString();
 
                 while (dataTable.Rows[i][2].ToString() != "")
                 {
-                    if (Convert.ToDecimal(dataTable.Rows[i][9 + Convert.ToInt32(isExit)]) > 0)
+                    if (Convert.ToDecimal(dataTable.Rows[i][10 + Convert.ToInt32(isExit)]) > 0)
                     {
                         string idPrefix = isExit ? "tdmsExit-" : "tdmsEntry-";
-
+                        string docNumber = dataTable.Rows[i][5].ToString();
+                        
                         dataList.Add(new ActionRecord
                         {
-                            Id = idPrefix + dataTable.Rows[i][2].ToString() + "-" + dataTable.Rows[i][4].ToString() + "-" + dataTable.Rows[i][9 + Convert.ToInt32(isExit)].ToString(),
-                            DocNumber = dataTable.Rows[i][5].ToString(),
+                            Id = idPrefix + dataTable.Rows[i][2].ToString() + "-" + dataTable.Rows[i][4].ToString() + "-" + dataTable.Rows[i][10 + Convert.ToInt32(isExit)].ToString(),
+                            DocNumber = docNumber,
                             DocDate = dataTable.Rows[i][2].ToString(),
                             Type = dataTable.Rows[i][6].ToString(),
+                            InvoiceNumber = dataTable.Rows[i][8].ToString(),
                             Explanation = dataTable.Rows[i][7].ToString(),
-                            Price = Convert.ToDecimal(dataTable.Rows[i][9 + Convert.ToInt32(isExit)])
+                            Price = Convert.ToDecimal(dataTable.Rows[i][10 + Convert.ToInt32(isExit)]),
+                            DateBase = Convert.ToDateTime(dataTable.Rows[i][2].ToString()),
+
                         });
+                        
 
                     }
                     i++;

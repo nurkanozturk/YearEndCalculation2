@@ -105,6 +105,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChooseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooseForm.Designer.cs">
+      <DependentUpon>ChooseForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FillMkys.cs" />
     <Compile Include="FillTdms.cs" />
     <Compile Include="FormMain.cs">
@@ -141,6 +147,9 @@
     <Compile Include="ToggleButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <EmbeddedResource Include="ChooseForm.resx">
+      <DependentUpon>ChooseForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

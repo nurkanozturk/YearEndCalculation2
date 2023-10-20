@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using YearEndCalculation.Business.Concrete;
+using YearEndCalculation.Business.Tools;
 using YearEndCalculation.Entities.Concrete;
 using YearEndCalculation2.WindowsFormUI;
 
@@ -28,15 +30,11 @@ namespace YearEndCalculation.WindowsFormUI
             {
                 return;
             }
-            FillListView(FormMain.DgwItems[0], lvMkysEntry);
+            FillListView(FormMain.DgwItems[0], lvMkysEntry);         
             FillListView(FormMain.DgwItems[1], lvMkysExit);
             FillListView(FormMain.DgwItems[2], lvTdmsEntry);
             FillListView(FormMain.DgwItems[3], lvTdmsExit);
-            int columnWidth = 100;
-            lvMkysEntry.Columns[1].Width = columnWidth;
-            lvMkysExit.Columns[1].Width = columnWidth;
-            lvTdmsEntry.Columns[1].Width = columnWidth;
-            lvTdmsExit.Columns[1].Width = columnWidth;
+            
             Color bgColor, bgColor2, textColor;
 
             if (FormMain.darkMode)
@@ -82,7 +80,8 @@ namespace YearEndCalculation.WindowsFormUI
                             DocDate = item.Attributes[2].Value,
                             Type = item.Attributes[3].Value,
                             Explanation = item.Attributes[4].Value,
-                            Price = decimal.Parse(item.Attributes[5].Value)
+                            Price = decimal.Parse(item.Attributes[5].Value),
+                            DateBase = FormatDate.Format(item.Attributes[2].Value)
                         });
                     }
                     flpMatched.Controls.Add(new CheckBox
@@ -98,18 +97,21 @@ namespace YearEndCalculation.WindowsFormUI
         }
 
         private void FillListView(List<ActionRecord> recordList, ListView listView)
-        {
+        {                    
+            recordList = recordList.OrderBy(a => a.Price).ToList();
+                      
             foreach (ActionRecord item in recordList)
             {
                 ListViewItem listViewItem = new ListViewItem();
                 listViewItem.Tag = item.Id;
-                listViewItem.Text = item.DocNumber;
+                listViewItem.Text = item.DocNumber.ToString(); ;
+                listViewItem.SubItems.Add(item.DocDate);
                 listViewItem.SubItems.Add(item.Type);
+                listViewItem.SubItems.Add(item.Explanation);
                 listViewItem.SubItems.Add(item.Price.ToString());
                 listView.Items.Add(listViewItem);
                 unMatchedItems.Add(item);
             }
-
         }
 
 
@@ -123,22 +125,22 @@ namespace YearEndCalculation.WindowsFormUI
             decimal tdmsExitPrice = 0;
             foreach (ListViewItem item in lvMkysEntry.CheckedItems)
             {
-                mkysEntryPrice += Convert.ToDecimal(item.SubItems[2].Text);
+                mkysEntryPrice += Convert.ToDecimal(item.SubItems[4].Text);
             }
             foreach (ListViewItem item in lvTdmsEntry.CheckedItems)
             {
-                tdmsEntryPrice += Convert.ToDecimal(item.SubItems[2].Text);
+                tdmsEntryPrice += Convert.ToDecimal(item.SubItems[4].Text);
             }
             foreach (ListViewItem item in lvTdmsExit.CheckedItems)
             {
-                tdmsExitPrice += Convert.ToDecimal(item.SubItems[2].Text);
+                tdmsExitPrice += Convert.ToDecimal(item.SubItems[4].Text);
             }
             foreach (ListViewItem item in lvMkysExit.CheckedItems)
             {
-                mkysExitPrice += Convert.ToDecimal(item.SubItems[2].Text);
+                mkysExitPrice += Convert.ToDecimal(item.SubItems[4].Text);
             }
-
-            if (Math.Abs(mkysEntryPrice - tdmsEntryPrice - mkysExitPrice + tdmsExitPrice) > 0.1m)
+            var sonuc = Math.Abs(mkysEntryPrice - tdmsEntryPrice - mkysExitPrice + tdmsExitPrice);
+            if (sonuc > 0.1m)
             {
                 MessageBox.Show("Seçilen kayıtların tutarları eşleşmiyor. Kontrol edip tekrar deneyiniz.", "Dikkat", MessageBoxButtons.OK);
 

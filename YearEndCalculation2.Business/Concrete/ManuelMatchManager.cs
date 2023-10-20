@@ -126,7 +126,7 @@ namespace YearEndCalculation.Business.Concrete
                 item.Attributes.Append(docNumber);
 
                 XmlAttribute docDate = xmlDocument.CreateAttribute("docDate");
-                docDate.Value = matchedItem.DocDate;
+                docDate.Value = matchedItem.DocDate.ToString();
                 item.Attributes.Append(docDate);
 
                 XmlAttribute type = xmlDocument.CreateAttribute("type");

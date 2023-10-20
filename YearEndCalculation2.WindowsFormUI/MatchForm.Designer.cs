@@ -29,21 +29,29 @@
         private void InitializeComponent()
         {
             this.lvMkysEntry = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clmn1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clmn2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clmn3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clmn4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clmn5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvMkysExit = new System.Windows.Forms.ListView();
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cclmn1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cclmn2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cclmn3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cclmn4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cclmn5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvTdmsEntry = new System.Windows.Forms.ListView();
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tclmn1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tclmn2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tclmn3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tclmn4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tclmn5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvTdmsExit = new System.Windows.Forms.ListView();
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tcclmn1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tcclmn2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tcclmn3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tcclmn4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tcclmn5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnMatch = new System.Windows.Forms.Button();
             this.flpMatched = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRemove = new System.Windows.Forms.Button();
@@ -59,138 +67,180 @@
             this.lvMkysEntry.BackColor = System.Drawing.Color.Honeydew;
             this.lvMkysEntry.CheckBoxes = true;
             this.lvMkysEntry.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
+            this.clmn1,
+            this.clmn2,
+            this.clmn3,
+            this.clmn4,
+            this.clmn5});
             this.lvMkysEntry.FullRowSelect = true;
             this.lvMkysEntry.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvMkysEntry.HideSelection = false;
             this.lvMkysEntry.Location = new System.Drawing.Point(12, 70);
             this.lvMkysEntry.Name = "lvMkysEntry";
             this.lvMkysEntry.ShowItemToolTips = true;
-            this.lvMkysEntry.Size = new System.Drawing.Size(240, 460);
+            this.lvMkysEntry.Size = new System.Drawing.Size(498, 216);
             this.lvMkysEntry.TabIndex = 2;
             this.lvMkysEntry.UseCompatibleStateImageBehavior = false;
             this.lvMkysEntry.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader1
+            // clmn1
             // 
-            this.columnHeader1.Text = "FİŞ NO";
-            this.columnHeader1.Width = 50;
+            this.clmn1.Text = "Belge No";
             // 
-            // columnHeader2
+            // clmn2
             // 
-            this.columnHeader2.Text = "AÇIKLAMA";
-            this.columnHeader2.Width = 181;
+            this.clmn2.Text = "Tarih";
+            this.clmn2.Width = 65;
             // 
-            // columnHeader3
+            // clmn3
             // 
-            this.columnHeader3.Text = "TUTAR";
-            this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader3.Width = 63;
+            this.clmn3.Text = "Tür";
+            this.clmn3.Width = 90;
+            // 
+            // clmn4
+            // 
+            this.clmn4.Text = "Açıklama";
+            this.clmn4.Width = 200;
+            // 
+            // clmn5
+            // 
+            this.clmn5.Text = "Tutar";
             // 
             // lvMkysExit
             // 
             this.lvMkysExit.BackColor = System.Drawing.Color.Honeydew;
             this.lvMkysExit.CheckBoxes = true;
             this.lvMkysExit.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6});
+            this.cclmn1,
+            this.cclmn2,
+            this.cclmn3,
+            this.cclmn4,
+            this.cclmn5});
             this.lvMkysExit.FullRowSelect = true;
             this.lvMkysExit.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvMkysExit.HideSelection = false;
             this.lvMkysExit.LabelWrap = false;
-            this.lvMkysExit.Location = new System.Drawing.Point(258, 70);
+            this.lvMkysExit.Location = new System.Drawing.Point(518, 70);
             this.lvMkysExit.MultiSelect = false;
             this.lvMkysExit.Name = "lvMkysExit";
             this.lvMkysExit.ShowItemToolTips = true;
-            this.lvMkysExit.Size = new System.Drawing.Size(240, 460);
+            this.lvMkysExit.Size = new System.Drawing.Size(498, 216);
             this.lvMkysExit.TabIndex = 2;
             this.lvMkysExit.UseCompatibleStateImageBehavior = false;
             this.lvMkysExit.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader4
+            // cclmn1
             // 
-            this.columnHeader4.Text = "FİŞ NO";
+            this.cclmn1.Text = "Belge No";
             // 
-            // columnHeader5
+            // cclmn2
             // 
-            this.columnHeader5.Text = "AÇIKLAMA";
-            this.columnHeader5.Width = 174;
+            this.cclmn2.Text = "Tarih";
+            this.cclmn2.Width = 65;
             // 
-            // columnHeader6
+            // cclmn3
             // 
-            this.columnHeader6.Text = "TUTAR";
-            this.columnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.cclmn3.Text = "Tür";
+            this.cclmn3.Width = 90;
+            // 
+            // cclmn4
+            // 
+            this.cclmn4.Text = "Açıklama";
+            this.cclmn4.Width = 200;
+            // 
+            // cclmn5
+            // 
+            this.cclmn5.Text = "Tutar";
             // 
             // lvTdmsEntry
             // 
             this.lvTdmsEntry.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(226)))));
             this.lvTdmsEntry.CheckBoxes = true;
             this.lvTdmsEntry.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader7,
-            this.columnHeader8,
-            this.columnHeader9});
+            this.tclmn1,
+            this.tclmn2,
+            this.tclmn3,
+            this.tclmn4,
+            this.tclmn5});
             this.lvTdmsEntry.FullRowSelect = true;
             this.lvTdmsEntry.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvTdmsEntry.HideSelection = false;
-            this.lvTdmsEntry.Location = new System.Drawing.Point(504, 70);
+            this.lvTdmsEntry.Location = new System.Drawing.Point(12, 323);
             this.lvTdmsEntry.MultiSelect = false;
             this.lvTdmsEntry.Name = "lvTdmsEntry";
             this.lvTdmsEntry.ShowItemToolTips = true;
-            this.lvTdmsEntry.Size = new System.Drawing.Size(240, 460);
+            this.lvTdmsEntry.Size = new System.Drawing.Size(498, 216);
             this.lvTdmsEntry.TabIndex = 2;
             this.lvTdmsEntry.UseCompatibleStateImageBehavior = false;
             this.lvTdmsEntry.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader7
+            // tclmn1
             // 
-            this.columnHeader7.Text = "FİŞ NO ";
+            this.tclmn1.Text = "Fiş No";
             // 
-            // columnHeader8
+            // tclmn2
             // 
-            this.columnHeader8.Text = "AÇIKLAMA";
-            this.columnHeader8.Width = 174;
+            this.tclmn2.Text = "Tarih";
+            this.tclmn2.Width = 65;
             // 
-            // columnHeader9
+            // tclmn3
             // 
-            this.columnHeader9.Text = "TUTAR";
-            this.columnHeader9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tclmn3.Text = "Tür";
+            this.tclmn3.Width = 90;
+            // 
+            // tclmn4
+            // 
+            this.tclmn4.Text = "Açıklama";
+            this.tclmn4.Width = 200;
+            // 
+            // tclmn5
+            // 
+            this.tclmn5.Text = "Tutar";
             // 
             // lvTdmsExit
             // 
             this.lvTdmsExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(226)))));
             this.lvTdmsExit.CheckBoxes = true;
             this.lvTdmsExit.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader10,
-            this.columnHeader11,
-            this.columnHeader12});
+            this.tcclmn1,
+            this.tcclmn2,
+            this.tcclmn3,
+            this.tcclmn4,
+            this.tcclmn5});
             this.lvTdmsExit.FullRowSelect = true;
             this.lvTdmsExit.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvTdmsExit.HideSelection = false;
-            this.lvTdmsExit.Location = new System.Drawing.Point(750, 70);
+            this.lvTdmsExit.Location = new System.Drawing.Point(518, 323);
             this.lvTdmsExit.MultiSelect = false;
             this.lvTdmsExit.Name = "lvTdmsExit";
             this.lvTdmsExit.ShowItemToolTips = true;
-            this.lvTdmsExit.Size = new System.Drawing.Size(240, 460);
+            this.lvTdmsExit.Size = new System.Drawing.Size(498, 216);
             this.lvTdmsExit.TabIndex = 2;
             this.lvTdmsExit.UseCompatibleStateImageBehavior = false;
             this.lvTdmsExit.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader10
+            // tcclmn1
             // 
-            this.columnHeader10.Text = "FİŞ NO";
+            this.tcclmn1.Text = "Fiş No";
             // 
-            // columnHeader11
+            // tcclmn2
             // 
-            this.columnHeader11.Text = "AÇIKLAMA";
-            this.columnHeader11.Width = 174;
+            this.tcclmn2.Text = "Tarih";
+            this.tcclmn2.Width = 65;
             // 
-            // columnHeader12
+            // tcclmn3
             // 
-            this.columnHeader12.Text = "TUTAR";
-            this.columnHeader12.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tcclmn3.Text = "Tür";
+            this.tcclmn3.Width = 90;
+            // 
+            // tcclmn4
+            // 
+            this.tcclmn4.Text = "Açıklama";
+            this.tcclmn4.Width = 200;
+            // 
+            // tcclmn5
+            // 
+            this.tcclmn5.Text = "Tutar";
             // 
             // btnMatch
             // 
@@ -207,6 +257,7 @@
             // 
             // flpMatched
             // 
+            this.flpMatched.AutoScroll = true;
             this.flpMatched.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flpMatched.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flpMatched.Location = new System.Drawing.Point(1022, 70);
@@ -240,7 +291,7 @@
             // lblMkysEntry
             // 
             this.lblMkysEntry.AutoSize = true;
-            this.lblMkysEntry.Location = new System.Drawing.Point(86, 54);
+            this.lblMkysEntry.Location = new System.Drawing.Point(218, 53);
             this.lblMkysEntry.Name = "lblMkysEntry";
             this.lblMkysEntry.Size = new System.Drawing.Size(69, 13);
             this.lblMkysEntry.TabIndex = 8;
@@ -249,7 +300,7 @@
             // lblMkysExit
             // 
             this.lblMkysExit.AutoSize = true;
-            this.lblMkysExit.Location = new System.Drawing.Point(341, 54);
+            this.lblMkysExit.Location = new System.Drawing.Point(735, 54);
             this.lblMkysExit.Name = "lblMkysExit";
             this.lblMkysExit.Size = new System.Drawing.Size(67, 13);
             this.lblMkysExit.TabIndex = 8;
@@ -258,7 +309,7 @@
             // lblTdmsEntry
             // 
             this.lblTdmsEntry.AutoSize = true;
-            this.lblTdmsEntry.Location = new System.Drawing.Point(589, 54);
+            this.lblTdmsEntry.Location = new System.Drawing.Point(218, 307);
             this.lblTdmsEntry.Name = "lblTdmsEntry";
             this.lblTdmsEntry.Size = new System.Drawing.Size(70, 13);
             this.lblTdmsEntry.TabIndex = 8;
@@ -267,7 +318,7 @@
             // lblTdmsExit
             // 
             this.lblTdmsExit.AutoSize = true;
-            this.lblTdmsExit.Location = new System.Drawing.Point(838, 54);
+            this.lblTdmsExit.Location = new System.Drawing.Point(735, 307);
             this.lblTdmsExit.Name = "lblTdmsExit";
             this.lblTdmsExit.Size = new System.Drawing.Size(68, 13);
             this.lblTdmsExit.TabIndex = 8;
@@ -304,21 +355,9 @@
 
         #endregion
         private System.Windows.Forms.ListView lvMkysEntry;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ListView lvMkysExit;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ListView lvTdmsEntry;
-        private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.ColumnHeader columnHeader8;
-        private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.ListView lvTdmsExit;
-        private System.Windows.Forms.ColumnHeader columnHeader10;
-        private System.Windows.Forms.ColumnHeader columnHeader11;
-        private System.Windows.Forms.ColumnHeader columnHeader12;
         private System.Windows.Forms.Button btnMatch;
         private System.Windows.Forms.FlowLayoutPanel flpMatched;
         private System.Windows.Forms.Button btnRemove;
@@ -327,5 +366,25 @@
         private System.Windows.Forms.Label lblMkysExit;
         private System.Windows.Forms.Label lblTdmsEntry;
         private System.Windows.Forms.Label lblTdmsExit;
+        private System.Windows.Forms.ColumnHeader clmn1;
+        private System.Windows.Forms.ColumnHeader clmn2;
+        private System.Windows.Forms.ColumnHeader clmn3;
+        private System.Windows.Forms.ColumnHeader clmn4;
+        private System.Windows.Forms.ColumnHeader clmn5;
+        private System.Windows.Forms.ColumnHeader cclmn1;
+        private System.Windows.Forms.ColumnHeader cclmn2;
+        private System.Windows.Forms.ColumnHeader cclmn3;
+        private System.Windows.Forms.ColumnHeader cclmn4;
+        private System.Windows.Forms.ColumnHeader cclmn5;
+        private System.Windows.Forms.ColumnHeader tclmn1;
+        private System.Windows.Forms.ColumnHeader tclmn2;
+        private System.Windows.Forms.ColumnHeader tclmn3;
+        private System.Windows.Forms.ColumnHeader tclmn4;
+        private System.Windows.Forms.ColumnHeader tclmn5;
+        private System.Windows.Forms.ColumnHeader tcclmn1;
+        private System.Windows.Forms.ColumnHeader tcclmn2;
+        private System.Windows.Forms.ColumnHeader tcclmn3;
+        private System.Windows.Forms.ColumnHeader tcclmn4;
+        private System.Windows.Forms.ColumnHeader tcclmn5;
     }
 }
