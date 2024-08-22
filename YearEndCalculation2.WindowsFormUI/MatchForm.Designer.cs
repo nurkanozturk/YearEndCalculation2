@@ -60,6 +60,8 @@
             this.lblMkysExit = new System.Windows.Forms.Label();
             this.lblTdmsEntry = new System.Windows.Forms.Label();
             this.lblTdmsExit = new System.Windows.Forms.Label();
+            this.btnSuggest = new System.Windows.Forms.Button();
+            this.btnRemoveAll = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lvMkysEntry
@@ -262,19 +264,20 @@
             this.flpMatched.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flpMatched.Location = new System.Drawing.Point(1022, 70);
             this.flpMatched.Name = "flpMatched";
-            this.flpMatched.Size = new System.Drawing.Size(302, 460);
+            this.flpMatched.Size = new System.Drawing.Size(302, 469);
             this.flpMatched.TabIndex = 4;
+            this.flpMatched.WrapContents = false;
             // 
             // btnRemove
             // 
             this.btnRemove.BackColor = System.Drawing.Color.Bisque;
             this.btnRemove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnRemove.Location = new System.Drawing.Point(1188, 536);
+            this.btnRemove.Location = new System.Drawing.Point(1055, 558);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(136, 29);
+            this.btnRemove.Size = new System.Drawing.Size(111, 29);
             this.btnRemove.TabIndex = 5;
-            this.btnRemove.Text = "Eşleştirmeyi İptal Et";
+            this.btnRemove.Text = "Seçilenleri Sil";
             this.btnRemove.UseVisualStyleBackColor = false;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
@@ -324,6 +327,33 @@
             this.lblTdmsExit.TabIndex = 8;
             this.lblTdmsExit.Text = "TDMS ÇIKIŞ";
             // 
+            // btnSuggest
+            // 
+            this.btnSuggest.BackColor = System.Drawing.Color.Bisque;
+            this.btnSuggest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSuggest.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnSuggest.Location = new System.Drawing.Point(12, 558);
+            this.btnSuggest.Name = "btnSuggest";
+            this.btnSuggest.Size = new System.Drawing.Size(91, 29);
+            this.btnSuggest.TabIndex = 9;
+            this.btnSuggest.Text = "Öneri İste";
+            this.btnSuggest.UseVisualStyleBackColor = false;
+            this.btnSuggest.Visible = false;
+            this.btnSuggest.Click += new System.EventHandler(this.btnSuggest_Click);
+            // 
+            // btnRemoveAll
+            // 
+            this.btnRemoveAll.BackColor = System.Drawing.Color.Bisque;
+            this.btnRemoveAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRemoveAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnRemoveAll.Location = new System.Drawing.Point(1186, 558);
+            this.btnRemoveAll.Name = "btnRemoveAll";
+            this.btnRemoveAll.Size = new System.Drawing.Size(111, 29);
+            this.btnRemoveAll.TabIndex = 10;
+            this.btnRemoveAll.Text = "Tümünü Sil";
+            this.btnRemoveAll.UseVisualStyleBackColor = false;
+            this.btnRemoveAll.Click += new System.EventHandler(this.btnRemoveAll_Click);
+            // 
             // MatchForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -331,6 +361,8 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(242)))), ((int)(((byte)(225)))));
             this.ClientSize = new System.Drawing.Size(1364, 648);
+            this.Controls.Add(this.btnRemoveAll);
+            this.Controls.Add(this.btnSuggest);
             this.Controls.Add(this.lblTdmsExit);
             this.Controls.Add(this.lblTdmsEntry);
             this.Controls.Add(this.lblMkysExit);
@@ -386,5 +418,7 @@
         private System.Windows.Forms.ColumnHeader tcclmn3;
         private System.Windows.Forms.ColumnHeader tcclmn4;
         private System.Windows.Forms.ColumnHeader tcclmn5;
+        private System.Windows.Forms.Button btnSuggest;
+        private System.Windows.Forms.Button btnRemoveAll;
     }
 }

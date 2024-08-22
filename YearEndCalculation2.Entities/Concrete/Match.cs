@@ -11,6 +11,6 @@ namespace YearEndCalculation.Entities.Concrete
         public string Id { get; set; }
         public ActionRecord MkysRecord { get; set; }
         public ActionRecord TdmsRecord { get; set; }
-        public bool IsInvoiceNumberMatch { get; set; }
+        public bool IsSafeMatch { get; set; }
     }
 }

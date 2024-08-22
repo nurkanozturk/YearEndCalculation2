@@ -26,7 +26,7 @@ namespace YearEndCalculation.WindowsFormUI
             {
                 this.BackColor = Color.FromArgb(37, 37, 41);
                 Color textColor = Color.FromArgb(231, 231, 231);
-                label1.ForeColor = label2.ForeColor = label3.ForeColor = label4.ForeColor = label5.ForeColor = label6.ForeColor = label7.ForeColor = label9.ForeColor = textColor;
+                label1.ForeColor = label2.ForeColor = label3.ForeColor =  label5.ForeColor = label6.ForeColor = label9.ForeColor = textColor;
             }
         }
 

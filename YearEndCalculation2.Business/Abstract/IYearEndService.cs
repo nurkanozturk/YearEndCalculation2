@@ -6,8 +6,18 @@ namespace YearEndCalculation2.Business.Abstract
     public interface IYearEndService
     {
 
-        List<ActionRecord> CompareMkysTdms(List<ActionRecord> mkysEntries, List<ActionRecord> tdmsEntries);
-        List<ActionRecord> CompareInSelf(List<ActionRecord> mkysEntries, List<ActionRecord> mkysExits);
-        List<ActionRecord> CompareCorrections(List<ActionRecord> mkysEntries, List<ActionRecord> tdmsEntries);
+        List<ActionRecord> CompareInvoiceNumber(List<ActionRecord> mkysEntries, List<ActionRecord> tdmsEntries);
+        List<ActionRecord> CompareDocNumber(List<ActionRecord> mkysEntries, List<ActionRecord> tdmsEntries);
+
+        List<ActionRecord> CompareMassRecords(List<ActionRecord> mkysEntries, List<ActionRecord> tdmsEntries);
+
+        List<ActionRecord> CompareForHospitalName(List<ActionRecord> mkysEntries, List<ActionRecord> tdmsEntries);
+
+        List<ActionRecord> CompareSensitivePrice(List<ActionRecord> mkysEntries, List<ActionRecord> tdmsEntries);
+
+        List<ActionRecord> CompareNotSensitivePrice(List<ActionRecord> mkysEntries, List<ActionRecord> tdmsEntries);
+
+
+        List<ActionRecord> RemoveZeroAmounts(List<ActionRecord> mkysEntries, List<ActionRecord> mkysExits);
     }
 }

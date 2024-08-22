@@ -1,17 +1,27 @@
-﻿using System;
-using System.Collections;
+﻿using Microsoft.Vbe.Interop;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Security;
 using System.Windows.Forms;
 using System.Xml;
 using YearEndCalculation.Business.Concrete;
+using YearEndCalculation.Business.Tools;
 using YearEndCalculation.Entities.Concrete;
 using YearEndCalculation.WindowsFormUI;
+using YearEndCalculation.WindowsFormUI.Properties;
 using YearEndCalculation2.Business.Abstract;
 using YearEndCalculation2.Business.Concrete.Managers;
 using YearEndCalculation2.Business.DependencyResolvers.Ninject;
@@ -26,7 +36,9 @@ namespace YearEndCalculation2.WindowsFormUI
         private decimal _tdmsRemain;
         private List<YearEndCalculation.Entities.Concrete.Match> _matchListForExcel;
         public static List<List<ActionRecord>> DgwItems;
-        
+        public static bool _skipAllChoose = false;
+        private bool isThereChoose = false;
+
 
 
         public static bool darkMode = new ThemeManager().WatchTheme() == 0 ? true : false;
@@ -47,20 +59,31 @@ namespace YearEndCalculation2.WindowsFormUI
         List<ActionRecord> _tdmsEntriesBase = new List<ActionRecord>();
         List<ActionRecord> _tdmsExitsBase = new List<ActionRecord>();
 
+        
+
         IYearEndService _yearEnd = InstanceFactory.GetInstance<IYearEndService>();
 
         FillMkys _fillMkys = new FillMkys();
         FillTdms _fillTdms = new FillTdms();
+
+        ProgressForm progressForm = new ProgressForm();
         public FormMain()
         {
             InitializeComponent();
+            Control.CheckForIllegalCrossThreadCalls = false;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            
-            
-            tglBtnDarkMode.Checked = darkMode;
+            if (CheckLicenceDate())
+            {
+                MessageBox.Show("Bu sürümün lisans süresi sona erdi. Lütfen yeni lisans satın alınız.");
+                LicenceSetting.Default.Licenced = false;
+                LicenceSetting.Default.Save();
+                this.Close();
+            }
+            //tgglBtn.Checked = darkMode;
+
             lblNoProblem.Visible = false;
             dgw.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(225, 225, 225);
             dgw.EnableHeadersVisualStyles = false;
@@ -81,8 +104,8 @@ namespace YearEndCalculation2.WindowsFormUI
                 tabTextColor = Color.WhiteSmoke;
                 btnMatch.BackColor= Color.FromArgb(32, 29, 41);
                 btnMatch.ForeColor = Color.DarkGray;
-                btnShowMatches.BackColor = Color.FromArgb(32, 29, 41);
-                btnShowMatches.ForeColor = Color.DarkGray;
+                btnCorrect.BackColor = Color.FromArgb(32, 29, 41);
+                btnCorrect.ForeColor = Color.DarkGray;
                 btnPrint.Image = Image.FromFile("icons8-print-50-2.png");
             }
             else
@@ -101,8 +124,8 @@ namespace YearEndCalculation2.WindowsFormUI
                 tabBgColor = SystemColors.InactiveBorder;
                 btnMatch.BackColor = Color.FromArgb(216, 214, 226);
                 btnMatch.ForeColor = SystemColors.ControlText;
-                btnShowMatches.BackColor = Color.FromArgb(216, 214, 226);
-                btnShowMatches.ForeColor = SystemColors.ControlText;
+                btnCorrect.BackColor = Color.FromArgb(216, 214, 226);
+                btnCorrect.ForeColor = SystemColors.ControlText;
                 btnPrint.Image = Image.FromFile("icons8-print-50.png");
 
             }
@@ -156,6 +179,26 @@ namespace YearEndCalculation2.WindowsFormUI
 
             MkysInfo();
             TdmsInfo();
+           
+            if (!Settings.Default.dontShowWelcome)
+            {
+                WelcomeForm welcomeForm = new WelcomeForm();
+                welcomeForm.Show();
+            }
+            
+
+        }
+
+        private bool CheckLicenceDate()
+        {
+            bool expired = false;
+            DateTime currentDateTime = DateTime.Now;
+            try { currentDateTime = OnlineTime.GetOnlineTime(); } catch {}
+            if (currentDateTime >= new DateTime(2025,2 , 15))
+            {
+                expired = true;  
+            }
+            return expired;
         }
 
         private void BtnMkysEntrySelect_Click(object sender, EventArgs e)
@@ -163,7 +206,7 @@ namespace YearEndCalculation2.WindowsFormUI
 
             OpenFileDialog fileDialog = new OpenFileDialog
             {
-                Filter = "Excel 97-2003|*.xls",
+                Filter = "Csv|*.csv",
                 Multiselect = true,
             };
             var dialogResult = fileDialog.ShowDialog();
@@ -182,7 +225,8 @@ namespace YearEndCalculation2.WindowsFormUI
                 List<string> lines = File.ReadAllLines(fileName, Encoding.GetEncoding("iso-8859-9")).ToList();
                 try
                 {
-                    if (lines[0].Split(';')[4] != "Fatura No")
+                    var checkString = lines[0].Split(';')[10];
+                    if (checkString != "Fatura No")
                     {
                         MessageBox.Show(fileName + " Geçerli bir dosya değil!");
                         continue;
@@ -231,7 +275,7 @@ namespace YearEndCalculation2.WindowsFormUI
         {
             OpenFileDialog fileDialog = new OpenFileDialog
             {
-                Filter = "Excel 97-2003|*.xls",
+                Filter = "Csv|*.csv",
                 Multiselect = true
             };
             var dialogResult = fileDialog.ShowDialog();
@@ -251,7 +295,7 @@ namespace YearEndCalculation2.WindowsFormUI
 
                 try
                 {
-                    if (firstValue != "Belge No")
+                    if (firstValue != "Sıra No")
                     {
                         MessageBox.Show(fileName + " Geçerli bir dosya değil! Doğru belgeyi seçtiğinizden ve belge üzerinde değişiklik yapmadığınızdan emin olun." + "\nHata almaya devam ederseniz lütfen bildiriniz.");
                         continue;
@@ -348,7 +392,8 @@ namespace YearEndCalculation2.WindowsFormUI
 
         private void BtnCalculate_Click(object sender, EventArgs e)
         {
-            if (Convert.ToInt32(lblMkysEntryCount.Text) + Convert.ToInt32(lblMkysExitCount.Text) + Convert.ToInt32(lblTdmsCount.Text) == 0)
+            
+                if (Convert.ToInt32(lblMkysEntryCount.Text) + Convert.ToInt32(lblMkysExitCount.Text) + Convert.ToInt32(lblTdmsCount.Text) == 0)
             {
                 prcMkysRemain.Text = tbxMkysRemain.Text;
                 prcTdmsRemain.Text = tbxTdmsRemain.Text;
@@ -359,6 +404,7 @@ namespace YearEndCalculation2.WindowsFormUI
 
             Cursor.Current = Cursors.AppStarting;
             ResetForm();
+            PreClear();
             ClearPrices();
             dgw.DataSource = null;
 
@@ -383,17 +429,14 @@ namespace YearEndCalculation2.WindowsFormUI
             {
                 _tdmsRemain -= tdmsExit.Price;
             }
-            DialogResult remainFillResult = MessageBox.Show("MKYS Kalan ve TDMS Kalan tutarları otomatik olarak doldurulsun mu? \nLütfen hesaplanan tutarların dğruluğunu kontrol ediniz!", "Kalan Tutarlar", MessageBoxButtons.YesNo);
-            if (remainFillResult == DialogResult.Yes)
-            {
-                tbxMkysRemain.Text = Math.Round(_mkysRemain, 2).ToString();
-                tbxTdmsRemain.Text = Math.Round(_tdmsRemain, 2).ToString();
-            }
+            
+            tbxMkysRemain.Text = string.Format("{0:#,0.00}", Math.Round(_mkysRemain, 2));
+            tbxTdmsRemain.Text = string.Format("{0:#,0.00}", Math.Round(_tdmsRemain, 2));
 
-            XmlNodeList matches = ManuelMatchManager.TakeMachedRecords(FillTdms.queryId);
-            if (matches != null)
+            XmlNodeList mamuelMatches = ManuelMatchManager.TakeMachedRecords(FillTdms.queryId);
+            if (mamuelMatches != null)
             {
-                foreach (XmlNode match in matches)
+                foreach (XmlNode match in mamuelMatches)
                 {
                     XmlNodeList items = match.SelectNodes("item");
                     foreach (XmlNode item in items)
@@ -412,371 +455,77 @@ namespace YearEndCalculation2.WindowsFormUI
             _tdmsEntriesBase.AddRange(_tdmsEntries);
             _tdmsExitsBase.AddRange(_tdmsExits);
 
-            // girişin tipi düzeltme diye yazıyor mu diye bakmak lazım
-            //_mkysExits = _yearEnd.CompareCorrections(_mkysEntries,_mkysExits);
-            _mkysEntries = _yearEnd.CompareMkysTdms(_mkysEntries, _tdmsEntries);
-            _mkysExits = _yearEnd.CompareMkysTdms(_mkysExits, _tdmsExits);
-           // _mkysExits = _yearEnd.CompareInSelf(_mkysEntries, _mkysExits);
-            //_tdmsExits = _yearEnd.CompareInSelf(_tdmsEntries, _tdmsExits);
+            ThreadAsync(progressForm);
 
-            List<decimal> checkedRecords = new List<decimal>();
-            List<ActionRecord> machedRecordsForChoose = new List<ActionRecord>();
-            List<ActionRecord> checkedMkysEntries = new List<ActionRecord>();
-            List<ActionRecord> checkedMkysExits = new List<ActionRecord>();
-            List<ActionRecord> checkedTdmsEntries = new List<ActionRecord>();
-            List<ActionRecord> checkedTdmsExits = new List<ActionRecord>();
+            _mkysEntries = _yearEnd.CompareInvoiceNumber(_mkysEntries, _tdmsEntries);
+            _mkysExits = _yearEnd.CompareInvoiceNumber(_mkysExits, _tdmsExits);
 
-            foreach (ActionRecord entry in _mkysEntries)
+            progressForm.UpdateText("Fiş Numarası Aynı Olan Kayıtlar Eşleştiriliyor...");
+            progressForm.Text = "Kayıtlar İnceleniyor... 2/5";
+
+            _mkysEntries = _yearEnd.CompareDocNumber(_mkysEntries, _tdmsEntries);
+            _mkysExits = _yearEnd.CompareDocNumber(_mkysExits, _tdmsExits);
+
+            progressForm.UpdateText("Çoklu Kaydedilen Tifler Eşleştiriliyor...");
+            progressForm.Text = "Kayıtlar İnceleniyor... 3/5";
+
+            _mkysEntries = _yearEnd.CompareMassRecords(_mkysEntries, _tdmsEntries);
+            _mkysExits = _yearEnd.CompareMassRecords(_mkysExits, _tdmsExits);
+
+            progressForm.UpdateText("Hastane İsmine Göre Eşleştirme Yapılıyor...");
+            progressForm.Text = "Kayıtlar İnceleniyor... 4/5";
+
+            _mkysEntries = _yearEnd.CompareForHospitalName(_mkysEntries, _tdmsEntries);
+            _mkysExits = _yearEnd.CompareForHospitalName(_mkysExits, _tdmsExits);
+
+            progressForm.UpdateText("Fatura Tutarına Göre Eşleştirme Yapılıyor...");
+            progressForm.Text = "Kayıtlar İnceleniyor... 5/5";
+
+            _mkysEntries = _yearEnd.CompareSensitivePrice(_mkysEntries, _tdmsEntries);
+            _mkysExits = _yearEnd.CompareSensitivePrice(_mkysExits, _tdmsExits);
+            _mkysEntries = _yearEnd.CompareNotSensitivePrice(_mkysEntries, _tdmsEntries);
+            _mkysExits = _yearEnd.CompareNotSensitivePrice(_mkysExits, _tdmsExits);
+
+           // _mkysExits = _yearEnd.RemoveZeroAmounts(_mkysEntries, _mkysExits);
+
+            //yazı ekranda görünebilsin diye iki defa bu kodu yazdık.
+            progressForm.UpdateText("Fatura Tutarına Göre Eşleştirme Yapılıyor...");
+
+            try
             {
-                bool isChecked = false;
-              List<ActionRecord> mkysEntryOptions = new List<ActionRecord>();
-                foreach (ActionRecord baseEntry in _mkysEntriesBase)
-                {
-                    if(Math.Abs(baseEntry.Price - entry.Price) < 0.1m )
-                    {
-                        if (!YearEndManager.matches.Any(m => m.Id == baseEntry.Id))
-                        {
-                            mkysEntryOptions.Add(baseEntry);
-                        }else if (!YearEndManager.matches.Single(m => m.Id == baseEntry.Id).IsInvoiceNumberMatch)
-                        {
-                            mkysEntryOptions.Add(baseEntry);
-                        }
-                    }
-                }
-
-                if (mkysEntryOptions.Count > 1)
-                {
-                    
-                    List<ActionRecord> tdmsEntriesOptions = new List<ActionRecord>();
-                    foreach (ActionRecord tdmsEntry in _tdmsEntriesBase)
-                    {
-                        if(Math.Abs(tdmsEntry.Price - entry.Price) < 0.1m)
-                        {
-                            tdmsEntriesOptions.Add(tdmsEntry);
-                        }
-                    }
-                    foreach (decimal price in checkedRecords)
-                    {
-                        if(Math.Abs(mkysEntryOptions[0].Price - price) < 0.1m)
-                        {
-                            isChecked = true;
-                        }
-                        
-                    }
-
-                    if (tdmsEntriesOptions.Count > 0 && !isChecked )
-                    {
-                        foreach (ActionRecord option in mkysEntryOptions)
-                        {
-                            //sistem tarafından eşleştirilmişse öneri olarak sunuyoruz
-                            if (!_mkysEntries.Contains(option))
-                            {
-                                machedRecordsForChoose.Add(option);
-                                YearEndManager.matches.Remove(YearEndManager.matches.Single(m => m.Id == option.Id));
-                            }
-                            checkedMkysEntries.Add(option);
-                        }
-                        foreach (ActionRecord option in tdmsEntriesOptions)
-                        {
-                            if (!_tdmsEntries.Contains(option))
-                            {
-                                machedRecordsForChoose.Add(option);
-                            }
-                            checkedTdmsEntries.Add(option);
-                        }
-
-                        if (!ChooseForm._skipAll)
-                        {
-                            ChooseForm chooseForm = new ChooseForm(mkysEntryOptions, tdmsEntriesOptions, true, machedRecordsForChoose);
-                            chooseForm.ShowDialog();
-                            checkedRecords.Add(entry.Price);
-                        }
-                        
-                    }
-
-                    
-                }
-               
+                progressForm.Close();
             }
-
-            foreach (ActionRecord entry in _tdmsEntries)
+            catch(Exception) 
             {
-                bool isChecked = false;
-               List<ActionRecord> tdmsEntryOptions = new List<ActionRecord>();
-                foreach (ActionRecord baseEntry in _tdmsEntriesBase)
-                {
-                    if (Math.Abs(baseEntry.Price - entry.Price) < 0.1m)
-                    {
-                        if (!YearEndManager.matches.Any(m => m.Id == baseEntry.Id))
-                        {
-                            tdmsEntryOptions.Add(baseEntry);
-                        }
-                        else if (!YearEndManager.matches.Single(m => m.Id == baseEntry.Id).IsInvoiceNumberMatch)
-                        {
-                            tdmsEntryOptions.Add(baseEntry);
-                        }
-
-                    }
-                }
-
-                if (tdmsEntryOptions.Count > 1)
-                {
-
-                    List<ActionRecord> mkysEntryOptions = new List<ActionRecord>();
-                    foreach (ActionRecord mkysEntry in _mkysEntriesBase)
-                    {
-                        if (Math.Abs(mkysEntry.Price - entry.Price) < 0.1m)
-                        {
-                            mkysEntryOptions.Add(mkysEntry);
-                        }
-                    }
-                    foreach (decimal price in checkedRecords)
-                    {
-                        if (Math.Abs(tdmsEntryOptions[0].Price - price) < 0.1m)
-                        {
-                            isChecked = true;
-                        }
-
-                    }
-
-                    if (mkysEntryOptions.Count > 0 && !isChecked)
-                    {
-                        foreach (ActionRecord option in mkysEntryOptions)
-                        {
-                            if (!_mkysEntries.Contains(option))
-                            {
-                                machedRecordsForChoose.Add(option);
-                                YearEndManager.matches.Remove(YearEndManager.matches.Single(m => m.Id == option.Id));
-                            }
-                            checkedMkysEntries.Add(option);
-                        }
-                        foreach (ActionRecord option in tdmsEntryOptions)
-                        {
-                            if (!_tdmsEntries.Contains(option))
-                            {
-                                machedRecordsForChoose.Add(option);
-                            }
-                            checkedTdmsEntries.Add(option);
-                        }
-                        if (!ChooseForm._skipAll)
-                        {
-                            ChooseForm chooseForm = new ChooseForm(mkysEntryOptions, tdmsEntryOptions, true, machedRecordsForChoose);
-                            chooseForm.ShowDialog();
-                            checkedRecords.Add(entry.Price);
-                        }
-                        
-                    }
-
-
-                }
+            Thread.Sleep(1000);
+                progressForm.Close();
             }
             
-            foreach (ActionRecord exit in _mkysExits)
+
+
+            ShowResult();
+
+
+        }
+        async static void ThreadAsync(ProgressForm progressForm)
+        {
+            void InnerThread()
             {
-                bool isChecked = false;
-                List<ActionRecord> mkysExitOptions = new List<ActionRecord>();
-                foreach (ActionRecord baseExit in _mkysExitsBase)
-                {
-                    if (Math.Abs(baseExit.Price - exit.Price) < 0.1m )
-                    {
-                        if (!YearEndManager.matches.Any(m => m.Id == baseExit.Id))
-                        {
-                            mkysExitOptions.Add(baseExit);
-                        }
-                        else if (!YearEndManager.matches.Single(m => m.Id == baseExit.Id).IsInvoiceNumberMatch)
-                        {
-                            mkysExitOptions.Add(baseExit);
-                        }
 
-                    }
-                }
-                if (mkysExitOptions.Count > 1)
-                {
-
-                    List<ActionRecord> tdmsExitOptions = new List<ActionRecord>();
-                    foreach (ActionRecord tdmsExit in _tdmsExitsBase)
-                    {
-                        if (Math.Abs(tdmsExit.Price - exit.Price) < 0.1m)
-                        {
-                            tdmsExitOptions.Add(tdmsExit);
-                        }
-                    }
-                    foreach (decimal price in checkedRecords)
-                    {
-                        if (Math.Abs(mkysExitOptions[0].Price - price) < 0.1m)
-                        {
-                            isChecked = true;
-                        }
-
-                    }
-
-                    if (tdmsExitOptions.Count > 0 && !isChecked)
-                    {
-                        foreach (ActionRecord option in mkysExitOptions)
-                        {
-                            if (!_mkysExits.Contains(option))
-                            {
-                                machedRecordsForChoose.Add(option);
-                                YearEndManager.matches.Remove(YearEndManager.matches.Single(m => m.Id == option.Id));
-                            }
-                            checkedMkysExits.Add(option);
-                        }
-                        foreach (ActionRecord option in tdmsExitOptions)
-                        {
-                            if (!_tdmsExits.Contains(option))
-                            {
-                                machedRecordsForChoose.Add(option);
-                            }
-                            checkedTdmsExits.Add(option);
-                        }
-                        if (!ChooseForm._skipAll)
-                        {
-                            ChooseForm chooseForm = new ChooseForm(mkysExitOptions, tdmsExitOptions, false, machedRecordsForChoose);
-                            chooseForm.ShowDialog();
-                            checkedRecords.Add(exit.Price);
-                        }
-                        
-                    }
-
-                }
-
+                progressForm.ShowDialog();
             }
-
-            foreach (ActionRecord exit in _tdmsExits)
-            {
-                bool isChecked = false;
-                List<ActionRecord> tdmsExitOptions = new List<ActionRecord>();
-                foreach (ActionRecord baseExit in _tdmsExitsBase)
-                {
-                    if (Math.Abs(baseExit.Price - exit.Price) < 0.1m)
-                    {
-                        if (!YearEndManager.matches.Any(m => m.Id == baseExit.Id))
-                        {
-                            tdmsExitOptions.Add(baseExit);
-                        }
-                        else if (!YearEndManager.matches.Single(m => m.Id == baseExit.Id).IsInvoiceNumberMatch)
-                        {
-                            tdmsExitOptions.Add(baseExit);
-                        }
-
-                    }
-                }
-
-                if (tdmsExitOptions.Count > 1)
-                {
-
-                    List<ActionRecord> mkysExitOptions = new List<ActionRecord>();
-                    foreach (ActionRecord mkysExit in _mkysExitsBase)
-                    {
-                        if (Math.Abs(mkysExit.Price - exit.Price) < 0.1m)
-                        {
-                            tdmsExitOptions.Add(mkysExit);
-                        }
-                    }
-                    foreach (decimal price in checkedRecords)
-                    {
-                        if (Math.Abs(tdmsExitOptions[0].Price - price) < 0.1m)
-                        {
-                            isChecked = true;
-                        }
-
-                    }
-
-                    if (mkysExitOptions.Count > 0 && !isChecked)
-                    {
-                        mkysExitOptions.ForEach
-                            (
-                            opt => 
-                                {
-                                    if (!_mkysExits.Contains(opt))
-                                    {
-                                        machedRecordsForChoose.Add(opt);
-                                        YearEndManager.matches.Remove(YearEndManager.matches.Single(m => m.Id == opt.Id));
-                                    }
-                                checkedMkysExits.Add(opt);
-                                }
-                            );
-                        tdmsExitOptions.ForEach(opt => { if (!_tdmsExits.Contains(opt)) machedRecordsForChoose.Add(opt);
-                        checkedTdmsExits.Add(opt);
-                        });
-                       if(!ChooseForm._skipAll)
-                        {
-                            ChooseForm chooseForm = new ChooseForm(mkysExitOptions, tdmsExitOptions, false, machedRecordsForChoose);
-                            chooseForm.ShowDialog();
-                            checkedRecords.Add(exit.Price);
-                        }                        
-                    }
-                }
-            }
-
-            checkedMkysEntries.ForEach(item =>
-            {
-                if (!_mkysEntries.Contains(item))
-                {
-                    _mkysEntries.Add(item);
-                                       
-                }
-            });
-
-            checkedMkysExits.ForEach(item =>
-            {
-                if (!_mkysExits.Contains(item))
-                {
-                    _mkysExits.Add(item);
-                }
-            });
-
-            checkedTdmsEntries.ForEach(item =>
-            {
-                if (!_tdmsEntries.Contains(item))
-                {
-                    _tdmsEntries.Add(item);
-                }
-            });
-
-            checkedTdmsExits.ForEach(item =>
-            {
-                if (!_tdmsExits.Contains(item))
-                {
-                    _tdmsExits.Add(item);
-                }
-            });
-
-            foreach (ActionRecord selectedItem in ChooseForm.selectedMEnItems)
-            {
-                _mkysEntries.Remove(selectedItem);
-            }
-                      
-            foreach (ActionRecord selectedItem in ChooseForm.selectedMExItems)
-            {
-                _mkysExits.Remove(selectedItem);
-                
-            }
-            
-            foreach (ActionRecord selectedItem in ChooseForm.selectedTEnItems)
-            {
-                _tdmsEntries.Remove(selectedItem);
-                
-            }
-           
-            foreach (ActionRecord selectedItem in ChooseForm.selectedTExItems)
-            {
-                _tdmsExits.Remove(selectedItem);
-            }
-           
-
-             //mesela program toplamları tutan kayıt var mı kendisi deneme yaparak öneri olarak sunabilir
-             //manuel eşleşme kayıt edilecek
-
+            Task task = new Task(() => { InnerThread(); });
+            task.Start();
+            await task;
+        }
+        private void ShowResult()
+        {
 
             _mkysEntriesDgw.AddRange(_mkysEntries);
             _mkysExitsDgw.AddRange(_mkysExits);
             _tdmsEntriesDgw.AddRange(_tdmsEntries);
             _tdmsExitsDgw.AddRange(_tdmsExits);
 
-           
-                            
-                    
 
             DgwItems = new List<List<ActionRecord>>();
             DgwItems.Add(_mkysEntriesDgw);
@@ -789,21 +538,8 @@ namespace YearEndCalculation2.WindowsFormUI
 
             FixDataGridFormats();
 
-            foreach (var mkysEntry in _mkysEntries) { _mkysEntryTotal += mkysEntry.Price; }
-            foreach (var mkysExit in _mkysExits) { _mkysExitTotal += mkysExit.Price; }
-            foreach (var tdmsEntry in _tdmsEntries) { _wrongTdmsEntry += tdmsEntry.Price; }
-            foreach (var tdmsExit in _tdmsExits) { _wrongTdmsExit += tdmsExit.Price; }
+            GetRemains();
             
-            
-
-            prcMkysRemain.Text = tbxMkysRemain.Text == string.Empty ? "0,00"
-                : string.Format("{0:0.00}", Convert.ToDecimal(tbxMkysRemain.Text));
-            prcTdmsRemain.Text = tbxTdmsRemain.Text == string.Empty ? "0,00"
-                : string.Format("{0:0.00}", Convert.ToDecimal(tbxTdmsRemain.Text));
-            prcMkysEntry.Text = string.Format("{0:0.00}", _mkysEntryTotal);
-            prcMkysExit.Text = string.Format("{0:0.00}", _mkysExitTotal);
-            prcWrongTdmsEntry.Text = string.Format("{0:0.00}", _wrongTdmsEntry);
-            prcWrongTdmsExit.Text = string.Format("{0:0.00}", _wrongTdmsExit);
             GetCountTick();
             calculated = true;
             rtbxMkysEntry.Clear();
@@ -812,6 +548,8 @@ namespace YearEndCalculation2.WindowsFormUI
 
             lblMkysEntryCount.Text = lblMkysExitCount.Text = lblTdmsCount.Text = "0";
             lblAttention.Visible = true;
+            lblCount.Visible = true;
+            lblCount.Text =string.Format( "{0} kayıt", _mkysEntriesDgw.Count);
 
             //tab1 e geçişi sağlıyoruz.
             ResetTabColors();
@@ -823,19 +561,40 @@ namespace YearEndCalculation2.WindowsFormUI
             if (_mkysEntriesDgw.Count == 0)
             {
                 lblNoProblem.Text = "MUHASEBE KAYDI YAPILMAMIŞ GİRİŞ TİFİNİZ BULUNMAMAKTADIR.";
+                lblCount.Visible = false;
             }
 
             lblNoProblem.Visible = true;
             _matchListForExcel = new List<YearEndCalculation.Entities.Concrete.Match>();
             _matchListForExcel.AddRange(YearEndManager.matches);
             ClearData();
+
+
+        }
+
+        private void GetRemains()
+        {
+            _mkysEntryTotal = _mkysExitTotal = _wrongTdmsEntry = _wrongTdmsExit = 0;
+            foreach (var mkysEntry in _mkysEntriesDgw) { _mkysEntryTotal += Math.Round(mkysEntry.Price,2); }
+            foreach (var mkysExit in _mkysExitsDgw) { _mkysExitTotal += Math.Round(mkysExit.Price,2); }
+            foreach (var tdmsEntry in _tdmsEntriesDgw) { _wrongTdmsEntry += tdmsEntry.Price; }
+            foreach (var tdmsExit in _tdmsExitsDgw) { _wrongTdmsExit += tdmsExit.Price; }
+
+            prcMkysRemain.Text = tbxMkysRemain.Text == string.Empty ? "0,00"
+                : string.Format("{0:#,0.00}", Convert.ToDecimal(tbxMkysRemain.Text));
+            prcTdmsRemain.Text = tbxTdmsRemain.Text == string.Empty ? "0,00"
+                : string.Format("{0:#,0.00}", Convert.ToDecimal(tbxTdmsRemain.Text));
+            prcMkysEntry.Text = string.Format("{0:#,0.00}", _mkysEntryTotal);
+            prcMkysExit.Text = string.Format("{0:#,0.00}", _mkysExitTotal);
+            prcWrongTdmsEntry.Text = string.Format("{0:#,0.00}", _wrongTdmsEntry);
+            prcWrongTdmsExit.Text = string.Format("{0:#,0.00}", _wrongTdmsExit);
         }
 
         private void GetCountTick()
         {
             picCountCorrect.Visible = Math.Abs(CalculatePennyDefrence()) < 1;
             picCountIncorrect.Visible = picCountCorrect.Visible == false;
-            prcDifrence.Text = string.Format("MKYS TDMS'den {0:0.00} TL ", Math.Abs(CalculatePennyDefrence()));
+            prcDifrence.Text = string.Format("MKYS TDMS'den {0:#,0.00} TL ", Math.Abs(CalculatePennyDefrence()));
             prcDifrence.Text += CalculatePennyDefrence() < 0 ? "eksiktir" : "fazladır";
         }
 
@@ -849,7 +608,7 @@ namespace YearEndCalculation2.WindowsFormUI
 
 
             ResetTabColors();
-            btnTab1.Font = new Font("tahoma", 9, FontStyle.Bold);
+            btnTab1.Font = new System.Drawing.Font("tahoma", 9, FontStyle.Bold);
 
             btnTab1.BackColor = Color.OliveDrab;
             btnTab1.ForeColor = Color.WhiteSmoke;
@@ -858,6 +617,12 @@ namespace YearEndCalculation2.WindowsFormUI
             if (_mkysEntriesDgw.Count == 0)
             {
                 lblNoProblem.Text = "MUHASEBE KAYDI YAPILMAMIŞ GİRİŞ TİFİNİZ BULUNMAMAKTADIR.";
+                lblCount.Visible = false;
+            }
+            else
+            {
+                lblCount.Visible = true;
+                lblCount.Text = string.Format("{0} kayıt", _mkysEntriesDgw.Count);
             }
         }
 
@@ -870,7 +635,7 @@ namespace YearEndCalculation2.WindowsFormUI
             }
 
             ResetTabColors();
-            btnTab2.Font = new Font("tahoma", 9, FontStyle.Bold);
+            btnTab2.Font = new System.Drawing.Font("tahoma", 9, FontStyle.Bold);
             btnTab2.BackColor = Color.Firebrick;
             btnTab2.ForeColor = Color.WhiteSmoke;
             lblNoProblem.Text = "";
@@ -878,6 +643,12 @@ namespace YearEndCalculation2.WindowsFormUI
             if (_mkysExitsDgw.Count == 0)
             {
                 lblNoProblem.Text = "MUHASEBE KAYDI YAPILMAMIŞ ÇIKIŞ TİFİNİZ BULUNMAMAKTADIR.";
+                lblCount.Visible = false;
+            }
+            else
+            {
+                lblCount.Visible = true;
+                lblCount.Text = string.Format("{0} kayıt", _mkysExitsDgw.Count);
             }
         }
 
@@ -890,13 +661,19 @@ namespace YearEndCalculation2.WindowsFormUI
             }
 
             ResetTabColors();
-            btnTab3.Font = new Font("tahoma", 9, FontStyle.Bold);
+            btnTab3.Font = new System.Drawing.Font("tahoma", 9, FontStyle.Bold);
             btnTab3.BackColor = Color.DarkMagenta;
             btnTab3.ForeColor = Color.WhiteSmoke;
             lblNoProblem.Text = "";
             if (_tdmsEntriesDgw.Count == 0)
             {
                 lblNoProblem.Text = "MUHASEBE GİRİŞ KAYITLARINIZDA HATA BULUNMAMAKTADIR.";
+                lblCount.Visible = false;
+            }
+            else
+            {
+                lblCount.Visible = true;
+                lblCount.Text = string.Format("{0} kayıt", _tdmsEntriesDgw.Count);
             }
         }
 
@@ -909,7 +686,7 @@ namespace YearEndCalculation2.WindowsFormUI
             }
 
             ResetTabColors();
-            btnTab4.Font = new Font("tahoma", 9, FontStyle.Bold);
+            btnTab4.Font = new System.Drawing.Font("tahoma", 9, FontStyle.Bold);
             btnTab4.BackColor = Color.DarkCyan;
             btnTab4.ForeColor = Color.WhiteSmoke;
 
@@ -917,11 +694,21 @@ namespace YearEndCalculation2.WindowsFormUI
             if (_tdmsExitsDgw.Count == 0)
             {
                 lblNoProblem.Text = "MUHASEBE ÇIKIŞ KAYITLARINIZDA HATA BULUNMAMAKTADIR.";
+                lblCount.Visible = false;
+            }
+            else
+            {
+                lblCount.Visible = true;
+                lblCount.Text = string.Format("{0} kayıt", _tdmsExitsDgw.Count);
             }
         }
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
+            if (!calculated)
+            {
+                return;
+            }
             PrintDocument printDocument = new PrintDocument();
             printDocument.PrintPage += new PrintPageEventHandler(this.printDocument_PrintPage);
 
@@ -938,79 +725,163 @@ namespace YearEndCalculation2.WindowsFormUI
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.AppStarting;
-            var app = new Microsoft.Office.Interop.Excel.Application();
-            Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
-            app.WindowState = Microsoft.Office.Interop.Excel.XlWindowState.xlMinimized;
-            app.WindowState = Microsoft.Office.Interop.Excel.XlWindowState.xlMaximized;
-            // Excel çalışma kitabında yeni sayfalar oluşturuluyor.  
-            Microsoft.Office.Interop.Excel._Worksheet worksheetMkysEntry = null;
-            Microsoft.Office.Interop.Excel._Worksheet worksheetMkysExit = null;
-            Microsoft.Office.Interop.Excel._Worksheet worksheetTdmsEntry = null;
-            Microsoft.Office.Interop.Excel._Worksheet worksheetTdmsExit = null;
-
-            
-            workbook.Sheets.Add(Type.Missing);
-            workbook.Sheets.Add(Type.Missing);
-            workbook.Sheets.Add(Type.Missing);
-            worksheetMkysEntry = workbook.Sheets["Sayfa4"];
-            worksheetMkysExit = workbook.Sheets["Sayfa3"];
-            worksheetTdmsEntry = workbook.Sheets["Sayfa2"];
-            worksheetTdmsExit = workbook.Sheets["Sayfa1"];
-
-            worksheetMkysEntry.Name = "MKYS GİRİŞ";
-            worksheetMkysExit.Name = "MKYS ÇIKIŞ";
-            worksheetTdmsEntry.Name = "TDMS GİRİŞ";
-            worksheetTdmsExit.Name = "TDMS ÇIKIŞ";
-
-            if (calculated)
-            {                
-                dgw.DataSource = _mkysExitsDgw.OrderBy(a => a.DateBase).ToList();
-                FixDataGridFormats();
-                dgw.DataSource = _tdmsEntriesDgw.OrderBy(a => a.DateBase).ToList();
-                FixDataGridFormats();
-                dgw.DataSource = _tdmsExitsDgw.OrderBy(a => a.DateBase).ToList();
-                FixDataGridFormats();
-            }
-
-            ResetTabColors();
-
-            List<Microsoft.Office.Interop.Excel._Worksheet> worksheets = new List<Microsoft.Office.Interop.Excel._Worksheet>();
-            worksheets.Add(worksheetMkysEntry);
-            worksheets.Add(worksheetMkysExit);
-            worksheets.Add(worksheetTdmsEntry);
-            worksheets.Add(worksheetTdmsExit);
-
-            
-
-
-            List<List<ActionRecord>> actions = new List<List<ActionRecord>>();
-            actions.Add(_mkysEntriesDgw.OrderBy(a => a.DateBase).ToList());
-            actions.Add(_mkysExitsDgw.OrderBy(a => a.DateBase).ToList());
-            actions.Add(_tdmsEntriesDgw.OrderBy(a => a.DateBase).ToList());
-            actions.Add(_tdmsExitsDgw.OrderBy(a => a.DateBase).ToList());
-            int actionIndex = 0;
-            foreach (Microsoft.Office.Interop.Excel._Worksheet worksheet in worksheets)
+            if (!calculated)
             {
-                worksheet.Cells[1, 1] = "FİŞ NO";
-                worksheet.Cells[1, 2] = "FİŞ TARİHİ";
-                worksheet.Cells[1, 3] = "TÜRÜ";
-                worksheet.Cells[1, 4] = "AÇIKLAMA";
-                worksheet.Cells[1, 5] = "TUTAR";
+                MessageBox.Show("Kalanlar listesi mevcut değil!");
+                return;
+            }
+            try
+            {
+                Cursor.Current = Cursors.AppStarting;
+                var app = GetExcelApplication();
+                Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
 
-                for (int i = 0; i < actions[actionIndex].Count; i++)
+                // Excel çalışma kitabında yeni sayfalar oluşturuluyor.  
+                Microsoft.Office.Interop.Excel._Worksheet worksheetMkysEntry = null;
+                Microsoft.Office.Interop.Excel._Worksheet worksheetMkysExit = null;
+                Microsoft.Office.Interop.Excel._Worksheet worksheetTdmsEntry = null;
+                Microsoft.Office.Interop.Excel._Worksheet worksheetTdmsExit = null;
+
+
+                workbook.Sheets.Add(Type.Missing);
+                workbook.Sheets.Add(Type.Missing);
+                workbook.Sheets.Add(Type.Missing);
+                worksheetMkysEntry = workbook.Sheets["Sayfa4"];
+                worksheetMkysExit = workbook.Sheets["Sayfa3"];
+                worksheetTdmsEntry = workbook.Sheets["Sayfa2"];
+                worksheetTdmsExit = workbook.Sheets["Sayfa1"];
+
+                worksheetMkysEntry.Name = "MKYS GİRİŞ";
+                worksheetMkysExit.Name = "MKYS ÇIKIŞ";
+                worksheetTdmsEntry.Name = "TDMS GİRİŞ";
+                worksheetTdmsExit.Name = "TDMS ÇIKIŞ";
+
+                List<Microsoft.Office.Interop.Excel._Worksheet> worksheets = new List<Microsoft.Office.Interop.Excel._Worksheet>();
+                worksheets.Add(worksheetMkysEntry);
+                worksheets.Add(worksheetMkysExit);
+                worksheets.Add(worksheetTdmsEntry);
+                worksheets.Add(worksheetTdmsExit);
+
+                List<List<ActionRecord>> actions = new List<List<ActionRecord>>();
+                actions.Add(_mkysEntriesDgw.OrderBy(a => a.DateBase).ToList());
+                actions.Add(_mkysExitsDgw.OrderBy(a => a.DateBase).ToList());
+                actions.Add(_tdmsEntriesDgw.OrderBy(a => a.DateBase).ToList());
+                actions.Add(_tdmsExitsDgw.OrderBy(a => a.DateBase).ToList());
+                int actionIndex = 0;
+                foreach (Microsoft.Office.Interop.Excel._Worksheet worksheet in worksheets)
                 {
-                    worksheet.Cells[i + 2, 1] = actions[actionIndex][i].DocNumber;
-                    worksheet.Cells[i + 2, 2] = actions[actionIndex][i].DocDate;
-                    worksheet.Cells[i + 2, 3] = actions[actionIndex][i].Type;
-                    worksheet.Cells[i + 2, 4] = actions[actionIndex][i].Explanation;
-                    worksheet.Cells[i + 2, 5] = Math.Round(Convert.ToDouble(actions[actionIndex][i].Price), 2);
-                }
-                actionIndex++;
+                    worksheet.Cells[1, 1] = "FİŞ NO";
+                    worksheet.Cells[1, 2] = "FİŞ TARİHİ";
+                    worksheet.Cells[1, 3] = "TÜRÜ";
+                    worksheet.Cells[1, 4] = "AÇIKLAMA";
+                    worksheet.Cells[1, 5] = "TUTAR";
 
-                worksheet.Columns.AutoFit();
-                worksheet.UsedRange.Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
-                app.Visible = true;
+                    for (int i = 0; i < actions[actionIndex].Count; i++)
+                    {
+                        worksheet.Cells[i + 2, 1] = actions[actionIndex][i].DocNumber;
+                        worksheet.Cells[i + 2, 2] = actions[actionIndex][i].DocDate;
+                        worksheet.Cells[i + 2, 3] = actions[actionIndex][i].Type;
+                        worksheet.Cells[i + 2, 4] = actions[actionIndex][i].Explanation;
+                        worksheet.Cells[i + 2, 5] = Math.Round(Convert.ToDouble(actions[actionIndex][i].Price), 2);
+                    }
+                    actionIndex++;
+
+                    worksheet.Columns.AutoFit();
+                    worksheet.UsedRange.Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+                }
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Excel Dosyası|*.xlsx";
+                saveFileDialog.Title = "Dosya Kaydet";
+                saveFileDialog.FileName = "Kalanlar.xlsx";
+                saveFileDialog.InitialDirectory = GetDownloadsPath();
+
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Kullanıcının seçtiği dosya yolunu alın
+                    string filePath = saveFileDialog.FileName;
+                    // Dosyayı kaydetme işlemini gerçekleştirin
+                    workbook.SaveAs(filePath);
+                    workbook.Close(true);
+                    app.Quit();
+                    DialogResult result = MessageBox.Show("Dosya başarıyla kaydedildi. Dosyanın indirildiği klasör açılsın mı?", "Klasörü Aç", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        OpenFolder(saveFileDialog.InitialDirectory);
+                    }
+                }
+            }
+            catch {
+                try {
+                    // Excel paketini başlat
+                    ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+                    // Yeni bir Excel paket oluştur
+                    using (ExcelPackage excelPackage = new ExcelPackage())
+                    {
+                        ExcelWorksheet worksheetMkysEntry = excelPackage.Workbook.Worksheets.Add("MKYS GİRİŞ");
+                        ExcelWorksheet worksheetMkysExit = excelPackage.Workbook.Worksheets.Add("MKYS ÇIKIŞ");
+                        ExcelWorksheet worksheetTdmsEntry = excelPackage.Workbook.Worksheets.Add("TDMS GİRİŞ");
+                        ExcelWorksheet worksheetTdmsExit = excelPackage.Workbook.Worksheets.Add("TDMS ÇIKIŞ");
+
+                        List<List<ActionRecord>> actions = new List<List<ActionRecord>>();
+                        actions.Add(_mkysEntriesDgw.OrderBy(a => a.DateBase).ToList());
+                        actions.Add(_mkysExitsDgw.OrderBy(a => a.DateBase).ToList());
+                        actions.Add(_tdmsEntriesDgw.OrderBy(a => a.DateBase).ToList());
+                        actions.Add(_tdmsExitsDgw.OrderBy(a => a.DateBase).ToList());
+                        int actionIndex = 0;
+
+                        foreach (ExcelWorksheet worksheet in excelPackage.Workbook.Worksheets)
+                        {
+                            worksheet.Cells[1, 1].Value = "FİŞ NO";
+                            worksheet.Cells[1, 2].Value = "FİŞ TARİHİ";
+                            worksheet.Cells[1, 3].Value = "TÜRÜ";
+                            worksheet.Cells[1, 4].Value = "AÇIKLAMA";
+                            worksheet.Cells[1, 5].Value = "TUTAR";
+
+                            for (int i = 0; i < actions[actionIndex].Count; i++)
+                            {
+                                worksheet.Cells[i + 2, 1].Value = actions[actionIndex][i].DocNumber;
+                                worksheet.Cells[i + 2, 2].Value = actions[actionIndex][i].DocDate;
+                                worksheet.Cells[i + 2, 3].Value = actions[actionIndex][i].Type;
+                                worksheet.Cells[i + 2, 4].Value = actions[actionIndex][i].Explanation;
+                                worksheet.Cells[i + 2, 5].Value = Math.Round(Convert.ToDouble(actions[actionIndex][i].Price), 2);
+                            }
+                            actionIndex++;
+
+                            worksheet.Columns.AutoFit();
+                            worksheet.Cells[worksheet.Dimension.Address].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                            worksheet.Cells[worksheet.Dimension.Address].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            worksheet.Cells[worksheet.Dimension.Address].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            worksheet.Cells[worksheet.Dimension.Address].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        }
+                        SaveFileDialog saveFileDialog = new SaveFileDialog();
+                        saveFileDialog.Filter = "Excel Dosyası|*.xlsx";
+                        saveFileDialog.Title = "Dosya Kaydet";
+                        saveFileDialog.FileName = "Kalanlar.xlsx";
+                        saveFileDialog.InitialDirectory = GetDownloadsPath();
+
+                        //örnek
+
+                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            Cursor.Current = Cursors.AppStarting;
+                            FileInfo fi = new FileInfo(saveFileDialog.FileName);
+                            excelPackage.SaveAs(fi);
+                            // Kullanıcıya indirilenler klasörünü açmak isteyip istemediğini sor
+                            DialogResult result = MessageBox.Show("Dosya başarıyla kaydedildi. Dosyanın indirildiği klasör açılsın mı?", "Klasörü Aç", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (result == DialogResult.Yes)
+                            {
+                                OpenFolder(saveFileDialog.InitialDirectory);
+                            }
+
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Excel dosyası oluşturulamadı!");
+                }
             }
         }
 
@@ -1023,7 +894,7 @@ namespace YearEndCalculation2.WindowsFormUI
                 e.Handled = true;
             }
 
-            if ((e.KeyChar == ',') && ((sender as TextBox).Text.IndexOf(',') > -1))
+            if ((e.KeyChar == ',') && ((sender as System.Windows.Forms.TextBox).Text.IndexOf(',') > -1))
             {
                 e.Handled = true;
             }
@@ -1046,7 +917,7 @@ namespace YearEndCalculation2.WindowsFormUI
                 e.Handled = true;
             }
 
-            if ((e.KeyChar == ',') && ((sender as TextBox).Text.IndexOf(',') > -1))
+            if ((e.KeyChar == ',') && ((sender as System.Windows.Forms.TextBox).Text.IndexOf(',') > -1))
             {
                 e.Handled = true;
             }
@@ -1117,7 +988,7 @@ namespace YearEndCalculation2.WindowsFormUI
             btnTab2.FlatAppearance.BorderColor = btnTab3.FlatAppearance.BorderColor = btnTab1.FlatAppearance.BorderColor = btnTab4.FlatAppearance.BorderColor = border;
             btnTab1.BackColor = btnTab2.BackColor = btnTab3.BackColor = btnTab4.BackColor = backColor;
             btnTab1.ForeColor = btnTab2.ForeColor = btnTab3.ForeColor = btnTab4.ForeColor = foreColor;
-            btnTab1.Font = btnTab2.Font = btnTab3.Font = btnTab4.Font = new Font("tahoma", 9);
+            btnTab1.Font = btnTab2.Font = btnTab3.Font = btnTab4.Font = new System.Drawing.Font("tahoma", 9);
 
         }
 
@@ -1131,7 +1002,10 @@ namespace YearEndCalculation2.WindowsFormUI
             _mkysExitsDgw.Clear();
             _tdmsEntriesDgw.Clear();
             _tdmsExitsDgw.Clear();
-            
+            lblCount.Visible = false;
+            progressForm.UpdateText("Fatura Numarası Aynı Olan Kayıtlar Eşleştiriliyor...");
+            progressForm.Text = "Kayıtlar İnceleniyor... 1/5";
+
         }
 
         private void ClearPrices()
@@ -1145,10 +1019,7 @@ namespace YearEndCalculation2.WindowsFormUI
             _mkysExits.Clear();
             _tdmsEntries.Clear();
             _tdmsExits.Clear();
-            _mkysEntriesBase.Clear();
-            _tdmsEntriesBase.Clear();
-            _mkysExitsBase.Clear();
-            _tdmsExitsBase.Clear();
+            
             ChooseForm.selectedMEnItems.Clear();
             ChooseForm.selectedMExItems.Clear();
             ChooseForm.selectedTEnItems.Clear();
@@ -1157,9 +1028,17 @@ namespace YearEndCalculation2.WindowsFormUI
             ChooseForm.unselectedMExItems.Clear();
             ChooseForm.unselectedTEnItems.Clear();
             ChooseForm.unselectedTExItems.Clear();
-            YearEndManager.matches.Clear();
-            ChooseForm._skipAll = false;
+            _skipAllChoose = false;
 
+        }
+
+        private void PreClear()
+        {
+            YearEndManager.matches.Clear();
+            _mkysEntriesBase.Clear();
+            _tdmsEntriesBase.Clear();
+            _mkysExitsBase.Clear();
+            _tdmsExitsBase.Clear();
         }
 
         private void FixDataGridFormats()
@@ -1179,7 +1058,7 @@ namespace YearEndCalculation2.WindowsFormUI
             dgw.Columns[4].Visible = false;
             dgw.Columns[5].HeaderText = "AÇIKLAMA";
             dgw.Columns[6].HeaderText = "TUTAR";
-            dgw.Columns[6].DefaultCellStyle.Format = "0.00";
+            dgw.Columns[6].DefaultCellStyle.Format = "#,0.00";
             dgw.Columns[1].Width = 60;
             dgw.Columns[2].Width = 80;
             dgw.Columns[3].Width = 200;
@@ -1209,117 +1088,552 @@ namespace YearEndCalculation2.WindowsFormUI
         }
 
 
-        private void tglBtnDarkMode_Click(object sender, EventArgs e)
-        {
-            if (darkMode)
-            {
-                darkMode = false;
-
-                this.FormMain_Load(sender, e);
-            }
-            else
-            {
-                darkMode = true;
-                FormMain_Load(sender, e);
-            }
-        }
-
         private void FormMain_SizeChanged(object sender, EventArgs e)
         {
             gbxResult.Height = Convert.ToInt32(this.Height-350);
             gbxResult.Width = Convert.ToInt32(this.Width - gbxEntrySelect.Width - 200);
             gbxBottom.Left = gbxResult.Left;
             gbxBottom.Top = gbxResult.Bottom + 5;
-            dgw.Height = gbxResult.Height - 90;
+            dgw.Height = gbxResult.Height - 110;
             dgw.Width = gbxResult.Width - 12;
             lblNoProblem.Top = dgw.Top + dgw.Height / 2;
             lblNoProblem.Left = dgw.Width / 2 - lblNoProblem.Width ;
             lblAttention.Top = gbxBottom.Bottom + 5;
+            lblAuthor.Top = gbxBottom.Bottom + 5;
+            lblContact.Top = gbxBottom.Bottom + 26;
             gbxEntrySelect.Left = gbxExitSelect.Left = gbxTdmsSelect.Left = gbxRemain.Left = gbxResult.Right + 20;
             btnCalculate.Left = gbxRemain.Left+gbxRemain.Width/2-btnCalculate.Width/2;
-            btnMatch.Left = dgw.Left+dgw.Width/2-btnMatch.Width/2;
+            // btnMatch.Left = dgw.Left+dgw.Width/2-btnMatch.Width/2;
             picInfoMkys.Left = picInfoTdms.Left = gbxEntrySelect.Right + 5;
 
         }
+     
 
-        private void pbxFacebook_Click(object sender, EventArgs e)
+       
+
+        private void btnCorrect_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.facebook.com/groups/466729348151176/?ref=share");
+
+            if (!calculated)
+            {
+                return;
+            }
+
+            ClearData();
+            _skipAllChoose = false;
+            isThereChoose = false;
+
+
+            List<decimal> controledEntries = new List<decimal>();
+            List<decimal> controledExits = new List<decimal>();
+            
+            
+
+            //kontrol için kalan mkys girişlerini dolaşıyoruz
+            //baseentry listesi ile karşılaştırıp kaç adet aynı tutarda var diye bakıyoruz
+            foreach (ActionRecord entry in _mkysEntriesDgw)
+            {
+                if (_skipAllChoose == true) return;
+
+                if (controledEntries.Any(c => Math.Abs(c - entry.Price) < 0.03m)) continue;
+                
+
+                List<ActionRecord> mkysEntryOptions = new List<ActionRecord>();
+
+
+                foreach (ActionRecord baseEntry in _mkysEntriesBase)
+                {
+                    if (Math.Abs(baseEntry.Price - entry.Price) < 0.03m)
+                    {
+                        //otomatik eşleşen listesinde var mı diye bakıyoruz yoksa seçeneklere ekle diyoruz.
+                        //eşleşen listesinde varsa güvenli eşleştirme mi diye bakıyoruz
+                        //güvenli eşleştirmeyse seçeneklere eklemiyoruz değilse ekliyoruz.
+                        //bu aşamada eşleşmeyenler listesindeki aynı tutarları da eklemiş oluyoruz
+
+                        if (!YearEndManager.matches.Any(m => m.Id == baseEntry.Id) || !YearEndManager.matches.Single(m => m.Id == baseEntry.Id).IsSafeMatch)
+                        {
+                            mkysEntryOptions.Add(baseEntry);
+                        }
+                    }
+                }
+
+                //mkys girişte kalanları kontrol ettiğimiz için burada bir kayıt var olması demek
+                //bu tutardaki mkys giriş sayısı her halükarda bu tutardaki tdms giriş kaydından fazla demek
+                //mesela mkys giriş 1 tdms 0 veya mkys 3 tdms 1 veya 2
+                //o nedenle sadece birden cok mkys giriş kadı var mı diye bakıyoruz
+                //tdms nin mkysden fazla olduğu durum tdms de kontrol edilecek
+                if (mkysEntryOptions.Count < 2)
+                {
+                    continue;
+                }
+
+                //birden fazla mkys giriş kaydı varsa kontrol edilenlere ekliyoruz
+                controledEntries.Add(entry.Price);
+
+
+                List<ActionRecord> tdmsEntriesOptions = new List<ActionRecord>();
+
+                foreach (ActionRecord tdmsEntry in _tdmsEntriesBase)
+                {
+                    if (Math.Abs(tdmsEntry.Price - entry.Price) < 0.03m)
+                    {
+                        if (!YearEndManager.matches.Any(t => t.TdmsRecord.Id == tdmsEntry.Id) || !YearEndManager.matches.Single(t => t.TdmsRecord.Id == tdmsEntry.Id).IsSafeMatch)
+                        {
+                            tdmsEntriesOptions.Add(tdmsEntry);
+                        }
+                    }
+                }
+                if (tdmsEntriesOptions.Count == 0) continue;
+                isThereChoose = true;
+                ChooseForm chooseForm = new ChooseForm(mkysEntryOptions, tdmsEntriesOptions, true);
+                chooseForm.ShowDialog();
+            }
+
+            //tdms girişinde eşleşmeden kalanları dolaşıyoruz
+            foreach (ActionRecord entry in _tdmsEntriesDgw)
+            {
+                if (_skipAllChoose == true) return;
+                if (controledEntries.Any(c => Math.Abs(c - entry.Price) < 0.03m)) continue;
+                
+                List<ActionRecord> tdmsEntryOptions = new List<ActionRecord>();
+                foreach (ActionRecord baseEntry in _tdmsEntriesBase)
+                {
+                    if (Math.Abs(baseEntry.Price - entry.Price) < 0.03m)
+                    {
+                        if (!YearEndManager.matches.Any(t => t.TdmsRecord.Id == baseEntry.Id) || !YearEndManager.matches.Single(t => t.TdmsRecord.Id == baseEntry.Id).IsSafeMatch)
+                        {
+                            tdmsEntryOptions.Add(baseEntry);
+                        }
+
+                    }
+                }
+
+                if (tdmsEntryOptions.Count < 2)
+                {
+                    continue;
+                }
+
+                controledEntries.Add(entry.Price);
+
+                List<ActionRecord> mkysEntryOptions = new List<ActionRecord>();
+
+                foreach (ActionRecord mkysEntry in _mkysEntriesBase)
+                {
+                    if (Math.Abs(mkysEntry.Price - entry.Price) < 0.03m)
+                    {
+                        if (!YearEndManager.matches.Any(m => m.MkysRecord.Id == mkysEntry.Id) || !YearEndManager.matches.Single(m => m.MkysRecord.Id == mkysEntry.Id).IsSafeMatch)
+                        {
+                            mkysEntryOptions.Add(mkysEntry);
+                        }
+                    }
+                }
+                isThereChoose = true;
+                ChooseForm chooseForm = new ChooseForm(mkysEntryOptions, tdmsEntryOptions, true);
+                chooseForm.ShowDialog();
+
+
+            }
+
+            //mkys çıkışlarında kalanları dolaşıyoruz
+            foreach (ActionRecord exit in _mkysExitsDgw)
+            {
+                if (_skipAllChoose == true) return;
+                if (controledExits.Any(c => Math.Abs(c - exit.Price) < 0.03m)) continue;
+                
+
+                List<ActionRecord> mkysExitOptions = new List<ActionRecord>();
+                foreach (ActionRecord baseExit in _mkysExitsBase)
+                {
+                    if (Math.Abs(baseExit.Price - exit.Price) < 0.03m)
+                    {
+                       
+                        if (!YearEndManager.matches.Any(m => m.Id == baseExit.Id) || !YearEndManager.matches.Single(m => m.Id == baseExit.Id).IsSafeMatch)
+                        {
+                            mkysExitOptions.Add(baseExit);
+                        }
+                    }
+                }
+
+                if (mkysExitOptions.Count < 2)
+                {
+                    continue;
+                }
+
+                //birden fazla mkys giriş kaydı varsa kontrol edilenlere ekliyoruz
+                controledExits.Add(exit.Price);
+
+
+                List<ActionRecord> tdmsExitOptions = new List<ActionRecord>();
+
+                foreach (ActionRecord tdmsExit in _tdmsExitsBase)
+                {
+                    if (Math.Abs(tdmsExit.Price - exit.Price) < 0.03m)
+                    {
+                        if (!YearEndManager.matches.Any(t => t.TdmsRecord.Id == tdmsExit.Id) || !YearEndManager.matches.Single(t => t.TdmsRecord.Id == tdmsExit.Id).IsSafeMatch)
+                        {
+                            tdmsExitOptions.Add(tdmsExit);
+                        }
+                    }
+                }
+                if (tdmsExitOptions.Count == 0) continue;
+                isThereChoose = true;
+                ChooseForm chooseForm = new ChooseForm(mkysExitOptions, tdmsExitOptions, false);
+                chooseForm.ShowDialog();
+                              
+            }
+
+            //tdms çıkışlarda eşleşmeden kalanlara bakıyoruz
+            foreach (ActionRecord exit in _tdmsExitsDgw)
+            {
+                if (_skipAllChoose == true) return;
+                if (controledExits.Any(c => Math.Abs(c - exit.Price) < 0.03m)) continue;
+                
+                List<ActionRecord> tdmsExitOptions = new List<ActionRecord>();
+                foreach (ActionRecord baseExit in _tdmsExitsBase)
+                {
+                    if (Math.Abs(baseExit.Price - exit.Price) < 0.03m)
+                    {
+                        if (!YearEndManager.matches.Any(t => t.TdmsRecord.Id == baseExit.Id) || !YearEndManager.matches.Single(t => t.TdmsRecord.Id == baseExit.Id).IsSafeMatch)
+                        {
+                            tdmsExitOptions.Add(baseExit);
+                        }
+
+                    }
+                }
+
+                if (tdmsExitOptions.Count < 2)
+                {
+                    continue;
+                }
+
+                controledExits.Add(exit.Price);
+
+                List<ActionRecord> mkysExitOptions = new List<ActionRecord>();
+                foreach (ActionRecord mkysExit in _mkysExitsBase)
+                {
+                    if (Math.Abs(mkysExit.Price - exit.Price) < 0.03m)
+                    {
+                        if (!YearEndManager.matches.Any(m => m.MkysRecord.Id == mkysExit.Id) || !YearEndManager.matches.Single(m => m.MkysRecord.Id == mkysExit.Id).IsSafeMatch)
+                        {
+                            tdmsExitOptions.Add(mkysExit);
+                        }
+                    }
+                }
+                isThereChoose = true;
+                ChooseForm chooseForm = new ChooseForm(mkysExitOptions, tdmsExitOptions, false);
+                chooseForm.ShowDialog();
+
+            }
+
+            
+
+            //bu metod ChooseFormda eşleştir denilince eklenen ve çıkan kayıtlara göre güncelleme yapıyor
+            UpdateRecords(_mkysEntriesDgw, ChooseForm.selectedMEnItems, true);
+            UpdateRecords(_mkysEntriesBase, ChooseForm.selectedMEnItems, true);
+            UpdateRecords(_mkysEntriesDgw, ChooseForm.unselectedMEnItems, false);
+            UpdateRecords(_mkysExitsDgw, ChooseForm.selectedMExItems, true);
+            UpdateRecords(_mkysExitsBase, ChooseForm.selectedMExItems, true);
+            UpdateRecords(_mkysExitsDgw, ChooseForm.unselectedMExItems, false);
+            UpdateRecords(_tdmsEntriesDgw, ChooseForm.selectedTEnItems, true);
+            UpdateRecords(_tdmsEntriesBase, ChooseForm.selectedTEnItems, true);
+            UpdateRecords(_tdmsEntriesDgw, ChooseForm.unselectedTEnItems, false);
+            UpdateRecords(_tdmsExitsDgw, ChooseForm.selectedTExItems, true);
+            UpdateRecords(_tdmsExitsBase, ChooseForm.selectedTExItems, true);
+            UpdateRecords(_tdmsExitsDgw, ChooseForm.unselectedTExItems, false);
+
+            foreach (var unselectedMEnItem in ChooseForm.unselectedMEnItems)
+            {
+                if (YearEndManager.matches.Any(m => m.Id == unselectedMEnItem.Id))
+                {
+                    YearEndManager.matches.Remove(YearEndManager.matches.Single(m => m.Id == unselectedMEnItem.Id));
+
+                }
+
+            }
+            foreach (var unselectedMExItem in ChooseForm.unselectedMExItems)
+            {
+                if (YearEndManager.matches.Any(m => m.Id == unselectedMExItem.Id))
+                {
+                    YearEndManager.matches.Remove(YearEndManager.matches.Single(m => m.Id == unselectedMExItem.Id));
+
+                }
+            }
+
+
+            if (!isThereChoose)
+            {
+                MessageBox.Show("Tüm eşleştirmeler doğru yapılmış görünüyor. Hatalı bir eşleştirme yaptığınızı düşünüyorsanız lütfen Manuel Eşleştirme ekranını kontrol ediniz.");
+
+            }
+
+            GetRemains();
+            dgw.DataSource = null;
+            btnTab1_Click(sender, e);
+
+        }
+
+        private void UpdateRecords(List<ActionRecord> updateList, List<ActionRecord> changedRecords, bool isSelected)
+        {
+
+            
+            foreach(ActionRecord record in changedRecords)
+            {
+                if (isSelected)
+                {
+                    if (updateList.Any(r=>r.Id==record.Id))
+                        updateList.Remove(updateList.Single(r=>r.Id==record.Id));
+                    
+                }
+                else
+                {
+                    if (!updateList.Any(r => r.Id == record.Id))    
+                        updateList.Add(record);
+                }
+            }
+
+        }
+
+        public static Microsoft.Office.Interop.Excel.Application GetExcelApplication()
+        {
+            Microsoft.Office.Interop.Excel.Application excelApp = null;
+
+            try
+            {
+                // Var olan Excel uygulamasını bul
+                excelApp = (Microsoft.Office.Interop.Excel.Application)Marshal.GetActiveObject("Excel.Application");
+            }
+            catch (COMException)
+            {
+                // Hata durumunda, yeni bir Excel uygulaması oluştur
+                excelApp = new Microsoft.Office.Interop.Excel.Application();
+            }
+
+            return excelApp;
         }
 
         private void btnShowMatches_Click(object sender, EventArgs e)
         {
-            if (_matchListForExcel == null) { return; }
+            if (_matchListForExcel == null) {
+                MessageBox.Show("Eşleştirilmiş kayıt mevcut değil!");
+                return; }
+
+            try
+            {
                 Cursor.Current = Cursors.AppStarting;
-                var app = new Microsoft.Office.Interop.Excel.Application();
+                var app = GetExcelApplication();
+
                 Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
-                app.WindowState = Microsoft.Office.Interop.Excel.XlWindowState.xlMinimized;
-                app.WindowState = Microsoft.Office.Interop.Excel.XlWindowState.xlMaximized;
-                // Excel çalışma kitabında yeni sayfalar oluşturuluyor.  
+
                 Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
-            workbook.Sheets.Add(Type.Missing);
-            worksheet = workbook.Sheets["Sayfa2"];
+                workbook.Sheets.Add(Type.Missing);
+                worksheet = workbook.Sheets["Sayfa2"];
 
-            worksheet.Cells[1, 1] = "MKYS";
-            worksheet.Cells[1, 2] = "TDMS";
-            worksheet.Cells[1, 3] = "Fatura No veya Hastane Adı Eşleşiyor";
+                worksheet.Cells[1, 1] = "MKYS";
+                worksheet.Cells[1, 2] = "TDMS";
+                worksheet.Cells[1, 3] = "Güvenli Eşleştirme";
 
-            int i = 0;
-            foreach (YearEndCalculation.Entities.Concrete.Match match in _matchListForExcel)
-            {
-                
-                worksheet.Cells[i + 2, 1] = 
-                    "Fiş No: " + match.MkysRecord.DocNumber + 
-                    ", Tarih: " + match.MkysRecord.DocDate +
-                    ", Türü: " + match.MkysRecord.Type +
-                    "\nAçıklama: " + match.MkysRecord.Explanation +
-                    "\nFatura No: " + match.MkysRecord.InvoiceNumber +
-                    ", Tutar: " + match.MkysRecord.Price;
-                
-                worksheet.Cells[i + 2, 2] = 
-                    "Fiş No: " + match.TdmsRecord.DocNumber + 
-                    ", Tarih: " + match.TdmsRecord.DocDate +
-                    ", Türü: " + match.TdmsRecord.Type +
-                    "\nAçıklama: " + match.TdmsRecord.Explanation +
-                    "\nFatura No: " + match.TdmsRecord.InvoiceNumber +
-                    ", Tutar: " + match.TdmsRecord.Price;
-                worksheet.Cells[i + 2, 3] = match.IsInvoiceNumberMatch ? "EVET" : "HAYIR";
-                i++;
-            }
-
-            worksheet.Columns[1].ColumnWidth = 70;
-            worksheet.Columns[2].ColumnWidth = 70;
-            worksheet.Columns[3].ColumnWidth = 17;
-            worksheet.Rows[1].WrapText = true;
-            worksheet.Cells[1, 1].Characters.Font.Bold = true;
-            worksheet.Cells[1, 2].Characters.Font.Bold = true;
-            worksheet.Cells[1, 3].Characters.Font.Bold = true;
-            worksheet.Rows.AutoFit();
-            worksheet.UsedRange.Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
-            worksheet.Cells[1, 1].Interior.Color = Color.PowderBlue;
-            worksheet.Cells[1, 2].Interior.Color = Color.PowderBlue;
-            worksheet.Cells[1, 3].Interior.Color = Color.PowderBlue;
-            
-            for (int j = 0; j < i; j++)
-            {
-                
-                if (worksheet.Cells[j+2, 3].Value == "HAYIR")
+                int i = 0;
+                foreach (YearEndCalculation.Entities.Concrete.Match match in _matchListForExcel)
                 {
-                    worksheet.Cells[j + 2, 1].Interior.Color = Color.PapayaWhip;
-                    worksheet.Cells[j + 2, 2].Interior.Color = Color.PapayaWhip;
-                    worksheet.Cells[j + 2, 3].Interior.Color = Color.PapayaWhip;
-                    
-                }
-                
-            }
-           
 
-            app.Visible = true;
+                    worksheet.Cells[i + 2, 1] =
+                        "Fiş No: " + match.MkysRecord.DocNumber +
+                        ", Tarih: " + match.MkysRecord.DocDate +
+                        ", Türü: " + match.MkysRecord.Type +
+                        "\nAçıklama: " + match.MkysRecord.Explanation +
+                        "\nFatura No: " + match.MkysRecord.InvoiceNumber +
+                        ", Tutar: " + match.MkysRecord.Price;
+
+                    worksheet.Cells[i + 2, 2] =
+                        "Fiş No: " + match.TdmsRecord.DocNumber +
+                        ", Tarih: " + match.TdmsRecord.DocDate +
+                        ", Türü: " + match.TdmsRecord.Type +
+                        "\nAçıklama: " + match.TdmsRecord.Explanation +
+                        "\nFatura No: " + match.TdmsRecord.InvoiceNumber +
+                        ", Tutar: " + match.TdmsRecord.Price;
+                    worksheet.Cells[i + 2, 3] = match.IsSafeMatch ? "EVET" : "HAYIR";
+                    i++;
+                }
+                worksheet.Columns[1].ColumnWidth = 70;
+                worksheet.Columns[2].ColumnWidth = 70;
+                worksheet.Columns[3].ColumnWidth = 17;
+                worksheet.Rows[1].WrapText = true;
+                worksheet.Cells[1, 1].Characters.Font.Bold = true;
+                worksheet.Cells[1, 2].Characters.Font.Bold = true;
+                worksheet.Cells[1, 3].Characters.Font.Bold = true;
+                worksheet.Rows.AutoFit();
+                worksheet.UsedRange.Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+                worksheet.Cells[1, 1].Interior.Color = Color.PowderBlue;
+                worksheet.Cells[1, 2].Interior.Color = Color.PowderBlue;
+                worksheet.Cells[1, 3].Interior.Color = Color.PowderBlue;
+
+                for (int j = 0; j < i; j++)
+                {
+                    if (worksheet.Cells[j + 2, 3].Value == "HAYIR")
+                    {
+                        worksheet.Cells[j + 2, 1].Interior.Color = Color.PapayaWhip;
+                        worksheet.Cells[j + 2, 2].Interior.Color = Color.PapayaWhip;
+                        worksheet.Cells[j + 2, 3].Interior.Color = Color.PapayaWhip;
+                    }
+                }
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Excel Dosyası|*.xlsx";
+                saveFileDialog.Title = "Dosya Kaydet";
+                saveFileDialog.FileName = "Eşleştirilenler.xlsx";
+                saveFileDialog.InitialDirectory = GetDownloadsPath();
+
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    Cursor.Current = Cursors.AppStarting;
+                    // Kullanıcının seçtiği dosya yolunu alın
+                    string filePath = saveFileDialog.FileName;
+                    // Dosyayı kaydetme işlemini gerçekleştirin
+                    workbook.SaveAs(filePath);
+                    workbook.Close(true);
+                    app.Quit();
+                    DialogResult result = MessageBox.Show("Dosya başarıyla kaydedildi. Dosyanın indirildiği klasör açılsın mı?", "Klasörü Aç", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        OpenFolder(saveFileDialog.InitialDirectory);
+                    }
+                }
+
+            }
+            catch {
+                try
+                {
+                    // Excel paketini başlat
+                    ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+                    // Yeni bir Excel paket oluştur
+                    using (ExcelPackage excelPackage = new ExcelPackage())
+                    {
+                        ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Eşleştirilenler");
+                        worksheet.Cells[1, 1].Value = "MKYS";
+                        worksheet.Cells[1, 2].Value = "TDMS";
+                        worksheet.Cells[1, 3].Value = "Güvenli Eşleştirme";
+                        int i = 0;
+                        foreach (YearEndCalculation.Entities.Concrete.Match match in _matchListForExcel)
+                        {
+
+                            worksheet.Cells[i + 2, 1].Value =
+                                "Fiş No: " + match.MkysRecord.DocNumber +
+                                ", Tarih: " + match.MkysRecord.DocDate +
+                                ", Türü: " + match.MkysRecord.Type +
+                                "\nAçıklama: " + match.MkysRecord.Explanation +
+                                "\nFatura No: " + match.MkysRecord.InvoiceNumber +
+                                ", Tutar: " + match.MkysRecord.Price;
+
+                            worksheet.Cells[i + 2, 2].Value =
+                                "Fiş No: " + match.TdmsRecord.DocNumber +
+                                ", Tarih: " + match.TdmsRecord.DocDate +
+                                ", Türü: " + match.TdmsRecord.Type +
+                                "\nAçıklama: " + match.TdmsRecord.Explanation +
+                                "\nFatura No: " + match.TdmsRecord.InvoiceNumber +
+                                ", Tutar: " + match.TdmsRecord.Price;
+                            worksheet.Cells[i + 2, 3].Value = match.IsSafeMatch ? "EVET" : "HAYIR";
+                            i++;
+                        }
+                        worksheet.Columns[1].Width = 70;
+                        worksheet.Columns[2].Width = 70;
+                        worksheet.Columns[3].Width = 17;
+                        worksheet.Rows.Style.WrapText = true;
+                        worksheet.Rows.Height = 60;
+                        worksheet.Rows[1].Height = 40;
+                        worksheet.Cells[1, 1].Style.Font.Bold = true;
+                        worksheet.Cells[1, 2].Style.Font.Bold = true;
+                        worksheet.Cells[1, 3].Style.Font.Bold = true;
+
+                        worksheet.Cells[worksheet.Dimension.Address].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        worksheet.Cells[worksheet.Dimension.Address].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        worksheet.Cells[worksheet.Dimension.Address].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        worksheet.Cells[worksheet.Dimension.Address].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                        worksheet.Cells[1, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[1, 1].Style.Fill.BackgroundColor.SetColor(Color.PowderBlue);
+                        worksheet.Cells[1, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[1, 2].Style.Fill.BackgroundColor.SetColor(Color.PowderBlue);
+                        worksheet.Cells[1, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[1, 3].Style.Fill.BackgroundColor.SetColor(Color.PowderBlue);
+
+                        for (int j = 0; j < i; j++)
+                        {
+                            if (worksheet.Cells[j + 2, 3].Value.ToString() == "HAYIR")
+                            {
+                                worksheet.Cells[j + 2, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[j + 2, 1].Style.Fill.BackgroundColor.SetColor(Color.PapayaWhip);
+                                worksheet.Cells[j + 2, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[j + 2, 2].Style.Fill.BackgroundColor.SetColor(Color.PapayaWhip);
+                                worksheet.Cells[j + 2, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[j + 2, 3].Style.Fill.BackgroundColor.SetColor(Color.PapayaWhip);
+                            }
+                        }
+
+                        SaveFileDialog saveFileDialog = new SaveFileDialog();
+                        saveFileDialog.Filter = "Excel Dosyası|*.xlsx";
+                        saveFileDialog.Title = "Dosya Kaydet";
+                        saveFileDialog.FileName = "Eşleştirilenler.xlsx";
+                        saveFileDialog.InitialDirectory = GetDownloadsPath();
+
+                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            Cursor.Current = Cursors.AppStarting;
+                            FileInfo fi = new FileInfo(saveFileDialog.FileName);
+                            excelPackage.SaveAs(fi);
+                            // Kullanıcıya indirilenler klasörünü açmak isteyip istemediğini sor
+                            DialogResult result = MessageBox.Show("Dosya başarıyla kaydedildi. Dosyanın indirildiği klasör açılsın mı?", "Klasörü Aç", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (result == DialogResult.Yes)
+                            {
+                                OpenFolder(saveFileDialog.InitialDirectory);
+                            }
+
+                        }
+                    }
+
+                }
+                catch
+                {
+                    MessageBox.Show("Excel dosyası oluşturulamadı!");
+                }
+              }
         }
 
-        
+        static string GetDownloadsPath()
+        {
+            // Windows işletim sistemi için kullanıcının İndirilenler klasörünün yolunu al
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string downloadsPath = Path.Combine(path, "Downloads");
 
-        private void tglBtnDarkMode_MouseClick(object sender, MouseEventArgs e)
+            // İndirilenler klasörü varsa yolunu döndür
+            if (Directory.Exists(downloadsPath))
+            {
+                return downloadsPath;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private void btnShowMatchesAlt_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        static void OpenFolder(string path)
+        {
+            // Dosya gezgininde belirtilen yolu aç
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                Arguments = path,
+                FileName = "explorer.exe"
+            };
+            Process.Start(startInfo);
+        }
+
+        private void tgglBtn_Click(object sender, EventArgs e)
         {
             if (darkMode)
             {
@@ -1345,9 +1659,16 @@ namespace YearEndCalculation2.WindowsFormUI
             foreach (string id in MatchForm.matchedRecords)
             {
                 _mkysEntriesDgw.RemoveAll(m => m.Id == id);
+                _mkysEntriesBase.RemoveAll(m=>m.Id == id);
+
                 _mkysExitsDgw.RemoveAll(m => m.Id == id);
+                _mkysExitsBase.RemoveAll(m=>m.Id==id);
+
                 _tdmsEntriesDgw.RemoveAll(t => t.Id == id);
+                _tdmsEntriesBase.RemoveAll(t=>t.Id==id);
+
                 _tdmsExitsDgw.RemoveAll(t => t.Id == id);
+                _tdmsExitsBase.RemoveAll(t => t.Id == id);
             }
 
             if (MatchForm.rescuedItems != null)
@@ -1358,27 +1679,31 @@ namespace YearEndCalculation2.WindowsFormUI
                     {
                         case "mkysEntr":
                             _mkysEntriesDgw.Add(item);
+                            _mkysEntriesBase.Add(item);
                             break;
                         case "mkysExit":
                             _mkysExitsDgw.Add(item);
+                            _mkysExitsBase.Add(item);
                             break;
                         case "tdmsEntr":
                             _tdmsEntriesDgw.Add(item);
+                            _tdmsEntriesBase.Add(item);
                             break;
                         case "tdmsExit":
                             _tdmsExitsDgw.Add(item);
+                            _tdmsExitsBase.Add(item);
                             break;
                     }
 
                 }
             }
             MatchForm.rescuedItems = new List<ActionRecord>();
+            GetRemains();
             dgw.DataSource = null;
             btnTab1_Click(sender, e);
 
-
+            
         }
-
 
 
         private void printDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
@@ -1418,11 +1743,11 @@ namespace YearEndCalculation2.WindowsFormUI
                     if (_dgwLineWritten < dgw.Rows.Count)
                     {
 
-                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[1].FormattedValue.ToString(), dgw.Font = new Font("Book Antiqua", 8), Brushes.Black, new RectangleF(55, lineHeight, dgw.Columns[1].Width, 25));
-                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[2].FormattedValue.ToString(), dgw.Font = new Font("Book Antiqua", 8), Brushes.Black, new RectangleF(120, lineHeight, dgw.Columns[2].Width, 25));
-                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[3].FormattedValue.ToString(), dgw.Font = new Font("Book Antiqua", 8), Brushes.Black, new RectangleF(210, lineHeight, 200, 25));
-                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[4].FormattedValue.ToString(), dgw.Font = new Font("Book Antiqua", 8), Brushes.Black, new RectangleF(410, lineHeight, 290, 25));
-                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[5].FormattedValue.ToString(), dgw.Font = new Font("Book Antiqua", 8), Brushes.Black, new RectangleF(710, lineHeight, dgw.Columns[5].Width, 25));
+                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[1].FormattedValue.ToString(), dgw.Font = new System.Drawing.Font("Book Antiqua", 8), Brushes.Black, new RectangleF(55, lineHeight, dgw.Columns[1].Width, 25));
+                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[2].FormattedValue.ToString(), dgw.Font = new System.Drawing.Font("Book Antiqua", 8), Brushes.Black, new RectangleF(120, lineHeight, dgw.Columns[2].Width, 25));
+                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[3].FormattedValue.ToString(), dgw.Font = new System.Drawing.Font("Book Antiqua", 8), Brushes.Black, new RectangleF(210, lineHeight, 200, 25));
+                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[5].FormattedValue.ToString(), dgw.Font = new System.Drawing.Font("Book Antiqua", 8), Brushes.Black, new RectangleF(410, lineHeight, 290, 25));
+                        e.Graphics.DrawString(dgw.Rows[_dgwLineWritten].Cells[6].FormattedValue.ToString(), dgw.Font = new System.Drawing.Font("Book Antiqua", 8), Brushes.Black, new RectangleF(710, lineHeight, dgw.Columns[5].Width, 25));
                         lineHeight += 25;
                         _dgwLineWritten++;
                         _lineWritten++;
@@ -1483,6 +1808,46 @@ namespace YearEndCalculation2.WindowsFormUI
 
     }
 
+    public class ProgressForm : Form
+    {
+        private System.Windows.Forms.Label label;
 
-   
+        public ProgressForm()
+        {
+            InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            Text = "Kayıtlar İnceleniyor... 1/5";
+            Size = new Size(300, 100);
+            StartPosition = FormStartPosition.CenterScreen;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            ControlBox = false;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            ShowInTaskbar = false;
+            TopMost = true;
+
+            label = new System.Windows.Forms.Label();
+            label.Text = "Fatura Numarası Aynı Olan Kayıtlar Eşleştiriliyor...";
+            label.TextAlign = ContentAlignment.MiddleCenter;
+            label.Dock = DockStyle.Fill;
+            this.Controls.Add(label);
+        }
+        public void UpdateText(string progressText)
+        {
+            if(InvokeRequired)
+            {
+                label.Invoke(new System.Action(() =>
+                {
+                    Thread.Sleep(800);
+                    label.Text = progressText;
+
+                }));
+            }
+        }
+
+    }
+
 }

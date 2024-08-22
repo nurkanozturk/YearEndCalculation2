@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace YearEndCalculation.WindowsFormUI
@@ -13,7 +8,7 @@ namespace YearEndCalculation.WindowsFormUI
     {
         private Color onBackColor = Color.MediumSlateBlue;
         private Color onToggleColor = Color.WhiteSmoke;
-        private Color offBackColor = Color.Gray;
+        private Color offBackColor = Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
         private Color offToggleColor = Color.Gainsboro;
 
         public Color OnBackColor { get { return onBackColor; } set { onBackColor = value; this.Invalidate(); } }

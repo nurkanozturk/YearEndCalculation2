@@ -197,6 +197,7 @@
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.lvMkys);
             this.Name = "ChooseForm";
+            this.ShowIcon = false;
             this.Text = "Benzer Tutara Sahip Kayıtları Eşleştirme Ekranı";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ResumeLayout(false);

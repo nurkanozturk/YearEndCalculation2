@@ -33,6 +33,7 @@ namespace YearEndCalculation.WindowsFormUI
             this.mtbxSerial = new System.Windows.Forms.MaskedTextBox();
             this.lblSerial = new System.Windows.Forms.Label();
             this.lblSerialInfo = new System.Windows.Forms.Label();
+            this.lblActivationCode = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnSerial
@@ -75,19 +76,32 @@ namespace YearEndCalculation.WindowsFormUI
             this.lblSerialInfo.TabIndex = 3;
             this.lblSerialInfo.Text = "Lütfen lisans anahtarını giriniz.";
             // 
+            // lblActivationCode
+            // 
+            this.lblActivationCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblActivationCode.AutoSize = true;
+            this.lblActivationCode.Font = new System.Drawing.Font("Segoe MDL2 Assets", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblActivationCode.Location = new System.Drawing.Point(152, 74);
+            this.lblActivationCode.Name = "lblActivationCode";
+            this.lblActivationCode.Size = new System.Drawing.Size(12, 15);
+            this.lblActivationCode.TabIndex = 4;
+            this.lblActivationCode.Text = " ";
+            // 
             // LoginForm
             // 
             this.AcceptButton = this.btnSerial;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(503, 194);
+            this.Controls.Add(this.lblActivationCode);
             this.Controls.Add(this.lblSerialInfo);
             this.Controls.Add(this.lblSerial);
             this.Controls.Add(this.mtbxSerial);
             this.Controls.Add(this.btnSerial);
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Lisans Ekranı";
+            this.Text = "Mkys Tdms Uyumu 2024 Lisans Ekranı";
             this.Load += new System.EventHandler(this.LoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -100,5 +114,6 @@ namespace YearEndCalculation.WindowsFormUI
         private System.Windows.Forms.MaskedTextBox mtbxSerial;
         private System.Windows.Forms.Label lblSerial;
         private System.Windows.Forms.Label lblSerialInfo;
+        private System.Windows.Forms.Label lblActivationCode;
     }
 }

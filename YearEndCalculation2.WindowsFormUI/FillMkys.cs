@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Windows.Forms;
 using YearEndCalculation.Business.Tools;
 using YearEndCalculation.Entities.Concrete;
 
@@ -10,27 +8,46 @@ namespace YearEndCalculation2.WindowsFormUI
     public class FillMkys
     {
        
+       
         public List<ActionRecord> FillEntries(List<string> lines, List<ActionRecord> mkysEntries)
         {
-            
+            int docIndex = 2;
+            int priceIndex = 18;
+            int invoiceDateIndex = 11;
+            int dateIndex = 3;
+            int typeIndex = 6;
+            int invoiceIndex = 10;
+            int expIndex = 8;
+            int detailIndex = 1;
 
             lines.Remove(lines[0]);
             foreach (var line in lines)
             {
                 string[] words = line.Split(';');
-                string docNumber = words[0].StartsWith("\"") ? words[0].Remove(0, 1) : words[0];
-                
+                if (words[detailIndex] != "")
+                {
+                    continue;
+                }
+
+                string docNumber = words[docIndex].StartsWith("\"") ? words[docIndex].Remove(0, 1) : words[docIndex];
+
+                var recordPrice = 0m;
+                if (words[priceIndex] != "")
+                {
+                    recordPrice = Convert.ToDecimal(words[priceIndex]);
+                }
+                 
 
                 mkysEntries.Add(new ActionRecord
                 {
-                    Id = "mkysEntry-"+docNumber+"-"+words[5]+"-"+words[7],
+                    Id = "mkysEntry-"+docNumber+"-"+words[invoiceDateIndex]+"-"+words[priceIndex],
                     DocNumber = docNumber,
-                    DocDate = words[1].ToString(),
-                    Type = words[3],
-                    InvoiceNumber = words[4],
-                    Explanation = words[11]+"   Fatura No: " + words[4],
-                    Price = Convert.ToDecimal(words[7]),
-                    DateBase = FormatDate.Format(words[1].ToString())
+                    DocDate = words[dateIndex].ToString(),
+                    Type = words[typeIndex],
+                    InvoiceNumber = words[invoiceIndex],
+                    Explanation = words[expIndex]+"   Fatura No: " + words[invoiceIndex],
+                    Price = recordPrice,
+                    DateBase = FormatDate.Format(words[dateIndex].ToString())
                 });
                 
             }
@@ -40,28 +57,44 @@ namespace YearEndCalculation2.WindowsFormUI
 
         public List<ActionRecord> FillExits(List<string> lines, List<ActionRecord> mkysExits)
         {
+            int docIndex = 2;
+            int priceIndex = 10;
+            int dateIndex = 3;
+            int typeIndex = 6;
+            int expIndex = 8;
+            int detailIndex = 1;
+
             lines.Remove(lines[0]);
             foreach (var line in lines)
             {
                 string[] words = line.Split(';');
-
-                string docNumber = words[0].StartsWith("\"") ? words[0].Remove(0, 1) : words[0];
-                
-                decimal price = words[7].EndsWith("\"") ? Convert.ToDecimal(words[7].Remove(words.Length - 1, 1)) : Convert.ToDecimal(words[7]);
-
-                if (!words[4].ToLower().Contains("tüketim"))
+                if (words[detailIndex] != "")
                 {
+                    continue;
+                }
+                string docNumber = words[docIndex].StartsWith("\"") ? words[docIndex].Remove(0, 1) : words[docIndex];
+
+                var price = 0m;
+                if (words[priceIndex] != "")
+                {
+                    price = words[priceIndex].EndsWith("\"") ? Convert.ToDecimal(words[priceIndex].Remove(words.Length - 1, 1)) : Convert.ToDecimal(words[priceIndex]);
+                }
+
+
+                if (!words[typeIndex].ToLower().Contains("tüketim"))
+                {
+                    
 
                     mkysExits.Add(new ActionRecord
                     {
-                        Id = "mkysExit-"+docNumber+"-"+words[4]+"-"+price.ToString(),
+                        Id = "mkysExit-"+docNumber+"-"+words[typeIndex]+"-"+price.ToString(),
                         DocNumber = docNumber,
-                        DocDate =  words[1].ToString(),
-                        Type = words[4],
+                        DocDate =  words[dateIndex].ToString(),
+                        Type = words[typeIndex],
                         InvoiceNumber = "",
-                        Explanation = words[5],
+                        Explanation = words[expIndex],
                         Price = price,
-                        DateBase = FormatDate.Format(words[1].ToString()),
+                        DateBase = FormatDate.Format(words[dateIndex].ToString()),
                     });
                     
                 }
@@ -71,7 +104,12 @@ namespace YearEndCalculation2.WindowsFormUI
         }
 
         public List<ActionRecord> FillMountlyExits(List<string> lines, List<ActionRecord> mkysExits)
-        {
+        {            
+            int priceIndex = 10;
+            int dateIndex = 3;
+            int typeIndex = 6;
+            int detailIndex = 1;
+
             int currentYear = 0;
 
             for (int i = 0; i < 12; i++)
@@ -83,13 +121,23 @@ namespace YearEndCalculation2.WindowsFormUI
                 foreach (var line in lines)
                 {
                     string[] words = line.Split(';');
+                    if (words[detailIndex] != "")
+                    {
+                        continue;
+                    }
                     if (currentYear==0)
                     {
-                        try { currentYear = Convert.ToInt32(words[1].Remove(0, words[1].Length - 4)); } catch { }
+                        try { currentYear = Convert.ToInt32(words[dateIndex].Remove(0, words[dateIndex].Length - 4)); } catch { }
                         
                     }
-                    decimal price = words[7].EndsWith("\"") ? Convert.ToDecimal(words[7].Remove(words[7].Length - 1, 1)) : Convert.ToDecimal(words[7]);
-                    if (words[4].ToLower().Contains("tüketim") && words[1].Contains(months[i]))
+
+                    var price = 0m;
+                    if (words[priceIndex] != "")
+                    {
+                        price = words[priceIndex].EndsWith("\"") ? Convert.ToDecimal(words[priceIndex].Remove(words[priceIndex].Length - 1, 1)) : Convert.ToDecimal(words[priceIndex]);
+                    }
+
+                    if (words[typeIndex].ToLower().Contains("tüketim") && words[dateIndex].Contains(months[i]))
                     {
                         totalPrice += price;
                     }

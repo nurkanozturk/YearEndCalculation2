@@ -117,26 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>	MKYS Giriş verilerini indirmek için "MKYS Giriş Çıkış Fişleri Listeleme" Ekranına gidin. 
-	Depo seçerek veya Tüm Depolar seçili iken taşınır kodu girerek arama yapın. TDMS kod bazlı çalıştığı için birden fazla depoda aynı koda sahip hareket varsa 
-                (Örneğin 150-03-03 kodu hem tıbbi sarfta hem Biyomedikalde mevcut) tüm depoları seçip taşınır kodu ile filtreleme yapılmalı. Tarih aralığı ise yılbaşından mevcut güne kadar seçilmeli.
-	Çıkış verilerini de aynı şekilde indirin.
-	
-	TDMS verileri için Tek Düze Muhasebe sistemini açın Yardımcı Defter ekranından taşınır kodu ile sorgulama yaparak Excel formatında indirip kaydedin.
+  <data name="label2.Text" xml:space="preserve">
+    <value>Bu Program Mkys kayıtları ile Tdms kayıtlarının kontrolünü kolaylaştırmak amacıyla geliştirildi.
+Program Mkys ve Tdms verilerini kontrol ederek eşleştirme yapıyor ve eşleşmeyen kayıtları kontrol edilmek üzere ekrana yansıtıyor.
+Verileri Mkys'den (Giriş ve Çıkış Fişleri Listeleme Ekranından) ve Tdms'den Excel olarak indirip yüklemelisiniz.
+Hesaplama tamamlandıktan sonra manuel olarak eşleştirme yapabilirsiniz.
+Program belirli kriterlere göre eşleştirme yaptıktan sonra son olarak sadece tutarları kontrol ederek eşleştirme yaptığı için nadiren hatalı eşleştirmeler olabiliyor.
+Bu hataları gidermek için 'Kayıtları Doğrula' butonu ile düzeltme yapılmalı.
+Son olarak 'Eşleştirilenler Listesi' butonu ile programın yaptığı eşleştirmelerin listesini indirip kontrol edebilirsiniz.
+Bu listede Fatura Numarası veya Fiş Numarası kontrol edilerek eşleşen kayıtlar 'Güvenli Eşleştirme' olarak işaretlenmiştir.
 
-                Program tek kod üzerinde hesaplama yapmakta. Aynı anda bir depodaki biden çok kod üzerinde hesamlama yapılamamaktadır. </value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>Hesaplama işlemi yaptırıldıktan sonra MKYS Giriş, MKYS Çıkış, TDMS Giriş ve TDMS Çıkış sayfalarında görüntülenen veriler program tarafından eşleştirmesi yapılamayan, manuel olarak kontrol edilmesi gereken verilerdir.
-Örneğin:
--Gösterilen verilerin muhasebeye kaydı yapılmamış veya hatalı yapılmış olabilir. 
--MKYS tarafında tek kalemde gösterilen bir giriş ya da çıkış muhasebeye ayrı ayrı işlenmiş olabilir.
--Avans gibi bir alımdan dolayı MKYS de parçalı olan bir alım muhasebeye tek kalemde işlenmiş olabilir vb.
-
-Nadiren de olsa program tarafından aynı tutara sahip iki kayıt (genelde devir tiflerinde) sadece tutara göre eşleştirildiği için hatalı eşleşebiliyor. Bu durumda Eşleştirme Kontrol butonu kullanılarak doğru kaydı seçebilirsiniz.
-
-Alt kısımda gösterilen hesap bildirilmemiş kayıtlar muhasebeye bildirildikten ve hatalı kayıtlar varsa düzeltildikten sonra kalan tutarlar hakkında bilgi vermektedir.
-Tik işareti yerinde çarpı işareti görüyorsanız indirilen verilerde bir sorun oluşmuş demektir. Dosyaları kontrol ederek tekrar indiriniz.</value>
+İyi çalışmalar...</value>
   </data>
 </root>

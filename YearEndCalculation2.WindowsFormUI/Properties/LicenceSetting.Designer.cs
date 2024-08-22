@@ -12,7 +12,7 @@ namespace YearEndCalculation.WindowsFormUI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     internal sealed partial class LicenceSetting : global::System.Configuration.ApplicationSettingsBase {
         
         private static LicenceSetting defaultInstance = ((LicenceSetting)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new LicenceSetting())));
@@ -26,12 +26,12 @@ namespace YearEndCalculation.WindowsFormUI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsLicensed {
+        public bool Licenced {
             get {
-                return ((bool)(this["IsLicensed"]));
+                return ((bool)(this["Licenced"]));
             }
             set {
-                this["IsLicensed"] = value;
+                this["Licenced"] = value;
             }
         }
     }

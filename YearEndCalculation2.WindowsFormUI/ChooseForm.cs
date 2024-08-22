@@ -20,9 +20,8 @@ namespace YearEndCalculation.WindowsFormUI
         public static List<ActionRecord> selectedTExItems = new List<ActionRecord>();
         public static List<ActionRecord> unselectedTExItems = new List<ActionRecord>();
         bool _isEntry=false;
-        public static bool _skipAll=false;
 
-        public ChooseForm(List<ActionRecord> mkysOptions, List<ActionRecord> tdmsOptions, bool isEntry, List<ActionRecord> machedRecordsForChoose)
+        public ChooseForm(List<ActionRecord> mkysOptions, List<ActionRecord> tdmsOptions, bool isEntry)
         {
             InitializeComponent();
             _isEntry= isEntry;
@@ -35,7 +34,6 @@ namespace YearEndCalculation.WindowsFormUI
                 listItem.SubItems.Add(actionRecord.Type);
                 listItem.SubItems.Add(actionRecord.Explanation);
                 listItem.SubItems.Add(actionRecord.Price.ToString());
-                if (machedRecordsForChoose.Contains(actionRecord)) { listItem.Checked = true; listItem.Selected = true; }
                 lvMkys.Items.Add(listItem);
                 
             });
@@ -47,7 +45,6 @@ namespace YearEndCalculation.WindowsFormUI
                 listItem.SubItems.Add(actionRecord.Type);
                 listItem.SubItems.Add(actionRecord.Explanation.ToString());
                 listItem.SubItems.Add(actionRecord.Price.ToString());
-                if (machedRecordsForChoose.Contains(actionRecord)) { listItem.Checked = true;listItem.Selected = true; }
                 lvTdms.Items.Add(listItem);
                 });
 
@@ -56,120 +53,78 @@ namespace YearEndCalculation.WindowsFormUI
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            decimal mkysEntryTotalPrice = 0;
-            decimal tdmsEntryTotalPrice = 0;
-            decimal mkysExitTotalPrice = 0;
-            decimal tdmsExitTotalPrice = 0;
-            int checkedItemCount = 0;
+            decimal mkysTotalPrice = 0;
+            decimal tdmsTotalPrice = 0;
+           
             List<ActionRecord> mkysRecords = new List<ActionRecord>();
             List<ActionRecord> tdmsRecords = new List<ActionRecord>();
-            if (_isEntry)
+
+            foreach (ListViewItem mkysItem in lvMkys.Items)
             {
-                foreach (ListViewItem mkysItem in lvMkys.Items)
+                if (mkysItem.Checked)
                 {
-                    if (mkysItem.Checked)
-                    {
-                        mkysEntryTotalPrice += ((ActionRecord)mkysItem.Tag).Price;
-                        checkedItemCount++;
-                    }
+                    mkysTotalPrice += ((ActionRecord)mkysItem.Tag).Price;
                 }
-                foreach (ListViewItem tdmsItem in lvTdms.Items)
+            }
+            foreach (ListViewItem tdmsItem in lvTdms.Items)
+            {
+                if (tdmsItem.Checked)
                 {
-                    if (tdmsItem.Checked)
-                    {
-                        tdmsEntryTotalPrice += ((ActionRecord)tdmsItem.Tag).Price;
-                    }
+                    tdmsTotalPrice += ((ActionRecord)tdmsItem.Tag).Price;
                 }
-                if (Math.Abs(mkysEntryTotalPrice - tdmsEntryTotalPrice) > 0.1m || checkedItemCount == 0)
+            }
+            if (mkysTotalPrice + tdmsTotalPrice == 0) return;
+            if (Math.Abs(mkysTotalPrice - tdmsTotalPrice) > 0.1m)
+            {
+                MessageBox.Show("Seçilen kayıtların tutarları eşleşmiyor. Kontrol edip tekrar deneyiniz.", "Dikkat", MessageBoxButtons.OK);
+                return;
+            }
+
+            foreach (ListViewItem item in lvMkys.Items)
+            {
+                if (item.Checked)
                 {
-                    return;
-                }
-                List<ActionRecord> newItems = new List<ActionRecord>();
-                foreach (ListViewItem item in lvMkys.Items)
-                {
-                    if (item.Checked)
+                    if (_isEntry)
                     {
                         selectedMEnItems.Add(item.Tag as ActionRecord);
-                        newItems.Add(item.Tag as ActionRecord);
-                        mkysRecords.Add(item.Tag as ActionRecord);
                     }
                     else
-                    {
-                        unselectedMEnItems.Add(item.Tag as ActionRecord);
-                    }
-                }
-                foreach (ListViewItem item in lvTdms.Items)
-                {
-                    if (item.Checked)
-                    {
-                        selectedTEnItems.Add(item.Tag as ActionRecord);
-                        newItems.Add(item.Tag as ActionRecord);
-                        tdmsRecords.Add(item.Tag as ActionRecord);
-                    }
-                    else
-                    {
-                        unselectedTEnItems.Add(item.Tag as ActionRecord);
-                    }
-                    
-                }
-                int i = 0;
-                foreach (ActionRecord mkysRecord in mkysRecords)
-                {
-                    YearEndManager.matches.Add(
-                        new Match 
-                        { 
-                            Id = mkysRecord.Id, 
-                            MkysRecord = mkysRecord,
-                            TdmsRecord = tdmsRecords[i],
-                            IsInvoiceNumberMatch = false
-                        });
-                    ++i;
-                }
-
-                _ = _manuelMatchManager.SaveMatches(FillTdms.queryId, newItems);
-            }
-            else
-            {
-                foreach (ListViewItem mkysItem in lvMkys.Items)
-                {
-                    if (mkysItem.Checked)
-                    {
-                        mkysExitTotalPrice += ((ActionRecord)mkysItem.Tag).Price;
-                        checkedItemCount++;
-                    }
-                }
-                foreach (ListViewItem tdmsItem in lvTdms.Items)
-                {
-                    if (tdmsItem.Checked)
-                    {
-                        tdmsExitTotalPrice += ((ActionRecord)tdmsItem.Tag).Price;
-                    }
-                }
-                if (Math.Abs(mkysExitTotalPrice - tdmsExitTotalPrice) > 0.1m || checkedItemCount == 0)
-                {
-                    return;
-                }
-                List<ActionRecord> newItems = new List<ActionRecord>();
-                foreach (ListViewItem item in lvMkys.Items)
-                {
-                    if (item.Checked)
                     {
                         selectedMExItems.Add(item.Tag as ActionRecord);
-                        newItems.Add(item.Tag as ActionRecord);
-                        mkysRecords.Add(item.Tag as ActionRecord);
+                    }
+                    mkysRecords.Add(item.Tag as ActionRecord);
+                }
+                else
+                {
+                    if (_isEntry)
+                    {
+                        unselectedMEnItems.Add(item.Tag as ActionRecord);
                     }
                     else
                     {
                         unselectedMExItems.Add(item.Tag as ActionRecord);
                     }
                 }
-                foreach (ListViewItem item in lvTdms.Items)
+            }
+            foreach (ListViewItem item in lvTdms.Items)
+            {
+                if (item.Checked)
                 {
-                    if (item.Checked)
+                    if (_isEntry)
+                    {
+                        selectedTEnItems.Add(item.Tag as ActionRecord);
+                    }
+                    else
                     {
                         selectedTExItems.Add(item.Tag as ActionRecord);
-                        newItems.Add(item.Tag as ActionRecord);
-                        tdmsRecords.Add(item.Tag as ActionRecord);
+                    }
+                    tdmsRecords.Add(item.Tag as ActionRecord);
+                }
+                else
+                {
+                    if (_isEntry)
+                    {
+                        unselectedTEnItems.Add(item.Tag as ActionRecord);
                     }
                     else
                     {
@@ -177,22 +132,26 @@ namespace YearEndCalculation.WindowsFormUI
                     }
                 }
 
-                int i = 0;
-                foreach (ActionRecord mkysRecord in mkysRecords)
-                {
-                    YearEndManager.matches.Add(
-                        new Match
-                        {
-                            Id = mkysRecord.Id,
-                            MkysRecord = mkysRecord,
-                            TdmsRecord = tdmsRecords[i],
-                            IsInvoiceNumberMatch = false
-                        });
-                    ++i;
-                }
-
-                _ = _manuelMatchManager.SaveMatches(FillTdms.queryId, newItems);
             }
+            /*int i = 0;
+            foreach (ActionRecord mkysRecord in mkysRecords)
+            {
+                YearEndManager.matches.Add(
+                    new Match 
+                    { 
+                        Id = mkysRecord.Id, 
+                        MkysRecord = mkysRecord,
+                        TdmsRecord = tdmsRecords[i],
+                        IsSafeMatch = true
+                    });
+                ++i;
+            }*/
+            List<ActionRecord> newItems = new List<ActionRecord>();
+
+            newItems.AddRange(mkysRecords);
+            newItems.AddRange(tdmsRecords);
+
+            _ = _manuelMatchManager.SaveMatches(FillTdms.queryId, newItems);
 
             Close();
         }
@@ -220,7 +179,7 @@ namespace YearEndCalculation.WindowsFormUI
 
         private void btnSkipAll_Click(object sender, EventArgs e)
         {
-            _skipAll = true;
+            FormMain._skipAllChoose = true;
             Close();
         }
 

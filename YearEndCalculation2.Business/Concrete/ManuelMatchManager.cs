@@ -12,23 +12,25 @@ namespace YearEndCalculation.Business.Concrete
     public class ManuelMatchManager
     {
         string _queryId = null;
-        List<string> _matchedRecords = new List<string>();
-        XmlDocument xmlDocument = new XmlDocument();
+        static readonly string _path = "C:/TdmsMkys";
+        static readonly string _fileName = "Matches.xml";
+        readonly List<string> _matchedRecords = new List<string>();
+        readonly XmlDocument xmlDocument = new XmlDocument();
         public static XmlNodeList TakeMachedRecords(string queryId)
         {
-            if (!Directory.Exists("C:/TdmsMkys"))
+            if (!Directory.Exists(_path))
             {
-                Directory.CreateDirectory("C:/TdmsMkys");
+                Directory.CreateDirectory(_path);
             }
             try
             {
-                if (!File.Exists("C:/TdmsMkys/Matches.xml"))
+                if (!File.Exists(_path+"/"+_fileName))
                 {
                     return null;
                 }
 
                 XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load("C:/TdmsMkys/Matches.xml");
+                xmlDocument.Load(_path + "/" + _fileName);
                 XmlNode datas = xmlDocument.SelectSingleNode("datas");
 
                 XmlNode query = datas.SelectNodes(string.Format("//query[@id='{0}']", queryId))[0];
@@ -51,7 +53,7 @@ namespace YearEndCalculation.Business.Concrete
             XmlNode query = null;
             _queryId = queryId;
 
-            if (!File.Exists("C:/TdmsMkys/Matches.xml"))
+            if (!File.Exists(_path + "/" + _fileName))
             {
                 XmlElement datas = xmlDocument.CreateElement("datas");
                 xmlDocument.AppendChild(datas);
@@ -63,11 +65,9 @@ namespace YearEndCalculation.Business.Concrete
                 datas.AppendChild(query);
 
             }
-
-
-            if (File.Exists("C:/TdmsMkys/Matches.xml"))
+            else
             {
-                xmlDocument.Load("C:/TdmsMkys/Matches.xml");
+                xmlDocument.Load(_path + "/" + _fileName);
                 XmlNode datas = xmlDocument.SelectSingleNode("datas");
 
                 bool queryExist = false;
@@ -96,7 +96,7 @@ namespace YearEndCalculation.Business.Concrete
             }
             CreateQueryRecord(xmlDocument, query, matchedItems);
            
-            xmlDocument.Save("C:/TdmsMkys/Matches.xml");
+            xmlDocument.Save(_path + "/" + _fileName);
             return _matchedRecords;
         }
 
@@ -150,12 +150,13 @@ namespace YearEndCalculation.Business.Concrete
 
         public void RemoveMatchFromXml(string queryId, string matchId)
         {
-            xmlDocument.Load("C:/TdmsMkys/Matches.xml");
+            xmlDocument.Load(_path + "/" + _fileName);
             XmlNode datas = xmlDocument.SelectSingleNode("datas");
             XmlNode query = datas.SelectNodes(string.Format("//query[@id='{0}']", queryId))[0];
             XmlNode match = query.SelectNodes(string.Format("//match[@id='{0}']", matchId))[0];
             query.RemoveChild(match);
-            xmlDocument.Save("C:/TdmsMkys/Matches.xml");
+            xmlDocument.Save(_path + "/" + _fileName);
+            
         }
     }
 }

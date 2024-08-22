@@ -40,7 +40,12 @@ namespace YearEndCalculation2.WindowsFormUI
             this.lblTdmsRemaining = new System.Windows.Forms.Label();
             this.gbxRemain = new System.Windows.Forms.GroupBox();
             this.gbxResult = new System.Windows.Forms.GroupBox();
-            this.btnShowMatches = new System.Windows.Forms.Button();
+            this.lblCount = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.btnShowMatches = new System.Windows.Forms.PictureBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.btnCorrect = new System.Windows.Forms.Button();
             this.btnMatch = new System.Windows.Forms.Button();
             this.lblNoProblem = new System.Windows.Forms.Label();
             this.dgw = new System.Windows.Forms.DataGridView();
@@ -50,7 +55,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.btnTab3 = new System.Windows.Forms.Button();
             this.btnTab2 = new System.Windows.Forms.Button();
             this.btnTab1 = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
+            this.lblAuthor = new System.Windows.Forms.Label();
             this.btnCalculate = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -102,12 +107,12 @@ namespace YearEndCalculation2.WindowsFormUI
             this.picInfoMkys = new System.Windows.Forms.PictureBox();
             this.picCountCorrect = new System.Windows.Forms.PictureBox();
             this.picCountIncorrect = new System.Windows.Forms.PictureBox();
-            this.pbxFacebook = new System.Windows.Forms.PictureBox();
             this.gbxBottom = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.tglBtnDarkMode = new YearEndCalculation.WindowsFormUI.ToggleButton();
+            this.lblContact = new System.Windows.Forms.Label();
+            this.tgglBtn = new YearEndCalculation.WindowsFormUI.ToggleButton();
             this.gbxRemain.SuspendLayout();
             this.gbxResult.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnShowMatches)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgw)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnExcel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPrint)).BeginInit();
@@ -118,7 +123,6 @@ namespace YearEndCalculation2.WindowsFormUI
             ((System.ComponentModel.ISupportInitialize)(this.picInfoMkys)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCountCorrect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCountIncorrect)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxFacebook)).BeginInit();
             this.gbxBottom.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -181,11 +185,16 @@ namespace YearEndCalculation2.WindowsFormUI
             this.gbxRemain.Size = new System.Drawing.Size(338, 97);
             this.gbxRemain.TabIndex = 0;
             this.gbxRemain.TabStop = false;
-            this.gbxRemain.Text = "MKYS ve TDMS verilerini giriniz";
+            this.gbxRemain.Text = "Kalan Tutar";
             // 
             // gbxResult
             // 
+            this.gbxResult.Controls.Add(this.lblCount);
+            this.gbxResult.Controls.Add(this.label15);
+            this.gbxResult.Controls.Add(this.label12);
             this.gbxResult.Controls.Add(this.btnShowMatches);
+            this.gbxResult.Controls.Add(this.label11);
+            this.gbxResult.Controls.Add(this.btnCorrect);
             this.gbxResult.Controls.Add(this.btnMatch);
             this.gbxResult.Controls.Add(this.lblNoProblem);
             this.gbxResult.Controls.Add(this.dgw);
@@ -195,7 +204,6 @@ namespace YearEndCalculation2.WindowsFormUI
             this.gbxResult.Controls.Add(this.btnTab3);
             this.gbxResult.Controls.Add(this.btnTab2);
             this.gbxResult.Controls.Add(this.btnTab1);
-            this.gbxResult.Controls.Add(this.label9);
             this.gbxResult.Location = new System.Drawing.Point(53, 19);
             this.gbxResult.MinimumSize = new System.Drawing.Size(770, 450);
             this.gbxResult.Name = "gbxResult";
@@ -204,17 +212,81 @@ namespace YearEndCalculation2.WindowsFormUI
             this.gbxResult.TabStop = false;
             this.gbxResult.Text = "Kontrol Edilmesi Gereken Kayıtlar";
             // 
+            // lblCount
+            // 
+            this.lblCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCount.AutoSize = true;
+            this.lblCount.Location = new System.Drawing.Point(749, 25);
+            this.lblCount.Name = "lblCount";
+            this.lblCount.Size = new System.Drawing.Size(38, 13);
+            this.lblCount.TabIndex = 92;
+            this.lblCount.Text = "0 kayıt";
+            this.lblCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblCount.Visible = false;
+            // 
+            // label15
+            // 
+            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(629, 421);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(67, 26);
+            this.label15.TabIndex = 91;
+            this.label15.Text = "Eşleştirilenler\r\nListesi";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label12
+            // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(694, 420);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(45, 26);
+            this.label12.TabIndex = 90;
+            this.label12.Text = "Kalanlar\r\nListesi";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // btnShowMatches
             // 
-            this.btnShowMatches.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnShowMatches.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShowMatches.Location = new System.Drawing.Point(17, 415);
+            this.btnShowMatches.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShowMatches.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnShowMatches.Image = ((System.Drawing.Image)(resources.GetObject("btnShowMatches.Image")));
+            this.btnShowMatches.InitialImage = null;
+            this.btnShowMatches.Location = new System.Drawing.Point(646, 388);
             this.btnShowMatches.Name = "btnShowMatches";
-            this.btnShowMatches.Size = new System.Drawing.Size(129, 23);
-            this.btnShowMatches.TabIndex = 86;
-            this.btnShowMatches.Text = "Otomatik Eşleştirilenler";
-            this.btnShowMatches.UseVisualStyleBackColor = true;
+            this.btnShowMatches.Size = new System.Drawing.Size(34, 29);
+            this.btnShowMatches.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnShowMatches.TabIndex = 89;
+            this.btnShowMatches.TabStop = false;
             this.btnShowMatches.Click += new System.EventHandler(this.btnShowMatches_Click);
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(743, 420);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(36, 13);
+            this.label11.TabIndex = 88;
+            this.label11.Text = "Yazdır";
+            // 
+            // btnCorrect
+            // 
+            this.btnCorrect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCorrect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(214)))), ((int)(((byte)(226)))));
+            this.btnCorrect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCorrect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnCorrect.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnCorrect.Image = ((System.Drawing.Image)(resources.GetObject("btnCorrect.Image")));
+            this.btnCorrect.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCorrect.Location = new System.Drawing.Point(111, 392);
+            this.btnCorrect.Name = "btnCorrect";
+            this.btnCorrect.Size = new System.Drawing.Size(79, 46);
+            this.btnCorrect.TabIndex = 87;
+            this.btnCorrect.Text = "Kayıtları\r\nDoğrula";
+            this.btnCorrect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnCorrect.UseVisualStyleBackColor = false;
+            this.btnCorrect.Click += new System.EventHandler(this.btnCorrect_Click);
             // 
             // btnMatch
             // 
@@ -225,9 +297,9 @@ namespace YearEndCalculation2.WindowsFormUI
             this.btnMatch.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnMatch.Image = ((System.Drawing.Image)(resources.GetObject("btnMatch.Image")));
             this.btnMatch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMatch.Location = new System.Drawing.Point(306, 412);
+            this.btnMatch.Location = new System.Drawing.Point(17, 392);
             this.btnMatch.Name = "btnMatch";
-            this.btnMatch.Size = new System.Drawing.Size(145, 31);
+            this.btnMatch.Size = new System.Drawing.Size(88, 46);
             this.btnMatch.TabIndex = 85;
             this.btnMatch.Text = "Manuel Eşleştirme";
             this.btnMatch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -287,7 +359,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.dgw.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.dgw.RowTemplate.Height = 27;
             this.dgw.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgw.Size = new System.Drawing.Size(787, 363);
+            this.dgw.Size = new System.Drawing.Size(787, 339);
             this.dgw.TabIndex = 1;
             // 
             // btnExcel
@@ -296,7 +368,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.btnExcel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExcel.Image = ((System.Drawing.Image)(resources.GetObject("btnExcel.Image")));
             this.btnExcel.InitialImage = null;
-            this.btnExcel.Location = new System.Drawing.Point(713, 415);
+            this.btnExcel.Location = new System.Drawing.Point(697, 388);
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(34, 29);
             this.btnExcel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -310,7 +382,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.btnPrint.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnPrint.Image = ((System.Drawing.Image)(resources.GetObject("btnPrint.Image")));
             this.btnPrint.InitialImage = null;
-            this.btnPrint.Location = new System.Drawing.Point(754, 415);
+            this.btnPrint.Location = new System.Drawing.Point(745, 388);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(34, 29);
             this.btnPrint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -375,17 +447,14 @@ namespace YearEndCalculation2.WindowsFormUI
             this.btnTab1.UseVisualStyleBackColor = false;
             this.btnTab1.Click += new System.EventHandler(this.btnTab1_Click);
             // 
-            // label9
+            // lblAuthor
             // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Monotype Corsiva", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label9.ForeColor = System.Drawing.Color.Maroon;
-            this.label9.Location = new System.Drawing.Point(544, 13);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(249, 25);
-            this.label9.TabIndex = 76;
-            this.label9.Text = "Ecz. Ahmet Nurkan ÖZTÜRK";
+            this.lblAuthor.Font = new System.Drawing.Font("Sitka Display", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblAuthor.Location = new System.Drawing.Point(66, 641);
+            this.lblAuthor.Name = "lblAuthor";
+            this.lblAuthor.Size = new System.Drawing.Size(185, 21);
+            this.lblAuthor.TabIndex = 76;
+            this.lblAuthor.Text = "Ecz. Ahmet Nurkan ÖZTÜRK";
             // 
             // btnCalculate
             // 
@@ -556,6 +625,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // prcWrongTdmsExit
             // 
             this.prcWrongTdmsExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.prcWrongTdmsExit.AutoSize = true;
             this.prcWrongTdmsExit.BackColor = System.Drawing.Color.Transparent;
             this.prcWrongTdmsExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcWrongTdmsExit.FlatAppearance.BorderSize = 0;
@@ -574,6 +644,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // prcWrongTdmsEntry
             // 
             this.prcWrongTdmsEntry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.prcWrongTdmsEntry.AutoSize = true;
             this.prcWrongTdmsEntry.BackColor = System.Drawing.Color.Transparent;
             this.prcWrongTdmsEntry.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcWrongTdmsEntry.FlatAppearance.BorderSize = 0;
@@ -592,6 +663,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // prcMkysExit
             // 
             this.prcMkysExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.prcMkysExit.AutoSize = true;
             this.prcMkysExit.BackColor = System.Drawing.Color.Transparent;
             this.prcMkysExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcMkysExit.FlatAppearance.BorderSize = 0;
@@ -610,6 +682,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // prcMkysEntry
             // 
             this.prcMkysEntry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.prcMkysEntry.AutoSize = true;
             this.prcMkysEntry.BackColor = System.Drawing.Color.Transparent;
             this.prcMkysEntry.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcMkysEntry.FlatAppearance.BorderSize = 0;
@@ -628,6 +701,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // prcTdmsRemain
             // 
             this.prcTdmsRemain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.prcTdmsRemain.AutoSize = true;
             this.prcTdmsRemain.BackColor = System.Drawing.Color.Transparent;
             this.prcTdmsRemain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcTdmsRemain.FlatAppearance.BorderSize = 0;
@@ -646,6 +720,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // prcMkysRemain
             // 
             this.prcMkysRemain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.prcMkysRemain.AutoSize = true;
             this.prcMkysRemain.BackColor = System.Drawing.Color.Transparent;
             this.prcMkysRemain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.prcMkysRemain.FlatAppearance.BorderSize = 0;
@@ -1013,7 +1088,7 @@ namespace YearEndCalculation2.WindowsFormUI
             // lblAttention
             // 
             this.lblAttention.AutoSize = true;
-            this.lblAttention.Location = new System.Drawing.Point(87, 641);
+            this.lblAttention.Location = new System.Drawing.Point(444, 641);
             this.lblAttention.Name = "lblAttention";
             this.lblAttention.Size = new System.Drawing.Size(379, 13);
             this.lblAttention.TabIndex = 75;
@@ -1083,20 +1158,6 @@ namespace YearEndCalculation2.WindowsFormUI
             this.picCountIncorrect.TabStop = false;
             this.picCountIncorrect.Visible = false;
             // 
-            // pbxFacebook
-            // 
-            this.pbxFacebook.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbxFacebook.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbxFacebook.Image = ((System.Drawing.Image)(resources.GetObject("pbxFacebook.Image")));
-            this.pbxFacebook.InitialImage = null;
-            this.pbxFacebook.Location = new System.Drawing.Point(1293, 660);
-            this.pbxFacebook.Name = "pbxFacebook";
-            this.pbxFacebook.Size = new System.Drawing.Size(22, 23);
-            this.pbxFacebook.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbxFacebook.TabIndex = 84;
-            this.pbxFacebook.TabStop = false;
-            this.pbxFacebook.Click += new System.EventHandler(this.pbxFacebook_Click);
-            // 
             // gbxBottom
             // 
             this.gbxBottom.Controls.Add(this.label17);
@@ -1129,32 +1190,30 @@ namespace YearEndCalculation2.WindowsFormUI
             this.gbxBottom.TabIndex = 85;
             this.gbxBottom.TabStop = false;
             // 
-            // label10
+            // lblContact
             // 
-            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label10.Location = new System.Drawing.Point(50, 707);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(208, 32);
-            this.label10.TabIndex = 90;
-            this.label10.Text = "İletişim: ecz_nurkan@hotmail.com\r\nTelefon: 0542 743 6684";
+            this.lblContact.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblContact.Location = new System.Drawing.Point(67, 662);
+            this.lblContact.Name = "lblContact";
+            this.lblContact.Size = new System.Drawing.Size(221, 32);
+            this.lblContact.TabIndex = 90;
+            this.lblContact.Text = "İletişim: ecz_nurkan@hotmail.com\r\nTelefon: 0542 743 6684";
             // 
-            // tglBtnDarkMode
+            // tgglBtn
             // 
-            this.tglBtnDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tglBtnDarkMode.AutoSize = true;
-            this.tglBtnDarkMode.Location = new System.Drawing.Point(1270, 19);
-            this.tglBtnDarkMode.MinimumSize = new System.Drawing.Size(45, 22);
-            this.tglBtnDarkMode.Name = "tglBtnDarkMode";
-            this.tglBtnDarkMode.OffBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tglBtnDarkMode.OffToggleColor = System.Drawing.Color.WhiteSmoke;
-            this.tglBtnDarkMode.OnBackColor = System.Drawing.Color.SlateBlue;
-            this.tglBtnDarkMode.OnToggleColor = System.Drawing.Color.WhiteSmoke;
-            this.tglBtnDarkMode.Size = new System.Drawing.Size(45, 22);
-            this.tglBtnDarkMode.TabIndex = 91;
-            this.tglBtnDarkMode.UseVisualStyleBackColor = true;
-            this.tglBtnDarkMode.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tglBtnDarkMode_MouseClick);
+            this.tgglBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tgglBtn.AutoSize = true;
+            this.tgglBtn.Location = new System.Drawing.Point(1238, 19);
+            this.tgglBtn.MinimumSize = new System.Drawing.Size(45, 22);
+            this.tgglBtn.Name = "tgglBtn";
+            this.tgglBtn.OffBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tgglBtn.OffToggleColor = System.Drawing.Color.Gainsboro;
+            this.tgglBtn.OnBackColor = System.Drawing.Color.MediumSlateBlue;
+            this.tgglBtn.OnToggleColor = System.Drawing.Color.WhiteSmoke;
+            this.tgglBtn.Size = new System.Drawing.Size(45, 22);
+            this.tgglBtn.TabIndex = 91;
+            this.tgglBtn.UseVisualStyleBackColor = true;
+            this.tgglBtn.Click += new System.EventHandler(this.tgglBtn_Click);
             // 
             // FormMain
             // 
@@ -1163,10 +1222,9 @@ namespace YearEndCalculation2.WindowsFormUI
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
             this.ClientSize = new System.Drawing.Size(1339, 749);
-            this.Controls.Add(this.tglBtnDarkMode);
-            this.Controls.Add(this.label10);
+            this.Controls.Add(this.tgglBtn);
+            this.Controls.Add(this.lblContact);
             this.Controls.Add(this.gbxBottom);
-            this.Controls.Add(this.pbxFacebook);
             this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.gbxRemain);
             this.Controls.Add(this.btnHelp);
@@ -1177,11 +1235,12 @@ namespace YearEndCalculation2.WindowsFormUI
             this.Controls.Add(this.gbxEntrySelect);
             this.Controls.Add(this.gbxExitSelect);
             this.Controls.Add(this.gbxResult);
+            this.Controls.Add(this.lblAuthor);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1030, 500);
             this.Name = "FormMain";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-            this.Text = "Yıl Sonu Muhasebe Hesaplaması v3.01";
+            this.Text = "Mkys Tdms Uyumu 2024 v4.1.3";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.SizeChanged += new System.EventHandler(this.FormMain_SizeChanged);
@@ -1189,6 +1248,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.gbxRemain.PerformLayout();
             this.gbxResult.ResumeLayout(false);
             this.gbxResult.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnShowMatches)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgw)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnExcel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPrint)).EndInit();
@@ -1202,7 +1262,6 @@ namespace YearEndCalculation2.WindowsFormUI
             ((System.ComponentModel.ISupportInitialize)(this.picInfoMkys)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCountCorrect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCountIncorrect)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxFacebook)).EndInit();
             this.gbxBottom.ResumeLayout(false);
             this.gbxBottom.PerformLayout();
             this.ResumeLayout(false);
@@ -1275,14 +1334,18 @@ namespace YearEndCalculation2.WindowsFormUI
         private System.Windows.Forms.Label lblAttention;
         private System.Windows.Forms.Label lblNoProblem;
         private System.Windows.Forms.PictureBox btnExcel;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblAuthor;
         private System.Windows.Forms.Button btnHelp;
-        private System.Windows.Forms.PictureBox pbxFacebook;
         private System.Windows.Forms.Button btnMatch;
         private System.Windows.Forms.GroupBox gbxBottom;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button btnShowMatches;
-        private YearEndCalculation.WindowsFormUI.ToggleButton tglBtnDarkMode;
+        private System.Windows.Forms.Label lblContact;
+        private System.Windows.Forms.Button btnCorrect;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.PictureBox btnShowMatches;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lblCount;
+        private YearEndCalculation.WindowsFormUI.ToggleButton tgglBtn;
     }
 }
 

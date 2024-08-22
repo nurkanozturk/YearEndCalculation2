@@ -9,21 +9,22 @@ namespace YearEndCalculation2.Business.Concrete.Managers
     {        
         public static List<Match> matches = new List<Match>();
 
-        public List<ActionRecord> CompareMkysTdms(List<ActionRecord> mkys, List<ActionRecord> tdms)
+        public List<ActionRecord> CompareInvoiceNumber(List<ActionRecord> mkys, List<ActionRecord> tdms)
         {
             //fatura numarası karşılaştırması
             for (int i = 0; i < mkys.Count; i++)
             {
                 for (int j = 0; j < tdms.Count; j++)
                 {
-                    if (mkys[i].InvoiceNumber !="" && mkys[i].InvoiceNumber == tdms[j].InvoiceNumber && Math.Abs(mkys[i].Price - tdms[j].Price) < 0.1m )
+                    if (mkys[i].InvoiceNumber !="" && mkys[i].InvoiceNumber == tdms[j].InvoiceNumber && Math.Abs(mkys[i].Price - tdms[j].Price) < 0.03m )
                     {
                         matches.Add(
                             new Match { 
                                 Id = mkys[i].Id, 
                                 MkysRecord = mkys[i], 
                                 TdmsRecord = tdms[j], 
-                                IsInvoiceNumberMatch = true 
+                                IsSafeMatch = true
+
                             }); 
 
                         mkys.RemoveAt(i);
@@ -34,13 +35,125 @@ namespace YearEndCalculation2.Business.Concrete.Managers
                     }
                 }
             }
+            return mkys;
+        }
 
+        public List<ActionRecord> CompareDocNumber(List<ActionRecord> mkys, List<ActionRecord> tdms)
+        {
+            //fiş numarası karşılaştırması
+            for (int i = 0; i < mkys.Count; i++)
+            {
+                for (int j = 0; j < tdms.Count; j++)
+                {
+                    if (mkys[i].DocNumber != "" && mkys[i].DocNumber == tdms[j].DocNumber && Math.Abs(mkys[i].Price - tdms[j].Price) < 0.03m)
+                    {
+                        matches.Add(
+                            new Match
+                            {
+                                Id = mkys[i].Id,
+                                MkysRecord = mkys[i],
+                                TdmsRecord = tdms[j],
+                                IsSafeMatch = true
+                            });
+
+                        mkys.RemoveAt(i);
+                        tdms.RemoveAt(j);
+
+                        j = tdms.Count;
+                        i = -1;
+                    }
+                }
+            }
+
+            return mkys;
+        }
+
+        public List<ActionRecord> CompareMassRecords(List<ActionRecord> mkys, List<ActionRecord> tdms)
+        {
+            //birden fazla kaydın tek seferde kaydının kontrolü
+            for (int i = 0; i < tdms.Count; i++)
+            {
+                string[] docNumbers = tdms[i].DocNumber.Split('-');
+                if (docNumbers.Length < 2)
+                {
+                    continue;
+                }
+
+                int tdmsDocNumberCount = docNumbers.Length;
+                List<ActionRecord> mkysRecords = new List<ActionRecord>();
+
+                //tdms nin bir kaydındaki çoklu dosya numarasını tek tek mkys de aratıp mkysDocNumbers listesine ekliyoruz.
+                for (int j = 0; j < tdmsDocNumberCount; j++)
+                {
+                    for (int k = 0; k < mkys.Count; k++)
+                    {
+                        if (docNumbers[j].Trim() == mkys[k].DocNumber)
+                        {
+                            mkysRecords.Add(mkys[k]);
+                            k = mkys.Count;
+                        }
+                    }
+                }
+
+                if (docNumbers.Length != mkysRecords.Count)
+                {
+                    continue;
+                }
+
+                decimal mkysTotalPrice = 0;
+                foreach (ActionRecord record in mkysRecords)
+                {
+                    mkysTotalPrice += record.Price;
+                }
+
+                if (Math.Abs(tdms[i].Price - mkysTotalPrice) < 0.1m)
+                {
+                    for(int j = 0;j < mkysRecords.Count; j++)
+                    {
+                        if (j ==0)
+                        {
+                            matches.Add(
+                          new Match
+                          {
+                              Id = mkysRecords[j].Id,
+                              MkysRecord = mkysRecords[j],
+                              TdmsRecord = tdms[i],
+                              IsSafeMatch = true
+
+                          });
+                        }
+                        else
+                        {
+                            matches.Add(
+                          new Match
+                          {
+                              Id = mkysRecords[j].Id,
+                              MkysRecord = mkysRecords[j],
+                              TdmsRecord = tdms[i],
+                              IsSafeMatch = true
+                          });
+                        }
+                       
+                        mkys.Remove(mkysRecords[j]);
+                    }
+                    
+
+                    tdms.RemoveAt(i);
+                    i = -1;
+                }
+
+            }
+            return mkys;
+        }
+
+        public List<ActionRecord> CompareForHospitalName(List<ActionRecord> mkys, List<ActionRecord> tdms)
+        {
             //hastane adı karşılaştırması
             for (int i = 0; i < mkys.Count; i++)
             {
                 for (int j = 0; j < tdms.Count; j++)
                 {
-                    if (Math.Abs(mkys[i].Price - tdms[j].Price) <= 0.1m && sameHospital(mkys[i], tdms[j]))
+                    if (Math.Abs(mkys[i].Price - tdms[j].Price) <= 0.03m && sameHospital(mkys[i], tdms[j]))
                     {
                         matches.Add(
                             new Match
@@ -48,57 +161,7 @@ namespace YearEndCalculation2.Business.Concrete.Managers
                                 Id = mkys[i].Id,
                                 MkysRecord = mkys[i],
                                 TdmsRecord = tdms[j],
-                                IsInvoiceNumberMatch = true
-                            });
-
-                        mkys.RemoveAt(i);
-                        tdms.RemoveAt(j);
-
-                        j = tdms.Count;
-                        i = -1;
-                    }
-                }
-            }
-
-            //hassas tutar karşılaştırması
-            for (int i = 0; i < mkys.Count; i++)
-            {
-                for (int j = 0; j < tdms.Count; j++)
-                {
-                    if (Math.Abs(mkys[i].Price - tdms[j].Price) <= 0.01m)
-                    {
-                        matches.Add(
-                            new Match
-                            {
-                                Id = mkys[i].Id,
-                                MkysRecord = mkys[i],
-                                TdmsRecord = tdms[j],
-                                IsInvoiceNumberMatch = false
-                            });
-
-                        mkys.RemoveAt(i);
-                        tdms.RemoveAt(j);
-
-                        j = tdms.Count;
-                        i = -1;
-                    }
-                }
-            }
-
-            //normal tutar karşılaştırması
-            for (int i = 0; i < mkys.Count; i++)
-            {
-                for (int j = 0; j < tdms.Count; j++)
-                {
-                    if (Math.Abs(mkys[i].Price - tdms[j].Price) < 0.1m)
-                    {
-                        matches.Add(
-                            new Match
-                            {
-                                Id = mkys[i].Id,
-                                MkysRecord = mkys[i],
-                                TdmsRecord = tdms[j],
-                                IsInvoiceNumberMatch = false
+                                IsSafeMatch = false
                             });
 
                         mkys.RemoveAt(i);
@@ -112,70 +175,87 @@ namespace YearEndCalculation2.Business.Concrete.Managers
             return mkys;
         }
 
-        
-
-        public List<ActionRecord> CompareInSelf(List<ActionRecord> entries, List<ActionRecord> exits)
+        public List<ActionRecord> CompareSensitivePrice(List<ActionRecord> mkys, List<ActionRecord> tdms)
         {
-            
-            for (int i = 0; i < entries.Count; i++)
+            //hassas tutar karşılaştırması
+            for (int i = 0; i < mkys.Count; i++)
             {
-                for (int j = 0; j < exits.Count; j++)
+                for (int j = 0; j < tdms.Count; j++)
                 {
-                    if (exits[j].Price == entries[i].Price && exits[j].Type.Contains(entries[i].Type))
+                    if (Math.Abs(mkys[i].Price - tdms[j].Price) <= 0.01m)
                     {
-                       
-                        entries.RemoveAt(i);
-                        exits.RemoveAt(j);
+                        matches.Add(
+                            new Match
+                            {
+                                Id = mkys[i].Id,
+                                MkysRecord = mkys[i],
+                                TdmsRecord = tdms[j],
+                                IsSafeMatch = false
+                            });
 
-                        j = exits.Count;
+                        mkys.RemoveAt(i);
+                        tdms.RemoveAt(j);
+
+                        j = tdms.Count;
                         i = -1;
                     }
                 }
             }
-
-            RemoveZeroAmounts(entries);
-            RemoveZeroAmounts(exits);
-
-            return exits;
+            return mkys;
         }
-        public List<ActionRecord> CompareCorrections(List<ActionRecord> entries, List<ActionRecord> exits)
+
+        public List<ActionRecord> CompareNotSensitivePrice(List<ActionRecord> mkys, List<ActionRecord> tdms)
         {
-
-            for (int i = 0; i < entries.Count; i++)
+            //normal tutar karşılaştırması
+            for (int i = 0; i < mkys.Count; i++)
             {
-                for (int j = 0; j < exits.Count; j++)
+                for (int j = 0; j < tdms.Count; j++)
                 {
-                    // girişin tipi düzeltme diye yazıyor mu diye bakmak lazım
-                    if (exits[j].Price == entries[i].Price && exits[j].Type.ToLower()=="düzeltme çıkış")
+                    if (Math.Abs(mkys[i].Price - tdms[j].Price) < 0.03m)
                     {
-                        
+                        matches.Add(
+                            new Match
+                            {
+                                Id = mkys[i].Id,
+                                MkysRecord = mkys[i],
+                                TdmsRecord = tdms[j],
+                                IsSafeMatch = false
+                            });
 
-                        entries.RemoveAt(i);
-                        exits.RemoveAt(j);
+                        mkys.RemoveAt(i);
+                        tdms.RemoveAt(j);
 
-                        j = exits.Count;
+                        j = tdms.Count;
                         i = -1;
                     }
                 }
             }
-
-            RemoveZeroAmounts(entries);
-            RemoveZeroAmounts(exits);
-
-            return exits;
+            return mkys;
         }
 
-        private static void RemoveZeroAmounts(List<ActionRecord> list)
+        public List<ActionRecord> RemoveZeroAmounts(List<ActionRecord> entries, List<ActionRecord> exits)
         {
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < entries.Count; i++)
             {
-                if (list[i].Price == 0)
+                if (entries[i].Price == 0)
                 {
-                    list.RemoveAt(i);
+                    entries.RemoveAt(i);
                     i = -1;
                 }
             }
+            for (int i = 0; i < exits.Count; i++)
+            {
+                if (exits[i].Price == 0)
+                {
+                    exits.RemoveAt(i);
+                    i = -1;
+                }
+            }
+
+
+            return exits;
         }
+        
         private bool sameHospital(ActionRecord mkysRecord, ActionRecord tdmsRecord)
         {
             
@@ -185,6 +265,7 @@ namespace YearEndCalculation2.Business.Concrete.Managers
             {
                 if(word.ToLower() == "devlet")
                 {
+                    if (i == 0) continue;
                     mkysHospital = mkysRecord.Explanation.Split(' ')[i-1].ToLower();
                     
                 }
