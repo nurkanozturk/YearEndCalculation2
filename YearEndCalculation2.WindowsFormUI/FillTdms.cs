@@ -11,7 +11,7 @@ namespace YearEndCalculation2.WindowsFormUI
     public class FillTdms
     {
         public static string queryId = "";
-        public static decimal transferredPrice = 0;
+        public static decimal transferredPrice =0;
         
 
         public List<ActionRecord> FillTdmsDatas(string fileName, bool isExit)
@@ -36,44 +36,60 @@ namespace YearEndCalculation2.WindowsFormUI
                 }
             }
 
-            int i = 14;
+            int actionIndex = 14;
+            int queryIdColumn = 3;
+            int borcColumn = 11;
+            int docColumn = 5;
+            int tdmsFileNumColumn = 4;
+            int dateColumn = 2;
+            int typeColumn = 6;
+            int invoiceColumn = 8;
+            int expColumn = 7;
+
+
             bool isValiedFile = false;
             var checkValue = dataTable.Rows[14][6].ToString();
-            var checkValueAlt = dataTable.Rows[11][4].ToString();
+            //var checkValueAlt = dataTable.Rows[11][4].ToString();
+
+            
             if (checkValue == "Ödeme Emri" || checkValue == "Muhasebe İşlem")
             {
                 isValiedFile = true;
             }
-
+                      
 
             if (isValiedFile)
             {
-                transferredPrice = Convert.ToDecimal(dataTable.Rows[i - 1][10].ToString());
-                queryId = dataTable.Rows[5][3].ToString() + "-" + dataTable.Rows[6][3].ToString() + "-" + dataTable.Rows[10][3].ToString();
+                transferredPrice = Convert.ToDecimal(dataTable.Rows[actionIndex - 1][borcColumn].ToString());
+                queryId = dataTable.Rows[5][queryIdColumn].ToString() + "-" 
+                    + dataTable.Rows[6][queryIdColumn].ToString() + "-" 
+                    + dataTable.Rows[10][queryIdColumn].ToString();
 
-                while (dataTable.Rows[i][2].ToString() != "")
+                while (dataTable.Rows[actionIndex][dateColumn].ToString() != "")
                 {
-                    if (Convert.ToDecimal(dataTable.Rows[i][10 + Convert.ToInt32(isExit)]) > 0)
+                    if (Convert.ToDecimal(dataTable.Rows[actionIndex][borcColumn + Convert.ToInt32(isExit)]) > 0)
                     {
                         string idPrefix = isExit ? "tdmsExit-" : "tdmsEntry-";
-                        string docNumber = dataTable.Rows[i][5].ToString();
+                        string docNumber = dataTable.Rows[actionIndex][docColumn].ToString();
                         
                         dataList.Add(new ActionRecord
                         {
-                            Id = idPrefix + dataTable.Rows[i][2].ToString() + "-" + dataTable.Rows[i][4].ToString() + "-" + dataTable.Rows[i][10 + Convert.ToInt32(isExit)].ToString(),
+                            Id = idPrefix + dataTable.Rows[actionIndex][2].ToString() + "-" 
+                            + dataTable.Rows[actionIndex][tdmsFileNumColumn].ToString() + "-" 
+                            + dataTable.Rows[actionIndex][borcColumn + Convert.ToInt32(isExit)].ToString(),
                             DocNumber = docNumber,
-                            DocDate = dataTable.Rows[i][2].ToString(),
-                            Type = dataTable.Rows[i][6].ToString(),
-                            InvoiceNumber = dataTable.Rows[i][8].ToString(),
-                            Explanation = dataTable.Rows[i][7].ToString(),
-                            Price = Convert.ToDecimal(dataTable.Rows[i][10 + Convert.ToInt32(isExit)]),
-                            DateBase = Convert.ToDateTime(dataTable.Rows[i][2].ToString()),
+                            DocDate = dataTable.Rows[actionIndex][dateColumn].ToString(),
+                            Type = dataTable.Rows[actionIndex][typeColumn].ToString(),
+                            InvoiceNumber = dataTable.Rows[actionIndex][invoiceColumn].ToString(),
+                            Explanation = dataTable.Rows[actionIndex][expColumn].ToString(),
+                            Price = Convert.ToDecimal(dataTable.Rows[actionIndex][borcColumn + Convert.ToInt32(isExit)]),
+                            DateBase = Convert.ToDateTime(dataTable.Rows[actionIndex][dateColumn].ToString()),
 
                         });
                         
 
                     }
-                    i++;
+                    actionIndex++;
                 }
             }
 
