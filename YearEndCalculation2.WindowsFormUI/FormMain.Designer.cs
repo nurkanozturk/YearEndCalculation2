@@ -1240,7 +1240,7 @@ namespace YearEndCalculation2.WindowsFormUI
             this.MinimumSize = new System.Drawing.Size(1030, 500);
             this.Name = "FormMain";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-            this.Text = "Mkys Tdms Uyumu 2024 v4.1.3";
+            this.Text = "Mkys Tdms Uyumu 2024 v4.2.0";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.SizeChanged += new System.EventHandler(this.FormMain_SizeChanged);

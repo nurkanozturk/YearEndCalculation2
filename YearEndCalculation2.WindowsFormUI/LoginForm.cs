@@ -695,6 +695,8 @@ namespace YearEndCalculation.WindowsFormUI
                         licenced = true;
                         LicenceSetting.Default.Licenced = true;
                         LicenceSetting.Default.Save();
+                        Settings.Default.dontShowWelcome = true;
+                        Settings.Default.Save();
                     }
                 }
 
